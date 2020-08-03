@@ -5,22 +5,49 @@ html
     link(rel='stylesheet',href='https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/light.min.css')
 
   body
-    h4 How to use:
+    h3 How to use:
 
     h5 SVG address
-    code.
-     https://count.getloli.com/get/@:name
+    code https://count.getloli.com/get/@:name
 
     h5 Img tag
-    code.
-     &lt;img src="https://count.getloli.com/get/@:name" alt=":name" />
+    code &lt;img src="https://count.getloli.com/get/@:name" alt=":name" />
 
     h5 Markdown
-    code.
-     [:name](https://count.getloli.com/get/@:name)
+    code ![:name](https://count.getloli.com/get/@:name)
 
-    h4 eg:
+    h3 eg:
       <img src="https://count.getloli.com/get/@index" alt="Kawaii Count!" />
 
+    h3 Credits
+    ul
+      li
+        a(href='https://repl.it/') https://repl.it/
+      li
+        a(href='https://konachan.com/') http://konachan.com/
+        |  NSFW
+
+    h3 Tool
+    .tool
+      code https://count.getloli.com/get/@
+      input#name(type='text', placeholder=':name', style='display: inline-block;width: 80px;height: 1.4em;line-height: 1.4em;margin: 0 4px;vertical-align: middle;')
+      button#get(style='margin: 10px 0') Get
+      img#result(style='display: block; width: 315px; height: 100px')
+
+      script.
+        var btn = document.getElementById('get'),
+            img = document.getElementById('result')
+
+        btn.addEventListener('click', function() {
+          var name = document.getElementById('name')
+          var text = name.value ? name.value.trim() : ''
+          if(!text) {
+            alert('Please input counter name.')
+            return
+          }
+
+          img.src = 'https://count.getloli.com/get/@' + text
+        })
+
     p.copy
-      a(href='')
+      a(href='https://repl.it/@journeyad/kawaii-counter') source code
