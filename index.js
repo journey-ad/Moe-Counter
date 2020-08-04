@@ -31,6 +31,7 @@ function getCountImage(count) {
 
 
 const app = express()
+app.use(express.static('assets'))
 app.use(compression())
 app.set('view engine', 'pug')
 
