@@ -13,6 +13,7 @@
   "dependencies": {
     "compression": "^1.7.4",
     "express": "^4.17.1",
+    "mime-types": "^2.1.27",
     "pug": "^3.0.0",
     "sqlite3": "^5.0.0"
   }

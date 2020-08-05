@@ -24,6 +24,15 @@ html
       | <span style="color: #ff4500;"> DO NOT</span>
       |  enter personal information
 
+    details
+      summary(style='display: inline-block;')
+        h3(style='display: inline-block; cursor: pointer;') More theme
+      p(style='margin: 0;') Just use the query parameters <code>theme</code>, like this: <code>https://count.getloli.com/get/@:name?theme=konachan</code>
+      h5 konachan
+      img(src='https://count.getloli.com/get/@demo?theme=konachan', alt='Konachan')
+      h5 rule34
+      img(src='https://count.getloli.com/get/@demo?theme=rule34', alt='Rule34')
+
     h3 Credits
     ul
       li
@@ -32,12 +41,19 @@ html
         a(href='javascript:alert("!!! NSFW LINK !!!\\nPlease enter the url manually")') konachan.com
         |  NSFW
       li
+        a(href='javascript:alert("!!! NSFW LINK !!!\\nPlease enter the url manually")') rule34.xxx
+        |  NSFW
+      li
         a(href='https://icons8.com/icons/set/star', target='_blank', rel='nofollow') Icons8
 
     h3 Tool
     .tool
       code https://count.getloli.com/get/@
       input#name(type='text', placeholder=':name', style='display: inline-block; width: 80px; height: 1.4em; line-height: 1.4em; margin: 0 4px; vertical-align: middle;')
+      code ?theme=
+      select#theme(style='display: inline-block; height: 1.6em; line-height: 1.6em; font-size: 14px; margin: 0 4px; padding: 0 4px; vertical-align: middle;')
+        option(value='konachan') konachan
+        option(value='rule34') rule34
       button#get(style='margin: 10px 0') Get
       img#result(style='display: block; width: 315px; height: 100px')
 
@@ -46,14 +62,16 @@ html
             img = document.getElementById('result')
 
         btn.addEventListener('click', function() {
-          var name = document.getElementById('name')
+          var name = document.getElementById('name'),
+              themeEl = document.getElementById('theme')
           var text = name.value ? name.value.trim() : ''
+          var theme = themeEl.value || 'konachan'
           if(!text) {
             alert('Please input counter name.')
             return
           }
 
-          img.src = 'https://count.getloli.com/get/@' + text
+          img.src = 'https://count.getloli.com/get/@' + text + '?theme=' + theme
         })
 
     p.copy

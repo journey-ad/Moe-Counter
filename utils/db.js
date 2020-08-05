@@ -1,6 +1,9 @@
+'use strict'
+
+const path = require('path')
 const sqlite3 = require('sqlite3')
 
-const db = new sqlite3.Database('count.db')
+const db = new sqlite3.Database(path.resolve(__dirname, '../count.db'))
 
 db.run(`CREATE TABLE IF NOT EXISTS tb_count (
     id    INTEGER      PRIMARY KEY AUTOINCREMENT

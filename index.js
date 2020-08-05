@@ -4,19 +4,18 @@ const fs = require('fs')
 const express = require('express')
 const compression = require('compression')
 
-const db = require('./db')
-
-const numList = require('./num-list')
+const db = require('./utils/db')
+const themify = require('./utils/themify')
 
 const PLACES = 7
 
-function getCountImage(count) {
+function getCountImage({ count, theme='konachan', PLACES=PLACES }) {
   // This is not the greatest way for generating an SVG but it'll do for now
   const countArray = count.toString().padStart(PLACES, '0').split('')
 
   const parts = countArray.reduce((acc, next, index) => `
         ${acc}
-        <image x="${index * 45}" y="0" width="45px" height="100px" xlink:href="data:image/gif;base64,${numList[next]}" />
+        <image x="${index * 45}" y="0" width="45px" height="100px" xlink:href="${themify.wrap(next, theme)}" />
 `, '')
 
   return `<?xml version="1.0" encoding="UTF-8"?>
@@ -42,13 +41,8 @@ app.get('/', (req, res) => {
 // get the image
 app.get('/get/@:name', async (req, res) => {
   const name = req.params.name
-
-  if (!name) return
-
-  const counter = await db.getNum(name)
-  const num = counter.num + 1
-
-  db.setNum(counter.name, num)
+  const theme = req.query.theme || 'konachan'
+  let length = PLACES, num = 0
 
   // This helps with GitHub's image cache 
   res.set({
@@ -56,9 +50,20 @@ app.get('/get/@:name', async (req, res) => {
     'cache-control': 'max-age=0, no-cache, no-store, must-revalidate'
   })
 
+  if (name === 'demo') {
+    num = '0123456789'
+    length = 10
+
+  } else {
+    const counter = await db.getNum(name)
+    num = counter.num + 1
+
+    db.setNum(counter.name, num)
+    console.log(counter, `theme: ${theme}`)
+  }
+
   // Send the generated SVG as the result
-  res.send(getCountImage(num))
-  console.log(counter)
+  res.send(getCountImage({ count: num, theme, PLACES: length }))
 })
 
 app.get('/heart-beat', (req, res) => {
