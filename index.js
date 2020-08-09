@@ -51,6 +51,9 @@ app.get('/get/@:name', async (req, res) => {
   })
 
   if (name === 'demo') {
+    res.set({
+      'cache-control': 'max-age=31536000'
+    })
     num = '0123456789'
     length = 10
 
