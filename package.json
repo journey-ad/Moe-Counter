@@ -12,8 +12,11 @@
   "license": "MIT",
   "dependencies": {
     "compression": "^1.7.4",
+    "config-yml": "^0.10.3",
     "express": "^4.17.1",
+    "image-size": "^0.8.3",
     "mime-types": "^2.1.27",
+    "mongoose": "^5.9.28",
     "pug": "^3.0.0",
     "sqlite3": "^5.0.0"
   }
