@@ -5,8 +5,8 @@ const config = require('config-yml')
 let db
 
 switch(config.db.type){
-  case 'mongo':
-    db = require('./mongo')
+  case 'mongodb':
+    db = require('./mongodb')
     break;
   case 'sqlite':
   default:
