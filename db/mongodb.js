@@ -3,7 +3,12 @@
 const mongoose = require('mongoose')
 const schema = require('./schema')
 
-mongoose.connect(process.env.DB_URL, {
+// the default mongodb url (local server)
+let mongodbURL = `mongodb://127.0.0.1:27017`
+const envMongoURL = process.env.DB_URL
+if (envMongoURL) mongodbURL = envMongoURL
+
+mongoose.connect(mongodbURL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false
