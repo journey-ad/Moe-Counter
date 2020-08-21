@@ -11,6 +11,7 @@ const themify = require('./utils/themify')
 const PLACES = 7
 
 const app = express()
+
 app.use(express.static('assets'))
 app.use(compression())
 app.set('view engine', 'pug')
@@ -18,6 +19,21 @@ app.set('view engine', 'pug')
 app.get('/', (req, res) => {
   res.render('index')
 });
+
+const getCountByName = async name=> {
+  if (name === 'demo') return '0123456789'
+  // console.log(name)
+  try {
+    const counter = await db.getNum(name) || { name, num: 0 }
+    const r = counter.num + 1
+    db.setNum(counter.name, r)
+    return r
+  } catch (error) {
+    console.log("get count by name is error: ", error)
+    const errorDefaultCount = 0
+    return  errorDefaultCount
+  }
+}
 
 // get the image
 app.get('/get/@:name', async (req, res) => {
@@ -31,23 +47,18 @@ app.get('/get/@:name', async (req, res) => {
     'cache-control': 'max-age=0, no-cache, no-store, must-revalidate'
   })
 
+  count = await getCountByName(name)
+
   if (name === 'demo') {
     res.set({
       'cache-control': 'max-age=31536000'
     })
-    count = '0123456789'
     length = 10
-
-  } else {
-    const counter = await db.getNum(name) || { name, num: 0 }
-    count = counter.num + 1
-
-    db.setNum(counter.name, count)
-    console.log(counter, `theme: ${theme}`)
   }
 
   // Send the generated SVG as the result
-  res.send(themify.getCountImage({ count, theme, length }))
+  const renderSvg = themify.getCountImage({ count, theme, length })
+  res.send(renderSvg)
 })
 
 app.get('/heart-beat', (req, res) => {
@@ -59,6 +70,17 @@ app.get('/heart-beat', (req, res) => {
   console.log('heart-beat')
 });
 
-const listener = app.listen(config.app.port, () => {
+let port = 3000
+
+try {
+  let configPort = config.app.port
+  if (configPort) {
+    port = configPort
+  }
+} catch (error) {
+  throw new Error(error)
+}
+
+const listener = app.listen(port, () => {
   console.log('Your app is listening on port ' + listener.address().port)
 })
