@@ -21,19 +21,34 @@ app.get('/', (req, res) => {
 });
 
 const getCountByName = async name=> {
-  if (name === 'demo') return '0123456789'
   // console.log(name)
+  if (name === 'demo') return { num: '0123456789', name }
   try {
     const counter = await db.getNum(name) || { name, num: 0 }
     const r = counter.num + 1
     db.setNum(counter.name, r)
-    return r
+    return counter
   } catch (error) {
     console.log("get count by name is error: ", error)
     const errorDefaultCount = 0
     return  errorDefaultCount
   }
 }
+
+// the rest api get data
+// link: https://www.liaoxuefeng.com/wiki/1022910821149312/1105009634703392
+app.get('/rest/@:name', async (req, res) => {
+  const name = req.params.name
+  try {
+    const data = await getCountByName(name)
+    res.send(data)
+  } catch (error) {
+    res.send({
+      num: 0,
+      name
+    })
+  }
+})
 
 // get the image
 app.get('/get/@:name', async (req, res) => {
@@ -47,7 +62,8 @@ app.get('/get/@:name', async (req, res) => {
     'cache-control': 'max-age=0, no-cache, no-store, must-revalidate'
   })
 
-  count = await getCountByName(name)
+  const data = await getCountByName(name)
+  count = data.num
 
   if (name === 'demo') {
     res.set({
