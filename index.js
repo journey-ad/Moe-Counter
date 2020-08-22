@@ -11,6 +11,7 @@ const themify = require('./utils/themify')
 const PLACES = 7
 
 const app = express()
+
 app.use(express.static('assets'))
 app.use(compression())
 app.set('view engine', 'pug')
@@ -21,9 +22,9 @@ app.get('/', (req, res) => {
 
 // get the image
 app.get('/get/@:name', async (req, res) => {
-  const name = req.params.name
-  const theme = req.query.theme || 'moebooru'
-  let length = PLACES, count = 0
+  const { name } = req.params
+  const { theme = 'moebooru' } = req.query
+  let length = PLACES
 
   // This helps with GitHub's image cache 
   res.set({
@@ -31,23 +32,29 @@ app.get('/get/@:name', async (req, res) => {
     'cache-control': 'max-age=0, no-cache, no-store, must-revalidate'
   })
 
+  const data = await getCountByName(name)
+
   if (name === 'demo') {
     res.set({
       'cache-control': 'max-age=31536000'
     })
-    count = '0123456789'
     length = 10
-
-  } else {
-    const counter = await db.getNum(name) || { name, num: 0 }
-    count = counter.num + 1
-
-    db.setNum(counter.name, count)
-    console.log(counter, `theme: ${theme}`)
   }
 
   // Send the generated SVG as the result
-  res.send(themify.getCountImage({ count, theme, length }))
+  const renderSvg = themify.getCountImage({ count: data.num, theme, length })
+  res.send(renderSvg)
+
+  console.log(data, `theme: ${theme}`)
+})
+
+// JSON record
+app.get('/record/@:name', async (req, res) => {
+  const { name } = req.params
+
+  const data = await getCountByName(name)
+
+  res.json(data)
 })
 
 app.get('/heart-beat', (req, res) => {
@@ -59,6 +66,24 @@ app.get('/heart-beat', (req, res) => {
   console.log('heart-beat')
 });
 
-const listener = app.listen(config.app.port, () => {
+const listener = app.listen(config.app.port || 3000, () => {
   console.log('Your app is listening on port ' + listener.address().port)
 })
+
+async function getCountByName(name) {
+  const defaultCount = { name, num: 0 }
+
+  if (name === 'demo') return { name, num: '0123456789' }
+
+  try {
+    const counter = await db.getNum(name) || defaultCount
+    const num = counter.num + 1
+    db.setNum(counter.name, num)
+    return counter
+
+  } catch (error) {
+    console.log("get count by name is error: ", error)
+    return defaultCount
+
+  }
+}
