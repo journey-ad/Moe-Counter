@@ -5,6 +5,21 @@ html
     link(rel='icon', type='image/png', href='favicon.png')
     link(rel='stylesheet', href='https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/light.min.css')
     link(rel='stylesheet', href='style.css')
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    script(async, src='https://www.googletagmanager.com/gtag/js?id=G-2RLWN5JXRL')
+    script.
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-2RLWN5JXRL');
+
+      function _evt_push(type, category, label){
+        gtag('event', type, {
+          'event_category' : category,
+          'event_label' : label
+        });
+      }
 
   body
     h3 How to use:
@@ -26,7 +41,7 @@ html
       |  enter personal information
 
     details
-      summary(style='display: inline-block;')
+      summary(style='display: inline-block;', onclick='_evt_push("click", "normal", "more_theme")')
         h3(style='display: inline-block; cursor: pointer;') More theme
       p(style='margin: 0;') Just use the query parameters <code>theme</code>, like this: <code>https://count.getloli.com/get/@:name?theme=moebooru</code>
       h5 moebooru
@@ -66,7 +81,7 @@ html
         option(value='rule34') rule34
         option(value='gelbooru') gelbooru
         option(value='gelbooru-h') gelbooru-h
-      button#get(style='margin: 10px 0;') Get
+      button#get(style='margin: 10px 0;', onclick='_evt_push("click", "normal", "get_counter")') Get
       img#result(style='display: block;')
 
       script.
@@ -89,4 +104,4 @@ html
     iframe(src="https://chat.getloli.com/room/@Moe-counter?title=%E8%90%8C%E8%90%8C%E8%AE%A1%E6%95%B0%E5%99%A8%E7%9A%84%E7%95%99%E8%A8%80%E6%9D%BF", scrolling="no", frameborder="0", height="70%", width="26%", style="position: fixed;top: 2%;right: 5%;")
 
     p.copy
-      a(href='https://github.com/journey-ad/Moe-counter' target='_blank') source code
+      a(href='https://github.com/journey-ad/Moe-counter', target='_blank', onclick='_evt_push("click", "normal", "go_github")') source code
