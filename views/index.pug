@@ -30,11 +30,15 @@ html
         h3(style='display: inline-block; cursor: pointer;') More theme
       p(style='margin: 0;') Just use the query parameters <code>theme</code>, like this: <code>https://count.getloli.com/get/@:name?theme=moebooru</code>
       h5 moebooru
-      img(src='https://count.getloli.com/get/@demo?theme=moebooru', alt='moebooru')
+      img(src='https://count.getloli.com/get/@demo?theme=moebooru', alt='Moebooru')
+      h5 moebooru-h
+      img(src='https://count.getloli.com/get/@demo?theme=moebooru-h', alt='Moebooru-Hentai')
       h5 rule34
       img(src='https://count.getloli.com/get/@demo?theme=rule34', alt='Rule34')
       h5 gelbooru
       img(src='https://count.getloli.com/get/@demo?theme=gelbooru', alt='Gelbooru')
+      h5 gelbooru-h
+      img(src='https://count.getloli.com/get/@demo?theme=gelbooru-h', alt='Gelbooru-Hentai')
 
     h3 Credits
     ul
@@ -58,8 +62,10 @@ html
       code ?theme=
       select#theme(style='display: inline-block; height: 1.6em; line-height: 1.6em; font-size: 14px; margin: 0 4px; padding: 0 4px; vertical-align: middle;')
         option(value='moebooru') moebooru
+        option(value='moebooru-h') moebooru-h
         option(value='rule34') rule34
         option(value='gelbooru') gelbooru
+        option(value='gelbooru-h') gelbooru-h
       button#get(style='margin: 10px 0;') Get
       img#result(style='display: block;')
 
@@ -83,4 +89,4 @@ html
     iframe(src="https://chat.getloli.com/room/@Moe-counter?title=%E8%90%8C%E8%90%8C%E8%AE%A1%E6%95%B0%E5%99%A8%E7%9A%84%E7%95%99%E8%A8%80%E6%9D%BF", scrolling="no", frameborder="0", height="70%", width="26%", style="position: fixed;top: 2%;right: 5%;")
 
     p.copy
-      a(href='https://repl.it/@journeyad/Moe-counter') source code
+      a(href='https://github.com/journey-ad/Moe-counter' target='_blank') source code
