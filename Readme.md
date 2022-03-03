@@ -7,6 +7,9 @@
 <details>
 <summary>More theme</summary>
 
+##### asoul
+![asoul](https://count.getloli.com/get/@demo?theme=asoul)
+
 ##### moebooru
 ![moebooru](https://count.getloli.com/get/@demo?theme=moebooru)
 
@@ -67,6 +70,7 @@ DB_URL="mongodb+srv://account:passwd@***.***.***.mongodb.net/db_count"
 ## Credits
 
 *   [repl.it](https://repl.it/)
+*   [A-SOUL](https://www.asoulworld.com/) <sup>(非官方导航站)</sup>
 *   [moebooru](https://github.com/moebooru/moebooru)
 *   rule34.xxx NSFW
 *   gelbooru.com NSFW
