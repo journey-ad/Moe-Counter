@@ -44,6 +44,8 @@ html
       summary(style='display: inline-block;', onclick='_evt_push("click", "normal", "more_theme")')
         h3(style='display: inline-block; cursor: pointer;') More theme
       p(style='margin: 0;') Just use the query parameters <code>theme</code>, like this: <code>https://count.getloli.com/get/@:name?theme=moebooru</code>
+      h5 asoul
+      img(src='https://count.getloli.com/get/@demo?theme=asoul', alt='A-SOUL')
       h5 moebooru
       img(src='https://count.getloli.com/get/@demo?theme=moebooru', alt='Moebooru')
       h5 moebooru-h
@@ -59,6 +61,8 @@ html
     ul
       li
         a(href='https://repl.it/', target='_blank', rel='nofollow') repl.it
+      li
+        a(href='https://www.asoulworld.com/', target='_blank', title='A-SOUL导航站(非官方)') A-SOUL
       li
         a(href='https://github.com/moebooru/moebooru', target='_blank', rel='nofollow') moebooru
       li
@@ -76,6 +80,7 @@ html
       input#name(type='text', placeholder=':name', style='display: inline-block; width: 80px; height: 1.4em; line-height: 1.4em; margin: 0 4px; vertical-align: middle;')
       code ?theme=
       select#theme(style='display: inline-block; height: 1.6em; line-height: 1.6em; font-size: 14px; margin: 0 4px; padding: 0 4px; vertical-align: middle;')
+        option(value='asoul') asoul
         option(value='moebooru') moebooru
         option(value='moebooru-h') moebooru-h
         option(value='rule34') rule34
