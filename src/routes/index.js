@@ -1,10 +1,9 @@
-import index from '../views/index.html';
-
 export async function get() {
-  return new Response(index, {
+  return new Response(null, {
+    status: 301,
     headers: {
-      'Content-Type': 'text/html; charset=utf-8',
-      'Cache-Control': 'max-age=0, private, must-revalidate',
+      Location: 'https://github.com/dsrkafuu/moe-counter#readme',
+      'Cache-Control': 'public, max-age=86400',
     },
   });
 }
