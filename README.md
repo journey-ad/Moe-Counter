@@ -6,22 +6,22 @@ Fork of Moe Counter for fast global access powered by Cloudflare Workers.
 
 ## Demo
 
-![Gelbooru](https://count.dsrkafuu.net/dsrkafuu:demo?theme=gelbooru)
+[![Gelbooru](https://count.dsrkafuu.net/dsrkafuu:demo?theme=gelbooru)](https://count.dsrkafuu.net/dsrkafuu:demo?theme=gelbooru)
 
 <details>
 <summary>More Themes and Customizations</summary>
 
 **A-SOUL (with `theme=asoul&length=10`)**
 
-![A-SOUL](https://count.dsrkafuu.net/dsrkafuu:demo?theme=asoul&length=10)
+[![A-SOUL](https://count.dsrkafuu.net/dsrkafuu:demo?theme=asoul&length=10)](https://count.dsrkafuu.net/dsrkafuu:demo?theme=asoul&length=10)
 
 **Moebooru (with `theme=moebooru&length=auto`)**
 
-![Moebooru](https://count.dsrkafuu.net/dsrkafuu:demo?theme=moebooru&length=auto)
+[![Moebooru](https://count.dsrkafuu.net/dsrkafuu:demo?theme=moebooru&length=auto)](https://count.dsrkafuu.net/dsrkafuu:demo?theme=moebooru&length=auto)
 
 **Rule 34 (with `theme=rule34`)**
 
-![Rule 34](https://count.dsrkafuu.net/dsrkafuu:demo?theme=rule34)
+[![Rule 34](https://count.dsrkafuu.net/dsrkafuu:demo?theme=rule34)](https://count.dsrkafuu.net/dsrkafuu:demo?theme=rule34)
 
 </details>
 
@@ -54,6 +54,7 @@ DELETE is not enabled in public counter, create a issue if you need to use it.
 ```
 <img src="https://count.dsrkafuu.net/{id}" alt="{id}" />
 ![{id}](https://count.dsrkafuu.net/{id})
+[![{id}](https://count.dsrkafuu.net/{id})](https://count.dsrkafuu.net/{id})
 ```
 
 ## Self-hosting
