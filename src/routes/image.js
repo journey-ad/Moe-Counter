@@ -14,7 +14,7 @@ function genImage(count, theme, length) {
   let x = 0; // x axis
   const parts = nums.reduce((pre, cur) => {
     const uri = images[cur];
-    const image = `<image x="${x}" y="0" width="${width}" height="${height}" xlink:href="${uri}"/>`;
+    const image = `<image x="${x}" y="0" width="${width}" height="${height}" href="${uri}"/>`;
     x += width;
     return pre + image;
   }, '');
