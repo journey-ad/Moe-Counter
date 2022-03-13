@@ -42,7 +42,7 @@ function genImage(count, theme, length) {
  */
 export async function get(req, event) {
   const id = validateID(req.params.id);
-  let { theme, length, add, proxy } = req.query;
+  let { theme, length, add } = req.query;
   if (!themes[theme]) {
     theme = 'gelbooru';
   }
@@ -63,15 +63,10 @@ export async function get(req, event) {
     image = genImage(count, theme, _length);
   }
 
-  const headers = {
-    'Content-Type': 'image/svg+xml; charset=utf-8',
-  };
-  // make sure image refreshes after some url proxys like GitHub's Camo
-  if (proxy === '1') {
-    headers['Cache-Control'] = 'max-age=0, no-cache, no-store, must-revalidate';
-  }
   return await genResponse(req, image, {
     status: 200,
-    headers,
+    headers: {
+      'Content-Type': 'image/svg+xml; charset=utf-8',
+    },
   });
 }

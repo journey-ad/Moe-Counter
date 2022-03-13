@@ -31,14 +31,13 @@ Fork of Moe Counter for fast global access powered by Cloudflare Workers.
 
 ```
 https://count.dsrkafuu.net/{id}
-https://count.dsrkafuu.net/{id}?theme={asoul,gelbooru,moebooru,rule34}&length={1-10,auto}&add={0,1}&proxy={0,1}
+https://count.dsrkafuu.net/{id}?theme={asoul,gelbooru,moebooru,rule34}&length={1-10,auto}&add={0,1}
 ```
 
 1. `{id}`: Any custom string between 1-256 chars (`a-zA-Z0-9:.@_-` allowed)
 2. `{&theme}`: `asoul`, `gelbooru`, `moebooru`, `rule34` and two other themes (default: `gelbooru`)
 3. `{&length}`: Number between `1-10` (default: `7`) or string `auto`
 4. `{&add}`: Controls whether make the counter count or not (default: `1`)
-5. `{&proxy}`: Should be used when showing images through proxies which break `no-cache` behavior, e.g. GitHub's image proxy, **DO NOT** use it when showing the counter directly in your website (default: `0`)
 
 Recommend to use `user:usage` like string as ID for better management and potential issue tracking.
 
