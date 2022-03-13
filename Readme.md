@@ -1,81 +1,84 @@
-# Moe-counter
+# Moe Counter CF
 
-多种风格可选的萌萌计数器
+Fork of Moe Counter for fast global access powered by Cloudflare Workers.
 
-![Moe-counter](https://count.getloli.com/get/@Moe-counter.github)
-
-<details>
-<summary>More theme</summary>
-
-##### asoul
-![asoul](https://count.getloli.com/get/@demo?theme=asoul)
-
-##### moebooru
-![moebooru](https://count.getloli.com/get/@demo?theme=moebooru)
-
-##### rule34
-![Rule34](https://count.getloli.com/get/@demo?theme=rule34)
-
-##### gelbooru
-![Gelbooru](https://count.getloli.com/get/@demo?theme=gelbooru)</details>
+[Source Project](https://github.com/journey-ad/Moe-counter) | [Cloudflare Workers](https://workers.cloudflare.com/) | [Workers KV](https://www.cloudflare.com/products/workers-kv/)
 
 ## Demo
-[https://count.getloli.com](https://count.getloli.com)
+
+![Gelbooru](https://count.dsrkafuu.net/dsrkafuu:demo?theme=gelbooru)
+
+<details>
+<summary>More Themes</summary>
+
+**A-SOUL**
+
+![A-SOUL](https://count.dsrkafuu.net/dsrkafuu:demo?theme=asoul)
+
+**Moebooru**
+
+![Moebooru](https://count.dsrkafuu.net/dsrkafuu:demo?theme=moebooru)
+
+##### Rule 34
+
+![Rule 34](https://count.dsrkafuu.net/dsrkafuu:demo?theme=rule34)
+
+##### Gelbooru
+
+![Gelbooru](https://count.dsrkafuu.net/dsrkafuu:demo?theme=gelbooru)
+
+</details>
 
 ## Usage
 
-### Install
-
-#### Run on Repl.it
-
-- Open the url [https://repl.it/@journeyad/Moe-counter](https://repl.it/@journeyad/Moe-counter)
-- Just hit the **Fork** button
-- And hit the **Run** button
-
-#### Deploying on your own server
-
-```shell
-$ git clone https://github.com/journey-ad/Moe-counter.git
-$ cd Moe-counter
-$ yarn install
-
-$ yarn start
-```
-
-### Confignation
-
-`config.yml`
-
-```yaml
-app:
-  port: 3000
-
-db:
-  type: mongodb # sqlite or mongodb
-```
-
-If you use mongodb, you need to specify the environment variable `DB_URL`
-
-```shell
-# eg:
-export DB_URL=mongodb+srv://account:passwd@***.***.***.mongodb.net/db_count
-```
-
-repl.it can use `.env` file, [documentation](https://docs.repl.it/repls/secret-keys)
+**Public Counter**
 
 ```
-DB_URL="mongodb+srv://account:passwd@***.***.***.mongodb.net/db_count"
+https://count.dsrkafuu.net/<id>
+https://count.dsrkafuu.net/<id>?theme=<theme>&length=<length>
+https://count.dsrkafuu.net/dsrkafuu:demo?theme=gelbooru
 ```
+
+1. `<id>`: A string between 1-256 chars (`0-9a-zA-Z!@#$%^&*_-`) starting with a letter (`a-zA-Z`)
+2. `<theme>`: `asoul`, `gelbooru`, `moebooru`, `rule34` (and two other themes, default is `gelbooru`)
+3. `<length>`: Number between 1-10 (default: 7)
+
+Recommend to use `user:usage` like string as ID for better management.
+
+**API Endpoints**
+
+```
+GET https://count.dsrkafuu.net/api/<id>
+DELETE https://count.dsrkafuu.net/api/<id>
+```
+
+DELETE is not enabled by default, create a issue if you need to use it in public counter.
+
+**HTML and Markdown**
+
+```
+<img src="https://count.dsrkafuu.net/<id>" alt="<id>" />
+![<id>](https://count.dsrkafuu.net/<id>)
+```
+
+## Self-hosting
+
+1. Create a Cloudflare Workers worker
+2. Create a Cloudflare Workers KV store
+3. Create your own `wrangler.toml` based on the example
+4. Build the worker and publish it using `wrangler publish`
 
 ## Credits
 
-*   [repl.it](https://repl.it/)
-*   [A-SOUL](https://www.asoulworld.com/) <sup>(非官方导航站)</sup>
-*   [moebooru](https://github.com/moebooru/moebooru)
-*   rule34.xxx NSFW
-*   gelbooru.com NSFW
-*   [Icons8](https://icons8.com/icons/set/star)
+- [A-SOUL](https://space.bilibili.com/703007996)
+- [Moebooru](https://github.com/moebooru/moebooru)
+- [Rule 34 (**NSFW**)](https://rule34.xxx/)
+- [Gelbooru (**NSFW**)](https://gelbooru.com/)
 
 ## License
 
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fjourney-ad%2FMoe-counter.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fjourney-ad%2FMoe-counter?ref=badge_large)
+This project and all contributors shall not be responsible for any dispute or loss caused by using this project.
+
+This project is released under the `MIT` License, for more information read the [License](https://github.com/dsrkafuu/moe-counter/blob/master/LICENSE).
+
+**Copyright (c) 2020 journey-ad, 2022 DSRKafuU**

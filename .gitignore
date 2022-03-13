@@ -1,26 +1,39 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# identity
+wrangler.toml
 
-/.history
+# output
+dist/
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
-
-# testing
-/coverage
-
-# production
-/build
-
-# misc
-.DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
+# logs
+logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-yarn.lock*
+lerna-debug.log*
+
+# diagnostic reports
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# dependency directories
+package-lock.json
+.npm/
+.pnpm-store/
+node_modules/
+jspm_packages/
+web_modules/
+
+# system
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

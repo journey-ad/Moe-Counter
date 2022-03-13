@@ -1,23 +1,25 @@
 {
-  "name": "kawaii-counter",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "journey-ad",
+  "name": "moe-counter-cf",
+  "version": "2.0.0",
+  "description": "Fork of Moe Counter for fast global access powered by Cloudflare Workers.",
+  "author": "DSRKafuU <dsrkafuu@outlook.com> (https://dsrkafuu.net)",
   "license": "MIT",
+  "main": "./dist/worker.js",
+  "scripts": {
+    "lint": "eslint \"./src\" && prettier --write",
+    "build": "webpack",
+    "dev": "wrangler dev --host count.dsrkafuu.net",
+    "publish": "wrangler publish"
+  },
   "dependencies": {
-    "compression": "^1.7.4",
-    "config-yml": "^0.10.3",
-    "express": "^4.17.1",
-    "image-size": "^0.8.3",
-    "mime-types": "^2.1.27",
-    "mongoose": "^5.9.28",
-    "pug": "^3.0.0",
-    "sqlite3": "^5.0.0"
+    "itty-router": "~2.5.2"
+  },
+  "devDependencies": {
+    "@cloudflare/wrangler": "~1.19.8",
+    "clean-webpack-plugin": "~4.0.0",
+    "eslint": "~8.10.0",
+    "prettier": "~2.5.1",
+    "webpack": "~5.70.0",
+    "webpack-cli": "~4.9.2"
   }
 }

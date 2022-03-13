@@ -1,0 +1,15 @@
+name = "moe-counter-cf"
+type = "javascript"
+account_id = "<CF_ACCOUNT_ID>"
+zone_id = "<CF_ZONE_ID>"
+workers_dev = false
+route = "<YOUR_DOMAIN>/*"
+compatibility_date = "2022-03-12"
+kv_namespaces = [
+  { binding = "KV", id = "<CF_KV_ID>", preview_id = "<CF_PREVIEW_KV_ID>" },
+]
+
+[build]
+command = "pnpm run build"
+[build.upload]
+format = "service-worker"
