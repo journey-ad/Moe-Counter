@@ -1,11 +1,13 @@
 import { Router } from 'itty-router';
 import { genErrorResponse, ResError } from './response';
+import { withCORS } from './middlewares';
 import * as index from './routes/index';
 import * as favicon from './routes/favicon';
 import * as image from './routes/image';
 import * as api from './routes/api';
 
 const router = Router();
+router.options('*', withCORS);
 
 // routes
 router.get('/', index.get);

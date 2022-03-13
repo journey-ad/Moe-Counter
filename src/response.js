@@ -17,6 +17,7 @@ export async function genResponse(req, body, init) {
       status: 304,
       headers: {
         'Access-Control-Allow-Origin': '*',
+        'Access-Control-Expose-Headers': '*',
         'Cache-Control': init.headers['Cache-Control'] || 'no-cache',
         ETag: etag,
         'X-Response-Time': `${Date.now() - req.time}ms`,
@@ -26,6 +27,7 @@ export async function genResponse(req, body, init) {
   // 200
   const res = new Response(body, init);
   res.headers.set('Access-Control-Allow-Origin', '*');
+  res.headers.set('Access-Control-Expose-Headers', '*');
   if (!init.headers['Cache-Control']) {
     res.headers.set('Cache-Control', 'no-cache');
   }
@@ -57,6 +59,7 @@ export async function genProxyResponse(req, event, proxy) {
       status: 304,
       headers: {
         'Access-Control-Allow-Origin': '*',
+        'Access-Control-Expose-Headers': '*',
         'Cache-Control': resCache.headers.get('Cache-Control'),
         ETag: etag,
         'X-Proxy-Cache': 'HIT',
@@ -67,6 +70,7 @@ export async function genProxyResponse(req, event, proxy) {
   // normal response
   const res = new Response(resCache.body, resCache);
   res.headers.set('Access-Control-Allow-Origin', '*');
+  res.headers.set('Access-Control-Expose-Headers', '*');
   res.headers.set('X-Proxy-Cache', usingCache ? 'HIT' : 'MISS');
   res.headers.set('X-Response-Time', `${Date.now() - req.time}ms`);
   return res;
@@ -94,6 +98,7 @@ export class ResError extends Error {
 export function genErrorResponse(req, e) {
   const headers = {
     'Access-Control-Allow-Origin': '*',
+    'Access-Control-Expose-Headers': '*',
     'Content-Type': 'text/plain',
     'Cache-Control': 'no-cache',
     'X-Response-Time': `${Date.now() - req.time}ms`,
