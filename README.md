@@ -39,7 +39,7 @@ https://count.dsrkafuu.net/<id>?theme=<theme>&length=<length>
 https://count.dsrkafuu.net/dsrkafuu:demo?theme=gelbooru
 ```
 
-1. `<id>`: A string between 1-256 chars (`0-9a-zA-Z:!@#$%^&*_-`) starting with a letter (`a-zA-Z`)
+1. `<id>`: Any string between 1-256 chars (`a-z0-9:.@_-` allowed)
 2. `<theme>`: `asoul`, `gelbooru`, `moebooru`, `rule34` (and two other themes, default: `gelbooru`)
 3. `<length>`: Number between 1-10 (default: 7) or `auto`
 

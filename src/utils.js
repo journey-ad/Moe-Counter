@@ -10,10 +10,9 @@ export function minify(str) {
 
 /**
  * @param {string} id
- * @returns
  */
 export function validateID(id) {
-  if (!/^[a-z][0-9a-z:!@#$%^&*_-]{0,255}$/i.test(id)) {
+  if (!/^[a-z0-9:.@_-]{1,256}$/i.test(id)) {
     throw new ResError(400, 'Invalid Counter ID');
   }
   return id;

@@ -63,6 +63,7 @@ export async function get(req, event) {
     status: 200,
     headers: {
       'Content-Type': 'image/svg+xml; charset=utf-8',
+      'Cache-Control': 'max-age=0, no-cache, must-revalidate', // fix github cdn cache
     },
   });
 }
