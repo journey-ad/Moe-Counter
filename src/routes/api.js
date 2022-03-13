@@ -5,26 +5,25 @@ export async function get(req) {
   const id = validateID(req.params.id);
 
   // get times from KV
-  const data = ((await KV.get(id)) || '|').split('|');
-  const count = Number.parseInt(data[0]) || 0;
-  const update = Number.parseInt(data[1]) || null;
+  const count = Number.parseInt(await KV.get(id)) || 0;
 
-  return new Response(JSON.stringify({ count, update }), {
+  return new Response(JSON.stringify({ count }), {
     headers: {
-      'Content-Type': 'application/json; charset=utf-8',
+      'Access-Control-Allow-Origin': '*',
       'Cache-Control': 'no-cache',
+      'Content-Type': 'application/json; charset=utf-8',
     },
   });
 }
 
 export async function del(req) {
   const id = validateID(req.params.id);
-
   await KV.delete(id);
 
   return new Response(null, {
     status: 204,
     headers: {
+      'Access-Control-Allow-Origin': '*',
       'Cache-Control': 'no-cache',
     },
   });

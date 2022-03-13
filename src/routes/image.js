@@ -43,11 +43,10 @@ export async function get(req, event) {
   }
 
   // get times from KV
-  const data = ((await KV.get(id)) || '|').split('|');
-  const count = (Number.parseInt(data[0]) || 0) + 1;
+  const count = (Number.parseInt(await KV.get(id)) || 0) + 1;
   const image = genImage(count, theme, _length);
   // set time asynchronously (no await)
-  event.waitUntil(KV.put(id, `${count}|${Date.now()}`));
+  event.waitUntil(KV.put(id, count.toString()));
 
   return new Response(image, {
     headers: {
