@@ -40,8 +40,8 @@ https://count.dsrkafuu.net/dsrkafuu:demo?theme=gelbooru
 ```
 
 1. `<id>`: A string between 1-256 chars (`0-9a-zA-Z:!@#$%^&*_-`) starting with a letter (`a-zA-Z`)
-2. `<theme>`: `asoul`, `gelbooru`, `moebooru`, `rule34` (and two other themes, default is `gelbooru`)
-3. `<length>`: Number between 1-10 (default: 7)
+2. `<theme>`: `asoul`, `gelbooru`, `moebooru`, `rule34` (and two other themes, default: `gelbooru`)
+3. `<length>`: Number between 1-10 (default: 7) or `auto`
 
 Recommend to use `user:usage` like string as ID for better management.
 

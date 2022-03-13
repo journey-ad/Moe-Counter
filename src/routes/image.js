@@ -3,7 +3,13 @@ import themes from '../../themes';
 import { validateID, minify } from '../utils';
 
 function genImage(count, theme, length) {
-  const nums = count.toString().padStart(length, '0').split('');
+  let nums;
+  if (length === 'auto') {
+    nums = count.toString().split('');
+  } else {
+    nums = count.toString().padStart(length, '0').split('');
+  }
+
   const { width, height, images } = themes[theme];
   let x = 0; // x axis
   const parts = nums.reduce((pre, cur) => {
@@ -29,14 +35,17 @@ export async function get(req, event) {
   if (!themes[theme]) {
     theme = 'gelbooru';
   }
-  if (!length || length <= 0 || length > 10) {
-    length = 7;
+  let _length = length;
+  if (length === 'auto') {
+    _length = 'auto';
+  } else if (!length || length <= 0 || length > 10) {
+    _length = 7;
   }
 
   // get times from KV
   const data = ((await KV.get(id)) || '|').split('|');
   const count = (Number.parseInt(data[0]) || 0) + 1;
-  const image = genImage(count, theme, length);
+  const image = genImage(count, theme, _length);
   // set time asynchronously (no await)
   event.waitUntil(KV.put(id, `${count}|${Date.now()}`));
 
