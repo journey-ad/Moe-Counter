@@ -13,15 +13,15 @@ Fork of Moe Counter for fast global access powered by Cloudflare Workers.
 
 **A-SOUL (with `theme=asoul&length=10`)**
 
-[![A-SOUL](https://count.dsrkafuu.net/dsrkafuu:demo?theme=asoul&length=10)](https://count.dsrkafuu.net/dsrkafuu:demo?theme=asoul&length=10)
+[![A-SOUL](https://count.dsrkafuu.net/dsrkafuu:demo?theme=asoul&length=10&add=0)](https://count.dsrkafuu.net/dsrkafuu:demo?theme=asoul&length=10)
 
 **Moebooru (with `theme=moebooru&length=auto`)**
 
-[![Moebooru](https://count.dsrkafuu.net/dsrkafuu:demo?theme=moebooru&length=auto)](https://count.dsrkafuu.net/dsrkafuu:demo?theme=moebooru&length=auto)
+[![Moebooru](https://count.dsrkafuu.net/dsrkafuu:demo?theme=moebooru&length=auto&add=0)](https://count.dsrkafuu.net/dsrkafuu:demo?theme=moebooru&length=auto)
 
 **Rule 34 (with `theme=rule34`)**
 
-[![Rule 34](https://count.dsrkafuu.net/dsrkafuu:demo?theme=rule34)](https://count.dsrkafuu.net/dsrkafuu:demo?theme=rule34)
+[![Rule 34](https://count.dsrkafuu.net/dsrkafuu:demo?theme=rule34&add=0)](https://count.dsrkafuu.net/dsrkafuu:demo?theme=rule34)
 
 </details>
 
@@ -31,12 +31,13 @@ Fork of Moe Counter for fast global access powered by Cloudflare Workers.
 
 ```
 https://count.dsrkafuu.net/{id}
-https://count.dsrkafuu.net/{id}?theme={asoul,gelbooru,moebooru,rule34}&length={1-10,auto}
+https://count.dsrkafuu.net/{id}?theme={asoul,gelbooru,moebooru,rule34}&length={1-10,auto}&add={0,1}
 ```
 
 1. ID: Any custom string between 1-256 chars (`a-zA-Z0-9:.@_-` allowed)
 2. Themes: `asoul`, `gelbooru`, `moebooru`, `rule34` and two other themes (default: `gelbooru`)
 3. Length: Number between `1-10` (default: `7`) or string `auto`
+4. Add: Controls whether make the counter count or not (default: `1`)
 
 Recommend to use `user:usage` like string as ID for better management and potential issue tracking.
 

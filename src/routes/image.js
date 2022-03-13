@@ -42,7 +42,7 @@ function genImage(count, theme, length) {
  */
 export async function get(req, event) {
   const id = validateID(req.params.id);
-  let { theme, length } = req.query;
+  let { theme, length, add } = req.query;
   if (!themes[theme]) {
     theme = 'gelbooru';
   }
@@ -57,7 +57,9 @@ export async function get(req, event) {
   const count = (Number.parseInt(await KV.get(id)) || 0) + 1;
   const image = genImage(count, theme, _length);
   // set time asynchronously (no await)
-  event.waitUntil(KV.put(id, count.toString()));
+  if (add !== '0') {
+    event.waitUntil(KV.put(id, count.toString()));
+  }
 
   return await genResponse(req, image, {
     status: 200,
