@@ -1,4 +1,4 @@
-# Moe Counter CF
+# Moe Counter
 
 Fork of Moe Counter for fast global access powered by Cloudflare Workers.
 
