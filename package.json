@@ -1,4 +1,5 @@
 {
+  "private": true,
   "name": "moe-counter",
   "version": "2.1.0",
   "description": "Fork of Moe Counter for fast global access powered by Cloudflare Workers.",
