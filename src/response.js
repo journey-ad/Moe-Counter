@@ -19,6 +19,7 @@ export async function genResponse(req, body, init) {
         'Access-Control-Allow-Origin': '*',
         'Cache-Control': init.headers['Cache-Control'] || 'no-cache',
         ETag: etag,
+        'X-Response-Time': `${Date.now() - req.time}ms`,
       },
     });
   }
@@ -29,6 +30,7 @@ export async function genResponse(req, body, init) {
     res.headers.set('Cache-Control', 'no-cache');
   }
   res.headers.set('ETag', etag);
+  res.headers.set('X-Response-Time', `${Date.now() - req.time}ms`);
   return res;
 }
 
@@ -58,6 +60,7 @@ export async function genProxyResponse(req, event, proxy) {
         'Cache-Control': resCache.headers.get('Cache-Control'),
         ETag: etag,
         'X-Proxy-Cache': 'HIT',
+        'X-Response-Time': `${Date.now() - req.time}ms`,
       },
     });
   }
@@ -65,6 +68,7 @@ export async function genProxyResponse(req, event, proxy) {
   const res = new Response(resCache.body, resCache);
   res.headers.set('Access-Control-Allow-Origin', '*');
   res.headers.set('X-Proxy-Cache', usingCache ? 'HIT' : 'MISS');
+  res.headers.set('X-Response-Time', `${Date.now() - req.time}ms`);
   return res;
 }
 
@@ -87,11 +91,12 @@ export class ResError extends Error {
  * @param {Request} req
  * @param {any} e
  */
-export function genErrorResponse(e) {
+export function genErrorResponse(req, e) {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Content-Type': 'text/plain',
     'Cache-Control': 'no-cache',
+    'X-Response-Time': `${Date.now() - req.time}ms`,
   };
   if (e instanceof ResError) {
     return new Response(e.message, { status: e.statusCode, headers });
