@@ -3,15 +3,17 @@ import { genErrorResponse, ResError } from './response';
 import { withCORS } from './middlewares';
 import * as index from './routes/index';
 import * as favicon from './routes/favicon';
+import * as robots from './routes/robots';
 import * as image from './routes/image';
 import * as api from './routes/api';
 
 const router = Router();
 router.options('*', withCORS);
-
-// routes
 router.get('/', index.get);
 router.get('/favicon.ico', favicon.get);
+router.get('/robots.txt', robots.get);
+
+// routes
 router.get('/:id', image.get);
 router.get('/api/:id', api.get);
 // router.delete('/api/:id', api.del);
