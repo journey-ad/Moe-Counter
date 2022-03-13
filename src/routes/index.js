@@ -1,14 +1,12 @@
-import { genResponse } from '../response';
+import html from '../index.html';
+import { minify } from '../utils';
 
-/**
- * @param {Request} req
- */
-export async function get(req) {
-  return await genResponse(req, null, {
-    status: 301,
+export async function get() {
+  return new Response(minify(html), {
+    status: 200,
     headers: {
-      Location: 'https://github.com/dsrkafuu/moe-counter-cf#readme',
       'Cache-Control': 'public, max-age=86400',
+      'Content-Type': 'text/html; charset=utf-8',
     },
   });
 }

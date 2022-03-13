@@ -5,7 +5,10 @@ import { ResError } from './response';
  * @param {string} str
  */
 export function minify(str) {
-  return str.replace(/ *\n */g, '').trim();
+  return str
+    .replace(/[\r\n]/g, ' ')
+    .replace(/> +</g, '><')
+    .trim();
 }
 
 /**

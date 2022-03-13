@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?display=swap&family=Inter:wght@400;500&family=Fira+Code:wght@400;500"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/dsr-design@2.5.1/css/reset.css"
+    />
+    <title>Moe Counter CF</title>
+    <style>
+      * {
+        text-align: center;
+      }
+      h1 {
+        font-size: 36px;
+        margin-bottom: 16px;
+        margin-top: 48px;
+      }
+      p {
+        font-size: 16px;
+        margin-bottom: 16px;
+      }
+      img {
+        display: inline-block;
+        height: 150px;
+      }
+      a,
+      span {
+        user-select: none;
+        cursor: pointer;
+        background-color: #eee;
+        text-decoration: none;
+        color: #7793cc;
+        display: inline-block;
+        width: 170px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 18px;
+        transition: all 100ms ease;
+        border-radius: 2px;
+        margin: 12px;
+      }
+      *::selection,
+      a:hover,
+      span:hover {
+        background-color: #7793cc;
+        color: #fff;
+      }
+      footer {
+        font-size: 14px;
+        margin-top: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Moe Counter CF</h1>
+      <img src="/dsrkafuu:demo?theme=gelbooru" alt="Demo Counter" />
+    </header>
+    <main>
+      <p>
+        Fork of Moe Counter for fast global access powered by Cloudflare
+        Workers.
+      </p>
+      <div>
+        <span id="theme">Change Theme</span>
+        <a
+          href="https://github.com/dsrkafuu/moe-counter-cf#readme"
+          target="_blank"
+          rel="noopener"
+          >Get Started</a
+        >
+      </div>
+    </main>
+    <footer>Copyright &copy; 2020 journey-ad, 2022 DSRKafuU</footer>
+    <script>
+      (function () {
+        var img = document.querySelector('img');
+        var btn = document.getElementById('theme');
+        var themes = ['asoul', 'gelbooru', 'moebooru', 'rule34'];
+        var idx = 1;
+        btn.addEventListener('click', function () {
+          var next = themes[++idx];
+          if (!themes[idx]) {
+            idx = 0;
+            next = themes[idx];
+          }
+          img.src = img.src.replace(/\?theme=.+/, '?theme=' + next + '&add=0');
+        });
+      })();
+    </script>
+  </body>
+</html>
