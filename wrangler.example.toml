@@ -1,4 +1,4 @@
-name = "moe-counter-cf"
+name = "moe-counter"
 type = "javascript"
 account_id = "<CF_ACCOUNT_ID>"
 zone_id = "<CF_ZONE_ID>"
