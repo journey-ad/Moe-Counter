@@ -39,7 +39,7 @@ https://count.dsrkafuu.net/{id}?theme={asoul,gelbooru,moebooru,rule34}&length={1
 3. `{&length}`: Number between `1-10` (default: `7`) or string `auto`
 4. `{&add}`: Controls whether make the counter count or not (default: `1`)
 
-Recommend to use `user:usage` like string as ID for better management and potential issue tracking.
+Make a pull request to add your id in `ids.json` to use the free public counter. Recommend to use `user:usage` like string as ID for better management and potential issue tracking.
 
 **API Endpoints**
 
