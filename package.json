@@ -12,6 +12,7 @@
     "publish": "wrangler publish"
   },
   "dependencies": {
+    "base64-arraybuffer": "~1.0.2",
     "itty-router": "~2.5.2"
   },
   "devDependencies": {

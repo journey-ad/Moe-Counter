@@ -1,7 +1,14 @@
 /* global KV */
 import themes from '../../themes';
+import { genResponse } from '../response';
 import { validateID, minify } from '../utils';
 
+/**
+ * @param {number} count
+ * @param {string} theme
+ * @param {number|string} length
+ * @returns
+ */
 function genImage(count, theme, length) {
   let nums;
   if (length === 'auto') {
@@ -29,6 +36,10 @@ function genImage(count, theme, length) {
   return minify(svg);
 }
 
+/**
+ * @param {Request} req
+ * @param {FetchEvent} event
+ */
 export async function get(req, event) {
   const id = validateID(req.params.id);
   let { theme, length } = req.query;
@@ -48,10 +59,10 @@ export async function get(req, event) {
   // set time asynchronously (no await)
   event.waitUntil(KV.put(id, count.toString()));
 
-  return new Response(image, {
+  return await genResponse(req, image, {
+    status: 200,
     headers: {
       'Content-Type': 'image/svg+xml; charset=utf-8',
-      'Cache-Control': 'no-cache',
     },
   });
 }

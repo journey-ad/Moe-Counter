@@ -2,6 +2,7 @@ lockfileVersion: 5.3
 
 specifiers:
   '@cloudflare/wrangler': ~1.19.8
+  base64-arraybuffer: ~1.0.2
   clean-webpack-plugin: ~4.0.0
   eslint: ~8.10.0
   itty-router: ~2.5.2
@@ -10,6 +11,7 @@ specifiers:
   webpack-cli: ~4.9.2
 
 dependencies:
+  base64-arraybuffer: 1.0.2
   itty-router: 2.5.2
 
 devDependencies:
@@ -331,6 +333,11 @@ packages:
   /balanced-match/1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
     dev: true
+
+  /base64-arraybuffer/1.0.2:
+    resolution: {integrity: sha512-I3yl4r9QB5ZRY3XuJVEPfc2XhZO6YweFPI+UovAzn+8/hb3oJ6lnysaFcjVpkCPfVWFUDvoZ8kmVDP7WyRtYtQ==}
+    engines: {node: '>= 0.6.0'}
+    dev: false
 
   /brace-expansion/1.1.11:
     resolution: {integrity: sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==}

@@ -20,7 +20,8 @@ router.all('*', async () => {
 });
 
 addEventListener('fetch', (event) => {
+  const req = event.request;
   event.respondWith(
-    router.handle(event.request, event).catch((e) => genErrorResponse(e))
+    router.handle(req, event).catch((e) => genErrorResponse(req, e))
   );
 });
