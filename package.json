@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "moe-counter",
+  "name": "moe-counter-cf",
   "version": "2.1.0",
   "description": "Fork of Moe Counter for fast global access powered by Cloudflare Workers.",
   "author": "DSRKafuU <dsrkafuu@outlook.com> (https://dsrkafuu.net)",
