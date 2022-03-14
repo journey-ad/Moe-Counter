@@ -14,7 +14,6 @@ export async function get(req) {
   return await genResponse(req, robots.join('\n'), {
     status: 200,
     headers: {
-      'Content-Type': 'text/plain; charset=utf-8',
       'Cache-Control': 'public, max-age=86400',
     },
   });

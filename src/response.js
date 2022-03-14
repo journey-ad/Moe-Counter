@@ -2,38 +2,53 @@ import { getETag } from './utils';
 
 /**
  * @param {Request} req
+ * @param {Response} res mutable response
+ */
+function applyCommonHeaders(req, res) {
+  // cors headers
+  res.headers.set('Access-Control-Allow-Origin', '*');
+  res.headers.set('Access-Control-Expose-Headers', '*');
+  // fix missing cache control
+  if (!res.headers.get('Cache-Control')) {
+    res.headers.set('Cache-Control', 'no-cache');
+  }
+  // default content type or no content
+  if (res.status === 204 || res.status === 304) {
+    res.headers.delete('Content-Type');
+    res.headers.delete('Content-Length');
+    res.headers.delete('Transfer-Encoding');
+  } else if (!res.headers.get('Content-Type')) {
+    res.headers.set('Content-Type', 'text/plain; charset=utf-8');
+  }
+  // custom response time
+  res.headers.set('X-Response-Time', `${Date.now() - req.time}ms`);
+  return res;
+}
+
+/**
+ * @param {Request} req
  * @param {BodyInit|null|undefined} body
  * @param {ResponseInit|undefined} init
  */
 export async function genResponse(req, body, init) {
+  let res;
   // 304
   const buffer = await new Response(body, init).arrayBuffer();
   const etag = await getETag(buffer);
-  if (!etag) {
-    return res;
-  }
-  if (req.headers.get('If-None-Match') === etag) {
-    return new Response(null, {
+  if (etag && req.headers.get('If-None-Match') === etag) {
+    res = new Response(null, {
       status: 304,
       headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Expose-Headers': '*',
-        'Cache-Control': init.headers['Cache-Control'] || 'no-cache',
         ETag: etag,
-        'X-Response-Time': `${Date.now() - req.time}ms`,
       },
     });
   }
-  // 200
-  const res = new Response(body, init);
-  res.headers.set('Access-Control-Allow-Origin', '*');
-  res.headers.set('Access-Control-Expose-Headers', '*');
-  if (!init.headers['Cache-Control']) {
-    res.headers.set('Cache-Control', 'no-cache');
+  // normal response
+  else {
+    res = new Response(body, init);
+    res.headers.set('ETag', etag);
   }
-  res.headers.set('ETag', etag);
-  res.headers.set('X-Response-Time', `${Date.now() - req.time}ms`);
-  return res;
+  return applyCommonHeaders(req, res);
 }
 
 /**
@@ -52,28 +67,25 @@ export async function genProxyResponse(req, event, proxy) {
     resCache = await fetch(proxy);
     event.waitUntil(cache.put(cacheKey, resCache.clone()));
   }
+  let res;
   // 304
   const etag = resCache.headers.get('ETag');
   if (etag && req.headers.get('If-None-Match') === etag) {
-    return new Response(null, {
+    res = new Response(null, {
       status: 304,
       headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Expose-Headers': '*',
         'Cache-Control': resCache.headers.get('Cache-Control'),
-        ETag: etag,
         'X-Proxy-Cache': 'HIT',
-        'X-Response-Time': `${Date.now() - req.time}ms`,
+        ETag: etag,
       },
     });
   }
   // normal response
-  const res = new Response(resCache.body, resCache);
-  res.headers.set('Access-Control-Allow-Origin', '*');
-  res.headers.set('Access-Control-Expose-Headers', '*');
-  res.headers.set('X-Proxy-Cache', usingCache ? 'HIT' : 'MISS');
-  res.headers.set('X-Response-Time', `${Date.now() - req.time}ms`);
-  return res;
+  else {
+    res = new Response(resCache.body, resCache);
+    res.headers.set('X-Proxy-Cache', usingCache ? 'HIT' : 'MISS');
+  }
+  return applyCommonHeaders(req, res);
 }
 
 /**
@@ -96,17 +108,12 @@ export class ResError extends Error {
  * @param {any} e
  */
 export function genErrorResponse(req, e) {
-  const headers = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Expose-Headers': '*',
-    'Content-Type': 'text/plain',
-    'Cache-Control': 'no-cache',
-    'X-Response-Time': `${Date.now() - req.time}ms`,
-  };
+  let res;
   if (e instanceof ResError) {
-    return new Response(e.message, { status: e.statusCode, headers });
+    res = new Response(e.message, { status: e.statusCode });
   } else {
     console.error(e.name + ':', e.message);
-    return new Response('Internal Server Error', { status: 500, headers });
+    res = new Response('Internal Server Error', { status: 500 });
   }
+  return applyCommonHeaders(req, res);
 }
