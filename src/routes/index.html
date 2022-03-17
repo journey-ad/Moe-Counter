@@ -61,6 +61,18 @@
         margin-top: 16px;
       }
     </style>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id={{GAID}}"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', '{{GAID}}');
+    </script>
   </head>
   <body>
     <header>

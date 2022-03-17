@@ -1,6 +1,6 @@
+import settings from '../settings.json';
 import { encode } from 'base64-arraybuffer';
 import { ResError } from './response';
-import ids from '../ids.json';
 
 /**
  * @param {string} str
@@ -19,7 +19,7 @@ export function validateID(id) {
   if (!/^[a-z0-9:.@_-]{1,256}$/i.test(id)) {
     throw new ResError(400, 'Invalid Counter ID');
   }
-  if (!ids[id]) {
+  if (!settings.ids[id]) {
     throw new ResError(400, 'Unregistered Counter ID');
   }
   return id;

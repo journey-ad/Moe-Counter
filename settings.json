@@ -1,0 +1,18 @@
+{
+  "defaults": {
+    "theme": "gelbooru",
+    "length": 7
+  },
+  "api": {
+    "get": true,
+    "delete": false
+  },
+  "index": {
+    "enabled": true,
+    "analytics": "G-0000000000"
+  },
+  "ids": {
+    "dsrkafuu:demo": "Demo for GitHub & preview site.",
+    "dsrkafuu:home": "Personal blog & GitHub page."
+  }
+}

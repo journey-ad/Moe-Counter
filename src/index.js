@@ -1,3 +1,4 @@
+import settings from '../settings.json';
 import { Router } from 'itty-router';
 import { genErrorResponse, ResError } from './response';
 import { withCORS } from './middlewares';
@@ -9,14 +10,22 @@ import * as api from './routes/api';
 
 const router = Router();
 router.options('*', withCORS);
-router.get('/', index.get);
-router.get('/favicon.ico', favicon.get);
 router.get('/robots.txt', robots.get);
+
+// enable index page
+if (settings.index) {
+  router.get('/favicon.ico', favicon.get);
+  router.get('/', index.get);
+}
 
 // routes
 router.get('/:id', image.get);
-router.get('/api/:id', api.get);
-// router.delete('/api/:id', api.del);
+if (settings.api.get) {
+  router.get('/api/:id', api.get);
+}
+if (settings.api.delete) {
+  router.delete('/api/:id', api.del);
+}
 
 // 404
 router.all('*', async () => {

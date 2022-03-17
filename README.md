@@ -39,7 +39,7 @@ https://count.dsrkafuu.net/{id}?theme={asoul,gelbooru,moebooru,rule34}&length={1
 3. `{&length}`: Number between `1-10` (default: `7`) or string `auto`
 4. `{&add}`: Controls whether make the counter count or not (default: `1`)
 
-Make a pull request to add your id in `ids.json` to use the free public counter. Recommend to use `user:usage` like string as ID for better management and potential issue tracking.
+Make a pull request to add your id in `settings.json` to use the free public counter. Recommend to use `user:usage` like string as ID for better management and potential issue tracking.
 
 **API Endpoints**
 
@@ -63,7 +63,8 @@ DELETE is not enabled in public counter, create a issue if you need to use it.
 1. Create a Cloudflare Workers worker
 2. Create a Cloudflare Workers KV store
 3. Create your own `wrangler.toml` based on the `wrangler.example.toml`
-4. Build the worker and publish it using `wrangler publish`
+4. Modify `settings.json` in your preferred way
+5. Build the worker and publish it using `wrangler publish`
 
 ## Credits
 

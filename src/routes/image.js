@@ -1,4 +1,5 @@
 /* global KV */
+import settings from '../../settings.json';
 import themes from '../../themes';
 import { genResponse } from '../response';
 import { validateID, minify } from '../utils';
@@ -43,10 +44,10 @@ function genImage(count, theme, length) {
 export async function get(req, event) {
   const id = validateID(req.params.id);
   let { theme, length, add } = req.query;
-  if (!themes[theme]) {
-    theme = 'gelbooru';
+  if (!theme || !themes[theme]) {
+    theme = settings.defaults.theme;
   }
-  let _length = length;
+  let _length = length || settings.defaults.length;
   if (length === 'auto') {
     _length = 'auto';
   } else if (!length || length <= 0 || length > 10) {
