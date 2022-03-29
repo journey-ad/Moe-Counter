@@ -9,10 +9,11 @@
   },
   "index": {
     "enabled": true,
-    "analytics": "G-0000000000"
+    "analytics": "G-MMZRQTYRXM"
   },
   "ids": {
     "dsrkafuu:demo": "Demo for GitHub & preview site.",
-    "dsrkafuu:home": "Personal blog & GitHub page."
+    "dsrkafuu:home": "Personal blog & GitHub page.",
+    "dsrkafuu:tools": "For DSRTOOLs counter."
   }
 }
