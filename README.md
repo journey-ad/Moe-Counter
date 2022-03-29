@@ -6,22 +6,22 @@ Fork of Moe Counter for fast global access powered by Cloudflare Workers.
 
 ## Demo
 
-[![Gelbooru](https://count.dsrkafuu.net/dsrkafuu:demo?proxy=1)](https://count.dsrkafuu.net/dsrkafuu:demo)
+[![Gelbooru](https://count.dsrkafuu.net/dsrkafuu:demo)](https://count.dsrkafuu.net/dsrkafuu:demo)
 
 <details>
 <summary>More Themes and Customizations</summary>
 
 **A-SOUL (with `theme=asoul&length=10`)**
 
-[![A-SOUL](https://count.dsrkafuu.net/dsrkafuu:demo?theme=asoul&length=10&add=0&proxy=1)](https://count.dsrkafuu.net/dsrkafuu:demo?theme=asoul&length=10)
+[![A-SOUL](https://count.dsrkafuu.net/dsrkafuu:demo?theme=asoul&length=10&add=0)](https://count.dsrkafuu.net/dsrkafuu:demo?theme=asoul&length=10)
 
 **Moebooru (with `theme=moebooru&length=auto`)**
 
-[![Moebooru](https://count.dsrkafuu.net/dsrkafuu:demo?theme=moebooru&length=auto&add=0&proxy=1)](https://count.dsrkafuu.net/dsrkafuu:demo?theme=moebooru&length=auto)
+[![Moebooru](https://count.dsrkafuu.net/dsrkafuu:demo?theme=moebooru&length=auto&add=0)](https://count.dsrkafuu.net/dsrkafuu:demo?theme=moebooru&length=auto)
 
 **Rule 34 (with `theme=rule34`)**
 
-[![Rule 34](https://count.dsrkafuu.net/dsrkafuu:demo?theme=rule34&add=0&proxy=1)](https://count.dsrkafuu.net/dsrkafuu:demo?theme=rule34)
+[![Rule 34](https://count.dsrkafuu.net/dsrkafuu:demo?theme=rule34&add=0)](https://count.dsrkafuu.net/dsrkafuu:demo?theme=rule34)
 
 </details>
 
