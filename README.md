@@ -19,9 +19,9 @@ Fork of Moe Counter for fast global access powered by Cloudflare Workers.
 
 [![Moebooru](https://count.dsrkafuu.net/dsrkafuu:demo?theme=moebooru&length=auto&add=0)](https://count.dsrkafuu.net/dsrkafuu:demo?theme=moebooru&length=auto)
 
-**Rule 34 (with `theme=rule34`)**
+**Rule 34 (with `theme=rule34&render=pixelated`)**
 
-[![Rule 34](https://count.dsrkafuu.net/dsrkafuu:demo?theme=rule34&add=0)](https://count.dsrkafuu.net/dsrkafuu:demo?theme=rule34)
+[![Rule 34](https://count.dsrkafuu.net/dsrkafuu:demo?theme=rule34&render=pixelated&add=0)](https://count.dsrkafuu.net/dsrkafuu:demo?theme=rule34)
 
 </details>
 
@@ -31,13 +31,16 @@ Fork of Moe Counter for fast global access powered by Cloudflare Workers.
 
 ```
 https://count.dsrkafuu.net/{id}
-https://count.dsrkafuu.net/{id}?theme={asoul,gelbooru,moebooru,rule34}&length={1-10,auto}&add={0,1}
+https://count.dsrkafuu.net/{id}?theme={asoul,gelbooru,moebooru,rule34}&render={auto,pixelated}&length={1-10,auto}&add={0,1}
 ```
 
 1. `{id}`: Any custom string between 1-256 chars (`a-zA-Z0-9:.@_-` allowed)
 2. `{&theme}`: `asoul`, `gelbooru`, `moebooru`, `rule34` and two other themes (default: `gelbooru`)
 3. `{&length}`: Number between `1-10` (default: `7`) or string `auto`
-4. `{&add}`: Controls whether make the counter count or not (default: `1`)
+4. `{&render}`: `auto` or `pixelated` (default: `auto`)
+5. `{&add}`: Controls whether make the counter count or not (default: `1`)
+
+You can custmize the default bahaviors by [self-hosting the counter](#self-hosting).
 
 Make a pull request to add your id in `settings.json` to use the free public counter. Recommend to use `user:usage` like string as ID for better management and potential issue tracking.
 

@@ -1,7 +1,8 @@
 {
   "defaults": {
     "theme": "gelbooru",
-    "length": 7
+    "length": 7,
+    "render": "auto"
   },
   "api": {
     "get": true,
