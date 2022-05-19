@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "moe-counter-cf",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "Fork of Moe Counter for fast global access powered by Cloudflare Workers.",
   "author": "DSRKafuU <dsrkafuu@outlook.com> (https://dsrkafuu.net)",
   "license": "MIT",
@@ -13,7 +13,6 @@
     "publish": "wrangler publish"
   },
   "dependencies": {
-    "base64-arraybuffer": "~1.0.2",
     "itty-router": "~2.6.1"
   },
   "devDependencies": {

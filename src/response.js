@@ -1,5 +1,3 @@
-import { getETag } from './utils';
-
 /**
  * @param {Request} req
  * @param {Response} res mutable response
@@ -20,8 +18,6 @@ function applyCommonHeaders(req, res) {
   } else if (!res.headers.get('Content-Type')) {
     res.headers.set('Content-Type', 'text/plain; charset=utf-8');
   }
-  // custom response time
-  res.headers.set('X-Response-Time', `${Date.now() - req.time}ms`);
   return res;
 }
 
@@ -31,23 +27,7 @@ function applyCommonHeaders(req, res) {
  * @param {ResponseInit|undefined} init
  */
 export async function genResponse(req, body, init) {
-  let res;
-  // 304
-  const buffer = await new Response(body, init).arrayBuffer();
-  const etag = await getETag(buffer);
-  if (etag && req.headers.get('If-None-Match') === etag) {
-    res = new Response(null, {
-      status: 304,
-      headers: {
-        ETag: etag,
-      },
-    });
-  }
-  // normal response
-  else {
-    res = new Response(body, init);
-    res.headers.set('ETag', etag);
-  }
+  const res = new Response(body, init);
   return applyCommonHeaders(req, res);
 }
 
@@ -67,24 +47,8 @@ export async function genProxyResponse(req, event, proxy) {
     resCache = await fetch(proxy);
     event.waitUntil(cache.put(cacheKey, resCache.clone()));
   }
-  let res;
-  // 304
-  const etag = resCache.headers.get('ETag');
-  if (etag && req.headers.get('If-None-Match') === etag) {
-    res = new Response(null, {
-      status: 304,
-      headers: {
-        'Cache-Control': resCache.headers.get('Cache-Control'),
-        'X-Proxy-Cache': 'HIT',
-        ETag: etag,
-      },
-    });
-  }
-  // normal response
-  else {
-    res = new Response(resCache.body, resCache);
-    res.headers.set('X-Proxy-Cache', usingCache ? 'HIT' : 'MISS');
-  }
+  const res = new Response(resCache.body, resCache);
+  res.headers.set('X-Proxy-Cache', usingCache ? 'HIT' : 'MISS');
   return applyCommonHeaders(req, res);
 }
 

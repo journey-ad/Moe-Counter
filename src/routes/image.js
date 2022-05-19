@@ -2,7 +2,7 @@
 import settings from '../../settings.json';
 import themes from '../../themes';
 import { genResponse } from '../response';
-import { validateID, minify } from '../utils';
+import { validateID } from '../utils';
 
 /**
  * @param {number} count
@@ -27,21 +27,13 @@ function genImage(count, theme, length, pixelated) {
     return pre + image;
   }, '');
 
-  const svg = `
-  <?xml version="1.0" encoding="UTF-8"?>
-  <svg
-    width="${x}"
-    height="${height}"
-    version="1.1"
-    xmlns="http://www.w3.org/2000/svg"
-    xmlns:xlink="http://www.w3.org/1999/xlink"
-    ${pixelated ? 'style="image-rendering: pixelated"' : ''}
-  >
-    <title>Moe Counter</title>
-    <g>${parts}</g>
-  </svg>
-  `;
-  return minify(svg);
+  return (
+    '<?xml version="1.0" encoding="UTF-8"?>' +
+    `<svg width="${x}" height="${height}" version="1.1"` +
+    ' xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"' +
+    `${pixelated ? ' style="image-rendering: pixelated"' : ''}>` +
+    `<title>Moe Counter</title><g>${parts}</g></svg>`
+  );
 }
 
 /**

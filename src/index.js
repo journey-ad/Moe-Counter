@@ -34,7 +34,6 @@ router.all('*', async () => {
 
 addEventListener('fetch', (event) => {
   const req = event.request;
-  req.time = Date.now(); // for response time calculation
   event.respondWith(
     router.handle(req, event).catch((e) => genErrorResponse(req, e))
   );
