@@ -2,16 +2,16 @@
 
 [English](https://github.com/dsrkafuu/moe-counter-cf#readme) | [中文](https://github.com/dsrkafuu/moe-counter-cf/blob/master/README.zh.md)
 
-Fork of Moe Counter for fast global access powered by Cloudflare Workers.
+基于 Cloudflare Workers 的 Moe Counter 萌萌计数器分支。
 
-[Original Project](https://github.com/journey-ad/Moe-counter) | [Cloudflare Workers](https://workers.cloudflare.com/) | [Cloudflare Workers KV](https://www.cloudflare.com/products/workers-kv/)
+[原项目](https://github.com/journey-ad/Moe-counter) | [Cloudflare Workers](https://workers.cloudflare.com/) | [Cloudflare Workers KV](https://www.cloudflare.com/products/workers-kv/)
 
-## Demo
+## 预览
 
 [![Gelbooru](https://count.dsrkafuu.net/dsrkafuu:demo)](https://count.dsrkafuu.net/dsrkafuu:demo)
 
 <details>
-<summary>More Themes and Customizations</summary>
+<summary>更多主题和自定义选项</summary>
 
 **A-SOUL (with `theme=asoul&length=10`)**
 
@@ -27,35 +27,35 @@ Fork of Moe Counter for fast global access powered by Cloudflare Workers.
 
 </details>
 
-## Usage
+## 使用
 
-**Public Counter**
+**公共计数器**
 
 ```
 https://count.dsrkafuu.net/{id}
 https://count.dsrkafuu.net/{id}?theme={asoul,gelbooru,moebooru,rule34}&render={auto,pixelated}&length={1-10,auto}&add={0,1}
 ```
 
-1. `{id}`: Any custom string between 1-256 chars (`a-zA-Z0-9:.@_-` allowed)
-2. `{&theme}`: `asoul`, `gelbooru`, `moebooru`, `rule34` and two other themes (default: `gelbooru`)
-3. `{&length}`: Number between `1-10` (default: `7`) or string `auto`
-4. `{&render}`: `auto` or `pixelated` (default: `auto`)
-5. `{&add}`: Controls whether make the counter count or not (default: `1`)
+1. `{id}`：任何长度在 1-256 之间的字符串 (允许的符号有 `a-zA-Z0-9:.@_-`)
+2. `{&theme}`：`asoul`、`gelbooru`、`moebooru`、`rule34` 和两个其他的主题 (默认：`gelbooru`)
+3. `{&length}`：`1-10` 之间的数字 (默认：`7`) 或 `auto`
+4. `{&render}`：`auto` 或 `pixelated` (默认：`auto`)
+5. `{&add}`：控制计数器是否增加 (默认：`1`)
 
-You can custmize the default bahaviors by [self-hosting the counter](#self-hosting).
+你可以通过[自行部署](#自行部署)来自定义默认行为。
 
-Make a pull request to add your id in `settings.json` to use the free public counter. Recommend to use `user:usage` like string as ID for better management and potential issue tracking.
+如果想要使用公共计数器，请发起一个对文件 `settings.json` 的 pull request 以在其中添加你的 ID。推荐使用 `用户名:用途` 格式的 ID 来便于管理和错误收集。
 
-**API Endpoints**
+**API 接口**
 
 ```
 GET https://count.dsrkafuu.net/api/{id}
 DELETE https://count.dsrkafuu.net/api/{id}
 ```
 
-DELETE is not enabled in public counter.
+公共计数器的 DELETE 接口默认不开启。
 
-**HTML and Markdown**
+**HTML 和 Markdown**
 
 ```
 <img src="https://count.dsrkafuu.net/{id}" alt="{id}" />
@@ -63,13 +63,13 @@ DELETE is not enabled in public counter.
 [![{id}](https://count.dsrkafuu.net/{id})](https://count.dsrkafuu.net/{id})
 ```
 
-## Self-hosting
+## 自行部署
 
-1. Create a Cloudflare Workers worker
-2. Create a Cloudflare Workers KV store
-3. Create your own `wrangler.toml` based on the `wrangler.example.toml`
-4. Modify `settings.json` in your preferred way
-5. Build the worker and publish it using `wrangler publish`
+1. 在 Cloudflare Workers 中创建一个 worker
+2. 在 Cloudflare Workers KV 中创建一个 store
+3. 使用模板 `wrangler.example.toml` 创建你自己的 `wrangler.toml`
+4. 修改 `settings.json` 来调整设置
+5. 使用 `wrangler publish` 编译并发布 worker
 
 ## Credits
 
