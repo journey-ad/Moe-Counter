@@ -57,6 +57,28 @@ app.get('/record/@:name', async (req, res) => {
   res.json(data)
 })
 
+app.get('/number/@:num', async (req, res) => {
+	const { num } = req.params
+	console.log(num)
+	const { theme = 'moebooru' } = req.query
+
+	let length = PLACES
+	// This helps with GitHub's image cache
+	res.set({
+		'content-type': 'image/svg+xml',
+		'cache-control': 'max-age=0, no-cache, no-store, must-revalidate',
+	})
+	length = 10
+
+	// Send the generated SVG as the result
+	const renderSvg = themify.getCountImage({
+		count: parseInt(num),
+		theme,
+		length,
+	})
+	res.send(renderSvg)
+})
+
 app.get('/heart-beat', (req, res) => {
   res.set({
     'cache-control': 'max-age=0, no-cache, no-store, must-revalidate'
