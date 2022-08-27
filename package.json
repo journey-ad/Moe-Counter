@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "moe-counter-cf",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "description": "Fork of Moe Counter for fast global access powered by Cloudflare Workers.",
   "author": "DSRKafuU <dsrkafuu@outlook.com> (https://dsrkafuu.net)",
   "license": "MIT",
@@ -18,9 +18,9 @@
   "devDependencies": {
     "@cloudflare/wrangler": "~1.19.12",
     "clean-webpack-plugin": "~4.0.0",
-    "eslint": "~8.15.0",
-    "prettier": "~2.6.2",
-    "webpack": "~5.72.1",
-    "webpack-cli": "~4.9.2"
+    "eslint": "~8.23.0",
+    "prettier": "~2.7.1",
+    "webpack": "~5.74.0",
+    "webpack-cli": "~4.10.0"
   }
 }

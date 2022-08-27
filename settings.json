@@ -9,8 +9,7 @@
     "delete": false
   },
   "index": {
-    "enabled": true,
-    "analytics": "G-MMZRQTYRXM"
+    "enabled": true
   },
   "ids": {
     "dsrkafuu:demo": "Demo for GitHub & preview site.",
