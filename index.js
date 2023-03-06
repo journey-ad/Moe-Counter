@@ -45,7 +45,7 @@ app.get('/get/@:name', async (req, res) => {
   const renderSvg = themify.getCountImage({ count: data.num, theme, length })
   res.send(renderSvg)
 
-  console.log(data, `theme: ${theme}`)
+  console.log(data, `theme: ${theme}`, `ref: ${req.get('Referrer') || null}`, `ua: ${req.get('User-Agent') || null}`)
 })
 
 // JSON record
@@ -70,16 +70,51 @@ const listener = app.listen(config.app.port || 3000, () => {
   console.log('Your app is listening on port ' + listener.address().port)
 })
 
+let __cache_counter = {}, shouldPush = false
+
+setInterval(() => {
+  shouldPush = true
+}, 1000 * 60);
+
+async function pushDB() {
+  if (!shouldPush) return
+
+  try {
+    shouldPush = false
+    if (Object.keys(__cache_counter).length === 0) return
+
+    console.log("pushDB", __cache_counter)
+
+    const counters = Object.keys(__cache_counter).map(key => {
+      return {
+        name: key,
+        num: __cache_counter[key]
+      }
+    })
+
+    await db.setNumMulti(counters)
+    __cache_counter = {}
+  } catch (error) {
+    console.log("pushDB is error: ", error)
+  }
+}
+
 async function getCountByName(name) {
   const defaultCount = { name, num: 0 }
 
   if (name === 'demo') return { name, num: '0123456789' }
 
   try {
-    const counter = await db.getNum(name) || defaultCount
-    const num = counter.num + 1
-    db.setNum(counter.name, num)
-    return counter
+    if (!(name in __cache_counter)) {
+      const counter = await db.getNum(name) || defaultCount
+      __cache_counter[name] = counter.num + 1
+    } else {
+      __cache_counter[name]++
+    }
+
+    pushDB()
+
+    return { name, num: __cache_counter[name] }
 
   } catch (error) {
     console.log("get count by name is error: ", error)
