@@ -32,8 +32,24 @@ function setNum(name, num) {
           .exec()
 }
 
+function setNumMulti(counters) {
+  const bulkOps = counters.map(obj => {
+    const { name, num } = obj
+    return {
+      updateOne: {
+        filter: { name },
+        update: { name, num },
+        upsert: true
+      }
+    }
+  })
+
+  return Count.bulkWrite(bulkOps, { ordered : false })
+}
+
 module.exports = {
   getNum,
   getAll,
-  setNum
+  setNum,
+  setNumMulti
 }

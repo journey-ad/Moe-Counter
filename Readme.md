@@ -1,8 +1,8 @@
-# Moe-counter
+# Moe-Counter
 
 多种风格可选的萌萌计数器
 
-![Moe-counter](https://count.getloli.com/get/@Moe-counter.github)
+![Moe-Counter](https://count.getloli.com/get/@Moe-counter.github)
 
 <details>
 <summary>More theme</summary>
@@ -26,17 +26,17 @@
 
 ### Install
 
-#### Run on Repl.it
+#### Run on Replit
 
-- Open the url [https://repl.it/@journeyad/Moe-counter](https://repl.it/@journeyad/Moe-counter)
+- Open the url [https://replit.com/@journeyad/Moe-Counter](https://replit.com/@journeyad/Moe-Counter)
 - Just hit the **Fork** button
 - And hit the **Run** button
 
 #### Deploying on your own server
 
 ```shell
-$ git clone https://github.com/journey-ad/Moe-counter.git
-$ cd Moe-counter
+$ git clone https://github.com/journey-ad/Moe-Counter.git
+$ cd Moe-Counter
 $ yarn install
 
 $ yarn start
@@ -51,7 +51,7 @@ app:
   port: 3000
 
 db:
-  type: mongodb # sqlite or mongodb
+  type: sqlite # sqlite or mongodb
 ```
 
 If you use mongodb, you need to specify the environment variable `DB_URL`
@@ -61,7 +61,7 @@ If you use mongodb, you need to specify the environment variable `DB_URL`
 export DB_URL=mongodb+srv://account:passwd@***.***.***.mongodb.net/db_count
 ```
 
-repl.it can use `.env` file, [documentation](https://docs.repl.it/repls/secret-keys)
+replit can use Secrets, [documentation](https://docs.replit.com/programming-ide/storing-sensitive-information-environment-variables)
 
 ```
 DB_URL="mongodb+srv://account:passwd@***.***.***.mongodb.net/db_count"
@@ -69,8 +69,8 @@ DB_URL="mongodb+srv://account:passwd@***.***.***.mongodb.net/db_count"
 
 ## Credits
 
-*   [repl.it](https://repl.it/)
-*   [A-SOUL](https://www.asoulworld.com/) <sup>(非官方导航站)</sup>
+*   [replit](https://replit.com/)
+*   [A-SOUL_Official](https://space.bilibili.com/703007996)
 *   [moebooru](https://github.com/moebooru/moebooru)
 *   rule34.xxx NSFW
 *   gelbooru.com NSFW
@@ -78,4 +78,4 @@ DB_URL="mongodb+srv://account:passwd@***.***.***.mongodb.net/db_count"
 
 ## License
 
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fjourney-ad%2FMoe-counter.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fjourney-ad%2FMoe-counter?ref=badge_large)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fjourney-ad%2FMoe-Counter.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fjourney-ad%2FMoe-Counter?ref=badge_large)
