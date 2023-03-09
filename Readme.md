@@ -42,7 +42,7 @@ $ yarn install
 $ yarn start
 ```
 
-### Confignation
+### Configuration
 
 `config.yml`
 
