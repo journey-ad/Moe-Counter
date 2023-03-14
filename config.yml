@@ -2,4 +2,4 @@ app:
   port: 3000
 
 db:
-  type: sqlite # sqlite or mongodb
+  type: sqlite # sqlite or mongodb or repl(using replit inbuilt database)
