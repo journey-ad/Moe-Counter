@@ -22,6 +22,13 @@
 ## Demo
 [https://count.getloli.com](https://count.getloli.com)
 
+## Backup Mirrors
+
+Here are the solutions if you can not access the link above.
+
+- https://count.ayaya.beauty Credit to [@Fijxu](https://github.com/Fijxu)
+- https://ipacel.cc/+/MoeCounter2/?name={gh_username} Credit to [@ApliNi](https://github.com/ApliNi)
+
 ## Usage
 
 ### Install
