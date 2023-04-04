@@ -25,16 +25,16 @@ html
     h3 How to use:
 
     h5 SVG address
-    code #{url}/get/@:name
+    code #{site}/get/@:name
 
     h5 Img tag
-    code &lt;img src="#{url}/get/@:name" alt=":name" />
+    code &lt;img src="#{site}/get/@:name" alt=":name" />
 
     h5 Markdown
-    code ![:name](#{url}/get/@:name)
+    code ![:name](#{site}/get/@:name)
 
     h3 eg:
-      <img src="#{url}/get/@index" alt="Moe Count!" />
+      <img src="#{site}/get/@index" alt="Moe Count!" />
 
     i Data can access by anyone, please
       | <span style="color: #ff4500;"> DO NOT</span>
@@ -43,19 +43,19 @@ html
     details
       summary(style='display: inline-block;', onclick='_evt_push("click", "normal", "more_theme")')
         h3(style='display: inline-block; cursor: pointer;') More theme
-      p(style='margin: 0;') Just use the query parameters <code>theme</code>, like this: <code>#{url}/get/@:name?theme=moebooru</code>
+      p(style='margin: 0;') Just use the query parameters <code>theme</code>, like this: <code>#{site}/get/@:name?theme=moebooru</code>
       h5 asoul
-      img(src='#{url}/get/@demo?theme=asoul', alt='A-SOUL')
+      img(src='#{site}/get/@demo?theme=asoul', alt='A-SOUL')
       h5 moebooru
-      img(src='#{url}/get/@demo?theme=moebooru', alt='Moebooru')
+      img(src='#{site}/get/@demo?theme=moebooru', alt='Moebooru')
       h5 moebooru-h
-      img(src='#{url}/get/@demo?theme=moebooru-h', alt='Moebooru-Hentai')
+      img(src='#{site}/get/@demo?theme=moebooru-h', alt='Moebooru-Hentai')
       h5 rule34
-      img(src='#{url}/get/@demo?theme=rule34', alt='Rule34')
+      img(src='#{site}/get/@demo?theme=rule34', alt='Rule34')
       h5 gelbooru
-      img(src='#{url}/get/@demo?theme=gelbooru', alt='Gelbooru')
+      img(src='#{site}/get/@demo?theme=gelbooru', alt='Gelbooru')
       h5 gelbooru-h
-      img(src='#{url}/get/@demo?theme=gelbooru-h', alt='Gelbooru-Hentai')
+      img(src='#{site}/get/@demo?theme=gelbooru-h', alt='Gelbooru-Hentai')
 
     h3 Credits
     ul
@@ -76,7 +76,7 @@ html
 
     h3 Tool
     .tool
-      code #{url}/get/@
+      code #{site}/get/@
       input#name(type='text', placeholder=':name', style='display: inline-block; width: 80px; height: 1.4em; line-height: 1.4em; margin: 0 4px; vertical-align: middle;')
       code ?theme=
       select#theme(style='display: inline-block; height: 1.6em; line-height: 1.6em; font-size: 14px; margin: 0 4px; padding: 0 4px; vertical-align: middle;')
@@ -103,7 +103,7 @@ html
             return
           }
 
-          img.src = '#{url}/get/@' + text + '?theme=' + theme
+          img.src = '#{site}/get/@' + text + '?theme=' + theme
         })
 
     iframe(src="https://chat.getloli.com/room/@Moe-counter?title=%E8%90%8C%E8%90%8C%E8%AE%A1%E6%95%B0%E5%99%A8%E7%9A%84%E7%95%99%E8%A8%80%E6%9D%BF", scrolling="no", frameborder="0", height="70%", width="26%", style="position: fixed;top: 2%;right: 5%;")

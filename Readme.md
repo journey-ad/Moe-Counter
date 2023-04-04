@@ -48,6 +48,7 @@ $ yarn start
 
 ```yaml
 app:
+  # site: https://count.getloli.com # your website
   port: 3000
 
 db:
