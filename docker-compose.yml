@@ -1,0 +1,6 @@
+version: '3'
+services:
+  moe-counter:
+    build: .
+    ports:
+      - "3000:3000"
