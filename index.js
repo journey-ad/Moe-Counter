@@ -17,7 +17,8 @@ app.use(compression())
 app.set('view engine', 'pug')
 
 app.get('/', (req, res) => {
-  res.render('index')
+  const site = config.app.site || `${req.protocol}://${req.get('host')}`
+  res.render('index', { site })
 });
 
 // get the image
