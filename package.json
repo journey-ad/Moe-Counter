@@ -1,5 +1,5 @@
 {
-  "name": "kawaii-counter",
+  "name": "moe-counter",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -11,6 +11,7 @@
   "author": "journey-ad",
   "license": "MIT",
   "dependencies": {
+    "better-sqlite3": "^8.1.0",
     "compression": "^1.7.4",
     "config-yml": "^0.10.3",
     "express": "^4.17.1",

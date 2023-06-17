@@ -25,16 +25,16 @@ html
     h3 How to use:
 
     h5 SVG address
-    code https://count.getloli.com/get/@:name
+    code #{site}/get/@:name
 
     h5 Img tag
-    code &lt;img src="https://count.getloli.com/get/@:name" alt=":name" />
+    code &lt;img src="#{site}/get/@:name" alt=":name" />
 
     h5 Markdown
-    code ![:name](https://count.getloli.com/get/@:name)
+    code ![:name](#{site}/get/@:name)
 
     h3 eg:
-      <img src="https://count.getloli.com/get/@index" alt="Moe Count!" />
+      <img src="#{site}/get/@index" alt="Moe Count!" />
 
     i Data can access by anyone, please
       | <span style="color: #ff4500;"> DO NOT</span>
@@ -43,26 +43,26 @@ html
     details
       summary(style='display: inline-block;', onclick='_evt_push("click", "normal", "more_theme")')
         h3(style='display: inline-block; cursor: pointer;') More theme
-      p(style='margin: 0;') Just use the query parameters <code>theme</code>, like this: <code>https://count.getloli.com/get/@:name?theme=moebooru</code>
+      p(style='margin: 0;') Just use the query parameters <code>theme</code>, like this: <code>#{site}/get/@:name?theme=moebooru</code>
       h5 asoul
-      img(src='https://count.getloli.com/get/@demo?theme=asoul', alt='A-SOUL')
+      img(src='#{site}/get/@demo?theme=asoul', alt='A-SOUL')
       h5 moebooru
-      img(src='https://count.getloli.com/get/@demo?theme=moebooru', alt='Moebooru')
+      img(src='#{site}/get/@demo?theme=moebooru', alt='Moebooru')
       h5 moebooru-h
-      img(src='https://count.getloli.com/get/@demo?theme=moebooru-h', alt='Moebooru-Hentai')
+      img(src='#{site}/get/@demo?theme=moebooru-h', alt='Moebooru-Hentai')
       h5 rule34
-      img(src='https://count.getloli.com/get/@demo?theme=rule34', alt='Rule34')
+      img(src='#{site}/get/@demo?theme=rule34', alt='Rule34')
       h5 gelbooru
-      img(src='https://count.getloli.com/get/@demo?theme=gelbooru', alt='Gelbooru')
+      img(src='#{site}/get/@demo?theme=gelbooru', alt='Gelbooru')
       h5 gelbooru-h
-      img(src='https://count.getloli.com/get/@demo?theme=gelbooru-h', alt='Gelbooru-Hentai')
+      img(src='#{site}/get/@demo?theme=gelbooru-h', alt='Gelbooru-Hentai')
 
     h3 Credits
     ul
       li
         a(href='https://repl.it/', target='_blank', rel='nofollow') repl.it
       li
-        a(href='https://www.asoulworld.com/', target='_blank', title='A-SOUL导航站(非官方)') A-SOUL
+        a(href='https://space.bilibili.com/703007996', target='_blank', title='A-SOUL_Official') A-SOUL
       li
         a(href='https://github.com/moebooru/moebooru', target='_blank', rel='nofollow') moebooru
       li
@@ -76,7 +76,7 @@ html
 
     h3 Tool
     .tool
-      code https://count.getloli.com/get/@
+      code #{site}/get/@
       input#name(type='text', placeholder=':name', style='display: inline-block; width: 80px; height: 1.4em; line-height: 1.4em; margin: 0 4px; vertical-align: middle;')
       code ?theme=
       select#theme(style='display: inline-block; height: 1.6em; line-height: 1.6em; font-size: 14px; margin: 0 4px; padding: 0 4px; vertical-align: middle;')
@@ -103,10 +103,10 @@ html
             return
           }
 
-          img.src = 'https://count.getloli.com/get/@' + text + '?theme=' + theme
+          img.src = '#{site}/get/@' + text + '?theme=' + theme
         })
 
     iframe(src="https://chat.getloli.com/room/@Moe-counter?title=%E8%90%8C%E8%90%8C%E8%AE%A1%E6%95%B0%E5%99%A8%E7%9A%84%E7%95%99%E8%A8%80%E6%9D%BF", scrolling="no", frameborder="0", height="70%", width="26%", style="position: fixed;top: 2%;right: 5%;")
 
     p.copy
-      a(href='https://github.com/journey-ad/Moe-counter', target='_blank', onclick='_evt_push("click", "normal", "go_github")') source code
+      a(href='https://github.com/journey-ad/Moe-Counter', target='_blank', onclick='_evt_push("click", "normal", "go_github")') source code
