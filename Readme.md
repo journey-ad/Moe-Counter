@@ -62,6 +62,13 @@ If you use mongodb, you need to specify the environment variable `DB_URL`
 export DB_URL=mongodb+srv://account:passwd@***.***.***.mongodb.net/db_count
 ```
 
+If you use mysql, you need to specify the environment variable `DB_URL`
+
+```shell
+# eg:
+export DB_URL=mysql://user:password@localhost:3306/database
+```
+
 replit can use Secrets, [documentation](https://docs.replit.com/programming-ide/storing-sensitive-information-environment-variables)
 
 ```
