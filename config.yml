@@ -3,4 +3,4 @@ app:
   port: 3000
 
 db:
-  type: sqlite # sqlite or mongodb
+  type: mongodb # sqlite or mongodb
