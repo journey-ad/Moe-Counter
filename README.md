@@ -1,8 +1,14 @@
+<div align="center">
+  
 # Moe-Counter
 
-多种风格可选的萌萌计数器
+Multiple styles of Moe-Counters to choose from
+
+**English** | [简体中文](docs/README-zhcn.md)
 
 ![Moe-Counter](https://count.getloli.com/get/@Moe-counter.github)
+
+</div>
 
 <details>
 <summary>More theme</summary>
@@ -62,7 +68,7 @@ If you use mongodb, you need to specify the environment variable `DB_URL`
 export DB_URL=mongodb+srv://account:passwd@***.***.***.mongodb.net/db_count
 ```
 
-replit can use Secrets, [documentation](https://docs.replit.com/programming-ide/storing-sensitive-information-environment-variables)
+Replit can use Secrets, check [documentation](https://docs.replit.com/programming-ide/storing-sensitive-information-environment-variables)
 
 ```
 DB_URL="mongodb+srv://account:passwd@***.***.***.mongodb.net/db_count"
