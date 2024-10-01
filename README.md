@@ -1,6 +1,6 @@
 # Moe-Counter
 
-多种风格可选的萌萌计数器
+Multiple styles of Moe-Counters to choose from
 
 ![Moe-Counter](https://count.getloli.com/get/@Moe-counter.github)
 
