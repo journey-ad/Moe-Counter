@@ -1,8 +1,14 @@
+<div align="center">
+
 # 萌萌计数器
 
 多种风格可选的萌萌计数器
 
+[English](README.md) | **简体中文**
+
 ![Moe-Counter](https://count.getloli.com/get/@Moe-counter.github)
+
+</div>
 
 <details>
 <summary>更多风格</summary>
