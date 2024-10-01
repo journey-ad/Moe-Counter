@@ -1,8 +1,14 @@
+<div align="center">
+  
 # Moe-Counter
 
 Multiple styles of Moe-Counters to choose from
 
+**English** | [简体中文](docs/README-zhcn.md)
+
 ![Moe-Counter](https://count.getloli.com/get/@Moe-counter.github)
+
+</div>
 
 <details>
 <summary>More theme</summary>
