@@ -62,7 +62,7 @@ If you use mongodb, you need to specify the environment variable `DB_URL`
 export DB_URL=mongodb+srv://account:passwd@***.***.***.mongodb.net/db_count
 ```
 
-replit can use Secrets, [documentation](https://docs.replit.com/programming-ide/storing-sensitive-information-environment-variables)
+Replit can use Secrets, check [documentation](https://docs.replit.com/programming-ide/storing-sensitive-information-environment-variables)
 
 ```
 DB_URL="mongodb+srv://account:passwd@***.***.***.mongodb.net/db_count"
