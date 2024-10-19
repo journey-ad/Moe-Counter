@@ -1,3 +1,39 @@
+@media screen and (min-width: 800px) {
+  body {
+    max-width: min(90%, 800px);
+  }
+}
+
+details>summary {
+  list-style: none
+}
+
+details>summary::-webkit-details-marker,details>summary::marker {
+  display: none
+}
+
+summary:before {
+  border-bottom: 6px solid transparent;
+  border-left: 10px solid var(--b-txt);
+  border-top: 6px solid transparent;
+  content: "";
+  display: inline-block;
+  height: 0;
+  margin-right: 10px;
+  position: relative;
+  transition: .2s;
+  width: 0
+}
+
+details[open] summary:before {
+  transform: rotate(90deg)
+}
+
+h2, h3, h4, h5 {
+  margin-top: 1.5em;
+  margin-bottom: .6em;
+}
+
 @media screen and (max-width: 900px) {
   iframe {
     display: none;

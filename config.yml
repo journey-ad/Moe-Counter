@@ -4,3 +4,4 @@ app:
 
 db:
   type: sqlite # sqlite or mongodb
+  interval: 60 # write to db interval in seconds (0 for realtime)
