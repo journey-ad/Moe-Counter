@@ -7,7 +7,7 @@
 <details>
 <summary>More theme</summary>
 
-### *Contribute themes is welcome!*
+### *[Contribute themes is welcome!](https://github.com/journey-ad/Moe-Counter/issues/new?assignees=&labels=theme&projects=&template=contribute-theme.yml&title=%5BTheme%5D%3A+)*
 
 ##### asoul
 
