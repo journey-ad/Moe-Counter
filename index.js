@@ -3,9 +3,12 @@
 const config = require("config-yml");
 const express = require("express");
 const compression = require("compression");
+const { z } = require("zod");
 
 const db = require("./db");
-const themify = require("./utils/themify");
+const { themeList, getCountImage } = require("./utils/themify");
+const { ZodValid } = require("./utils/zod");
+const { randomArray } = require("./utils");
 
 const app = express();
 
@@ -15,56 +18,65 @@ app.set("view engine", "pug");
 
 app.get('/', (req, res) => {
   const site = config.app.site || `${req.protocol}://${req.get('host')}`
-  res.render('index', { site })
+  res.render('index', {
+    site,
+    themeList,
+  })
 });
 
 // get the image
-app.get(["/@:name", "/get/@:name"], async (req, res) => {
-  const { name } = req.params;
-  const { theme = "moebooru", padding = 7, pixelated = '1', darkmode = 'auto' } = req.query;
-  const isPixelated = pixelated === '1';
+app.get(["/@:name", "/get/@:name"],
+  ZodValid({
+    params: z.object({
+      name: z.string().max(32),
+    }),
+    query: z.object({
+      theme: z.string().default("moebooru"),
+      padding: z.coerce.number().min(0).max(32).default(7),
+      offset: z.coerce.number().min(-500).max(500).default(0),
+      scale: z.coerce.number().min(0.1).max(2).default(1),
+      pixelated: z.enum(["0", "1"]).default("1"),
+      darkmode: z.enum(["0", "1", "auto"]).default("auto")
+    })
+  }),
+  async (req, res) => {
+    const { name } = req.params;
+    let { theme = "moebooru", ...rest } = req.query;
 
-  if (name.length > 32) {
-    res.status(400).send("name too long");
-    return;
+    // This helps with GitHub's image cache
+    res.set({
+      "content-type": "image/svg+xml",
+      "cache-control": "max-age=0, no-cache, no-store, must-revalidate",
+    });
+
+    const data = await getCountByName(name);
+
+    if (name === "demo") {
+      res.set("cache-control", "max-age=31536000");
+    }
+
+    if (theme === "random") {
+      theme = randomArray(Object.keys(themeList));
+    }
+
+    // Send the generated SVG as the result
+    const renderSvg = getCountImage({
+      count: data.num,
+      theme,
+      ...rest
+    });
+
+    res.send(renderSvg);
+
+    console.log(
+      data,
+      `theme: ${theme}`,
+      `ip: ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`,
+      `ref: ${req.get("Referrer") || null}`,
+      `ua: ${req.get("User-Agent") || null}`
+    );
   }
-
-  if (padding > 32) {
-    res.status(400).send("padding too long");
-    return;
-  }
-
-  // This helps with GitHub's image cache
-  res.set({
-    "content-type": "image/svg+xml",
-    "cache-control": "max-age=0, no-cache, no-store, must-revalidate",
-  });
-
-  const data = await getCountByName(name);
-
-  if (name === "demo") {
-    res.set("cache-control", "max-age=31536000");
-  }
-
-  // Send the generated SVG as the result
-  const renderSvg = themify.getCountImage({
-    count: data.num,
-    theme,
-    padding,
-    darkmode,
-    pixelated: isPixelated
-  });
-
-  res.send(renderSvg);
-
-  console.log(
-    data,
-    `theme: ${theme}`,
-    `ip: ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`,
-    `ref: ${req.get("Referrer") || null}`,
-    `ua: ${req.get("User-Agent") || null}`
-  );
-});
+);
 
 // JSON record
 app.get("/record/@:name", async (req, res) => {

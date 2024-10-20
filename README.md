@@ -84,4 +84,4 @@ Glitch can use `.env` file, [documentation](https://help.glitch.com/hc/en-us/art
 
 ## License
 
-[MIT License](./LICENSE)
+[MIT License](./LICENSE), excluding all themes

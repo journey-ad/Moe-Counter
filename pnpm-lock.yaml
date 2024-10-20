@@ -29,6 +29,9 @@ dependencies:
   pug:
     specifier: ^3.0.0
     version: 3.0.3
+  zod:
+    specifier: ^3.23.8
+    version: 3.23.8
 
 packages:
 
@@ -1664,4 +1667,8 @@ packages:
       window-size: 0.2.0
       y18n: 3.2.2
       yargs-parser: 2.4.1
+    dev: false
+
+  /zod@3.23.8:
+    resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
     dev: false

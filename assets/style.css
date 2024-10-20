@@ -34,6 +34,69 @@ h2, h3, h4, h5 {
   margin-bottom: .6em;
 }
 
+.back-to-top {
+  position: fixed;
+  z-index: 2;
+  right: -108px;
+  bottom: 0;
+  width: 108px;
+  height: 150px;
+  background: url('./img/back-to-top.png?v=1') no-repeat 0 0; /* artwork from https://www.pixiv.net/artworks/83996495 */
+  background-size: 108px 450px;
+  opacity: 0.6;
+  transition: opacity 0.3s, right 0.8s;
+  cursor: pointer;
+}
+.back-to-top:hover {
+  background-position: 0 -150px;
+  opacity: 1;
+}
+.back-to-top.load {
+  right: 0;
+}
+.back-to-top.ani-leave {
+  background-position: 0 -150px;
+  animation: ani-leave 390ms ease-in-out;
+  animation-fill-mode: forwards;
+}
+.back-to-top.leaved {
+  pointer-events: none;
+  background: none;
+  transition: none;
+}
+.back-to-top.ending {
+  pointer-events: none;
+}
+.back-to-top.ending::after {
+  opacity: 1;
+  transition-delay: 0.35s;
+}
+.back-to-top::after {
+  content: '';
+  position: fixed;
+  z-index: 2;
+  right: 0;
+  bottom: 0;
+  width: 108px;
+  height: 150px;
+  background: url('./img/back-to-top.png?v=1') no-repeat 0 0;
+  background-size: 108px 450px;
+  background-position: 0 -300px;
+  transition: opacity 0.3s;
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes ani-leave {
+  0% {
+    transform: translateX(0);
+ }
+  100% {
+    transform: translateX(108px);
+ }
+}
+
+
 @media screen and (max-width: 900px) {
   iframe {
     display: none;

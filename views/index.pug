@@ -35,7 +35,7 @@ html
     h3 How to use
     p Set a unique id for your counter, replace 
       code :name
-      |  in the url, that's all.
+      |  in the url, That's it!
 
     h5 SVG address
     code #{site}/@:name
@@ -47,24 +47,15 @@ html
     code ![:name](#{site}/@:name)
 
     h5 e.g.
-      <img src="#{site}/@index" alt="Moe Count!" />
+      <img src="#{site}/@index" alt="Moe Counter!" />
 
-    details#themes
+    details#themes(style='margin-top: 2em;')
       summary#more_theme(onclick='_evt_push("click", "normal", "more_theme")')
         h3(style='display: inline-block; margin: 0; cursor: pointer;') More theme✨
       p(style='margin: 0;') Just use the query parameters <code>theme</code>, like this: <code>#{site}/@:name?theme=moebooru</code>
-      h5 asoul
-      <img src="#{site}/@demo?theme=asoul" alt="A-SOUL" />
-      h5 moebooru
-      <img src="#{site}/@demo?theme=moebooru" alt="Moebooru" />
-      h5 moebooru-h
-      <img src="#{site}/@demo?theme=moebooru-h" alt="Moebooru-Hentai" />
-      h5 rule34
-      <img src="#{site}/@demo?theme=rule34" alt="Rule34" />
-      h5 gelbooru
-      <img src="#{site}/@demo?theme=gelbooru" alt="Gelbooru" />
-      h5 gelbooru-h
-      <img src="#{site}/@demo?theme=gelbooru-h" alt="Gelbooru-Hentai" />
+      each theme in Object.keys(themeList)
+        h5 #{theme}
+        <img src="#{site}/@demo?theme=#{theme}" alt="#{theme}" />
 
     h3 Credits
     ul
@@ -75,13 +66,12 @@ html
       li
         a(href='https://github.com/moebooru/moebooru', target='_blank', rel='nofollow') moebooru
       li
-        a(href='javascript:alert("!!! NSFW LINK !!!\\nPlease enter the url manually")') rule34.xxx
-        |  NSFW
-      li
         a(href='javascript:alert("!!! NSFW LINK !!!\\nPlease enter the url manually")') gelbooru.com
         |  NSFW
       li
         a(href='https://icons8.com/icon/80355/star', target='_blank', rel='nofollow') Icons8
+      span
+        i And all booru site...
 
     h3 Tool
     .tool
@@ -89,37 +79,58 @@ html
         thead
           tr
             th Param
+            th Description
             th Value
         tbody
           tr
             td
               code name
+            td Unique counter name
             td
               input#name(type='text', placeholder=':name')
           tr
             td
               code theme
+            td Select a counter image theme, default is 
+              code moebooru
             td
               select#theme
-                option(value='asoul') asoul
-                option(value='moebooru') moebooru
-                option(value='moebooru-h') moebooru-h
-                option(value='rule34') rule34
-                option(value='gelbooru') gelbooru
-                option(value='gelbooru-h') gelbooru-h
-          tr
-            td
-              code pixelated
-            td
-              input#pixelated(type='checkbox', checked, style='margin: .5rem .75rem;')
+                option(value="random", selected) * random
+                each theme in Object.keys(themeList)
+                  <option value="#{theme}">#{theme}</option>
           tr
             td
               code padding
+            td Set the minimum length, between 1-32, default is 
+              code 7
             td
               input#padding(type='number', value='7', min='1', max='32', step='1', oninput='this.value = this.value.replace(/[^0-9]/g, "")')
           tr
             td
+              code offset
+            td Set the offset pixel value, between -500-500, default is 
+              code 0
+            td
+              input#offset(type='number', value='0', min='-500', max='500', step='1', oninput='this.value = this.value.replace(/[^0-9|\-]/g, "")')
+          tr
+            td
+              code scale
+            td Set the image scale, between 0.1-2, default is
+              code 1
+            td
+              input#scale(type='number', value='1', min='0.1', max='2', step='0.1', oninput='this.value = this.value.replace(/[^0-9|\.]/g, "")')
+          tr
+            td
+              code pixelated
+            td Enable pixelated mode, Enum 0/1, default is 
+              code 1
+            td
+              input#pixelated(type='checkbox', checked, style='margin: .5rem .75rem;')
+          tr
+            td
               code darkmode
+            td Enable dark mode, Enum 0/1/auto, default is 
+              code auto
             td
               select#darkmode(name="darkmode")
                 option(value="auto", selected) auto
@@ -132,7 +143,13 @@ html
         code#code(style='visibility: hidden; display: inline-block; margin-bottom: 1em;')
         img#result(style='display: block;')
 
-      script.
+    p(style='margin-top: 2em;')
+      a(href='https://github.com/journey-ad/Moe-Counter', target='_blank', onclick='_evt_push("click", "normal", "go_github")') source code
+
+    div.back-to-top
+
+    script.
+      (function () {
         var btn = document.getElementById('get'),
             img = document.getElementById('result'),
             code = document.getElementById('code')
@@ -140,15 +157,13 @@ html
         btn.addEventListener('click', throttle(function() {
           var $name = document.getElementById('name'),
               $theme = document.getElementById('theme'),
-              $pixelated = document.getElementById('pixelated'),
               $padding = document.getElementById('padding'),
+              $offset = document.getElementById('offset'),
+              $scale = document.getElementById('scale'),
+              $pixelated = document.getElementById('pixelated'),
               $darkmode = document.getElementById('darkmode')
 
           var name = $name.value ? $name.value.trim() : ''
-          var theme = $theme.value || 'moebooru'
-          var pixelated = $pixelated.checked ? '1' : '0'
-          var padding = $padding.value || '7'
-          var darkmode = $darkmode.value || 'auto'
 
           if(!name) {
             alert('Please input counter name.')
@@ -157,7 +172,19 @@ html
 
           party.confetti(this, { count: party.variation.range(20, 40) });
 
-          img.src = `#{site}/@${name}?theme=${theme}&pixelated=${pixelated}&padding=${padding}&darkmode=${darkmode}`
+          var params = {
+            name: $name.value ? $name.value.trim() : '',
+            theme: $theme.value || 'moebooru',
+            padding: $padding.value || '7',
+            offset: $offset.value || '0',
+            scale: $scale.value || '1',
+            pixelated: $pixelated.checked ? '1' : '0',
+            darkmode: $darkmode.value || 'auto',
+          }
+
+          var query = new URLSearchParams(params).toString()
+
+          img.src = `#{site}/@${name}?${query}`
           code.textContent = img.src
           code.style.visibility = 'visible'
 
@@ -220,6 +247,50 @@ html
             }
           }
         }
+      })();
 
-    p(style='margin-top: 2em;')
-      a(href='https://github.com/journey-ad/Moe-Counter', target='_blank', onclick='_evt_push("click", "normal", "go_github")') source code
+    script.
+      (function () {
+        var isShow = false, lock = false;
+        var btn = document.querySelector('.back-to-top');
+
+        window.addEventListener('scroll', function () {
+          if (lock) return;
+
+          if (document.body.scrollTop >= 1000) {
+            if (!isShow) btn.classList.add('load');
+            isShow = true;
+          } else {
+            if (isShow) {
+              btn.classList.remove('load');
+              isShow = false;
+            }
+          }
+        });
+
+        btn.addEventListener('click', function () {
+          lock = true;
+          btn.classList.add('ani-leave');
+
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+
+          setTimeout(function () {
+            btn.classList.remove('ani-leave');
+            btn.classList.add('leaved');
+          }, 390);
+
+          setTimeout(function () {
+            btn.classList.add('ending');
+          }, 120);
+
+          setTimeout(function () {
+            btn.classList.remove('load');
+          }, 1500);
+
+          setTimeout(function () {
+            lock = false;
+            isShow = false;
+            btn.classList.remove('leaved', 'ending');
+          }, 2000);
+        });
+      })();

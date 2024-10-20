@@ -14,10 +14,10 @@ fs.readdirSync(themePath).forEach(theme => {
   const imgList = fs.readdirSync(path.resolve(themePath, theme))
   imgList.forEach(img => {
     const imgPath = path.resolve(themePath, theme, img)
-    const name = path.parse(img).name
+    const num = path.parse(img).name
     const { width, height } = sizeOf(imgPath)
 
-    themeList[theme][name] = {
+    themeList[theme][num] = {
       width,
       height,
       data: convertToDatauri(imgPath)
@@ -32,8 +32,12 @@ function convertToDatauri(path) {
   return `data:${mime};base64,${base64}`
 }
 
-function getCountImage({ count, theme = 'moebooru', padding = 7, pixelated = true, darkmode = 'auto' }) {
+function getCountImage(params) {
+  let { count, theme = 'moebooru', padding = 7, offset = 0, scale = 1, pixelated = '1', darkmode = 'auto' } = params
+
   if (!(theme in themeList)) theme = 'moebooru'
+  padding = parseInt(padding, 10)
+  offset = parseInt(offset, 10)
 
   // This is not the greatest way for generating an SVG but it'll do for now
   const countArray = count.toString().padStart(padding, '0').split('')
@@ -42,7 +46,9 @@ function getCountImage({ count, theme = 'moebooru', padding = 7, pixelated = tru
   let x = 0, y = 0
 
   const defs = uniqueChar.reduce((ret, cur) => {
-    const { width, height, data } = themeList[theme][cur]
+    let { width, height, data } = themeList[theme][cur]
+    width *= scale
+    height *= scale
 
     if (height > y) y = height
 
@@ -53,19 +59,23 @@ function getCountImage({ count, theme = 'moebooru', padding = 7, pixelated = tru
   }, '')
 
   const parts = countArray.reduce((ret, cur) => {
-    const { width } = themeList[theme][cur]
+    let { width } = themeList[theme][cur]
+    width *= scale
 
     const image = `${ret}
     <use x="${x}" xlink:href="#${cur}" />`
 
-    x += width
+    x += width + offset
 
     return image
   }, '')
 
+  // Fix the last image offset
+  x -= offset
+
   const style = `
   svg {
-    ${pixelated ? 'image-rendering: pixelated;' : ''}
+    ${pixelated === '1' ? 'image-rendering: pixelated;' : ''}
     ${darkmode === '1' ? 'filter: brightness(.6);' : ''}
   }
   ${darkmode === 'auto' ? `@media (prefers-color-scheme: dark) { svg { filter: brightness(.6); } }` : ''}
@@ -85,5 +95,6 @@ function getCountImage({ count, theme = 'moebooru', padding = 7, pixelated = tru
 }
 
 module.exports = {
+  themeList,
   getCountImage
 }
