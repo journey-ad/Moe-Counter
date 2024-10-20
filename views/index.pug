@@ -10,18 +10,22 @@ html
     script(async, src='https://www.googletagmanager.com/gtag/js?id=G-2RLWN5JXRL')
     script.
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
+      function gtag() {dataLayer.push(arguments); }
       gtag('js', new Date());
 
       gtag('config', 'G-2RLWN5JXRL');
 
-      function _evt_push(type, category, label){
+      function _evt_push(type, category, label) {
         gtag('event', type, {
           'event_category' : category,
           'event_label' : label
         });
       }
-    script(async, src='https://unpkg.com/party-js@2/bundle/party.min.js')
+
+    script.
+      var __global_data = {
+        site: "#{site}"
+      };
 
     style.
       html {
@@ -47,15 +51,16 @@ html
     code ![:name](#{site}/@:name)
 
     h5 e.g.
-      <img src="#{site}/@index" alt="Moe Counter!" />
+      img(src=`${site}/@index` alt="Moe Counter!")
 
     details#themes(style='margin-top: 2em;')
       summary#more_theme(onclick='_evt_push("click", "normal", "more_theme")')
         h3(style='display: inline-block; margin: 0; cursor: pointer;') More theme✨
       p(style='margin: 0;') Just use the query parameters <code>theme</code>, like this: <code>#{site}/@:name?theme=moebooru</code>
       each theme in Object.keys(themeList)
-        h5 #{theme}
-        <img src="#{site}/@demo?theme=#{theme}" alt="#{theme}" />
+        div.item(data-theme=theme)
+          h5 #{theme}
+          img(src=`${site}/@demo?theme=${theme}` alt=theme)
 
     h3 Credits
     ul
@@ -97,7 +102,7 @@ html
               select#theme
                 option(value="random", selected) * random
                 each theme in Object.keys(themeList)
-                  <option value="#{theme}">#{theme}</option>
+                  option(value=theme) #{theme}
           tr
             td
               code padding
@@ -148,149 +153,5 @@ html
 
     div.back-to-top
 
-    script.
-      (function () {
-        var btn = document.getElementById('get'),
-            img = document.getElementById('result'),
-            code = document.getElementById('code')
-
-        btn.addEventListener('click', throttle(function() {
-          var $name = document.getElementById('name'),
-              $theme = document.getElementById('theme'),
-              $padding = document.getElementById('padding'),
-              $offset = document.getElementById('offset'),
-              $scale = document.getElementById('scale'),
-              $pixelated = document.getElementById('pixelated'),
-              $darkmode = document.getElementById('darkmode')
-
-          var name = $name.value ? $name.value.trim() : ''
-
-          if(!name) {
-            alert('Please input counter name.')
-            return
-          }
-
-          party.confetti(this, { count: party.variation.range(20, 40) });
-
-          var params = {
-            name: $name.value ? $name.value.trim() : '',
-            theme: $theme.value || 'moebooru',
-            padding: $padding.value || '7',
-            offset: $offset.value || '0',
-            scale: $scale.value || '1',
-            pixelated: $pixelated.checked ? '1' : '0',
-            darkmode: $darkmode.value || 'auto',
-          }
-
-          var query = new URLSearchParams(params).toString()
-
-          img.src = `#{site}/@${name}?${query}`
-          code.textContent = img.src
-          code.style.visibility = 'visible'
-
-          img.onload = function() {
-            img.scrollIntoView({block:'start', behavior: 'smooth'})
-          }
-        }, 500))
-
-        code.addEventListener('click', function(e) {
-          e.preventDefault()
-          e.stopPropagation()
-
-          var target = e.target
-          var range, selection
-
-          if (document.body.createTextRange) {
-            range = document.body.createTextRange()
-            range.moveToElementText(target)
-            range.select()
-          } else if (window.getSelection) {
-            selection = window.getSelection()
-            range = document.createRange()
-            range.selectNodeContents(target)
-            selection.removeAllRanges()
-            selection.addRange(range)
-          }
-        })
-
-        var $main_title = document.querySelector('#main_title i'),
-            $themes = document.querySelector('#themes'),
-            $more_theme = document.querySelector('#more_theme')
-        $main_title.addEventListener('click', throttle(function() {
-          party.sparkles(document.documentElement, { count: party.variation.range(40, 100) });
-        }, 1000))
-        $more_theme.addEventListener('click', function() {
-          if (!$themes.hasAttribute('open')) {
-            party.sparkles($more_theme.querySelector('h3'), { count: party.variation.range(20, 40) });
-            $themes.scrollIntoView({block:'start', behavior: 'smooth'})
-          }
-        })
-
-        function throttle(fn, threshhold, scope) {
-          threshhold || (threshhold = 250)
-          var last
-          var deferTimer
-          return function () {
-            var context = scope || this
-            var now = +new Date
-            var args = arguments
-            if (last && now < last + threshhold) {
-              // hold on to it
-              clearTimeout(deferTimer)
-              deferTimer = setTimeout(function () {
-                last = now
-                fn.apply(context, args)
-              }, threshhold)
-            } else {
-              last = now
-              fn.apply(context, args)
-            }
-          }
-        }
-      })();
-
-    script.
-      (function () {
-        var isShow = false, lock = false;
-        var btn = document.querySelector('.back-to-top');
-
-        window.addEventListener('scroll', function () {
-          if (lock) return;
-
-          if (document.body.scrollTop >= 1000) {
-            if (!isShow) btn.classList.add('load');
-            isShow = true;
-          } else {
-            if (isShow) {
-              btn.classList.remove('load');
-              isShow = false;
-            }
-          }
-        });
-
-        btn.addEventListener('click', function () {
-          lock = true;
-          btn.classList.add('ani-leave');
-
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-
-          setTimeout(function () {
-            btn.classList.remove('ani-leave');
-            btn.classList.add('leaved');
-          }, 390);
-
-          setTimeout(function () {
-            btn.classList.add('ending');
-          }, 120);
-
-          setTimeout(function () {
-            btn.classList.remove('load');
-          }, 1500);
-
-          setTimeout(function () {
-            lock = false;
-            isShow = false;
-            btn.classList.remove('leaved', 'ending');
-          }, 2000);
-        });
-      })();
+    script(async, src='https://unpkg.com/party-js@2/bundle/party.min.js')
+    script(async, src='script.js')
