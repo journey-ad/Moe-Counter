@@ -31,11 +31,25 @@
     }
 
     const query = new URLSearchParams(params).toString();
-    img.src = `${__global_data.site}/@${name}?${query}`;
-    code.textContent = img.src;
-    code.style.visibility = 'visible';
+    const imgSrc = `${__global_data.site}/@${name}?${query}`;
+    img.src = imgSrc
 
-    img.onload = () => img.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    img.onload = () => {
+      img.scrollIntoView({ block: 'start', behavior: 'smooth' });
+
+      code.textContent = imgSrc;
+      code.style.visibility = 'visible';
+    }
+
+    img.onerror = () => {
+      fetch(imgSrc)
+        .then(async (res) => {
+          if (!res.ok) {
+            const { message } = await res.json();
+            alert(message);
+          }
+        })
+    };
   }, 500));
 
   code.addEventListener('click', (e) => {
