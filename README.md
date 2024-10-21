@@ -9,6 +9,10 @@
 
 ### *[Contribute themes is welcome!](https://github.com/journey-ad/Moe-Counter/issues/new?assignees=&labels=theme&projects=&template=contribute-theme.yml&title=%5BTheme%5D%3A+)*
 
+##### 3d-num
+
+![3d-num](https://count.getloli.com/@demo?theme=3d-num)
+
 ##### asoul
 
 ![asoul](https://count.getloli.com/@demo?theme=asoul)
@@ -105,6 +109,10 @@
 
 ![e621](https://count.getloli.com/@demo?theme=e621)
 
+##### food
+
+![food](https://count.getloli.com/@demo?theme=food)
+
 ##### gelbooru
 
 ![gelbooru](https://count.getloli.com/@demo?theme=gelbooru)
@@ -140,6 +148,10 @@
 ##### moebooru
 
 ![moebooru](https://count.getloli.com/@demo?theme=moebooru)
+
+##### morden-num
+
+![morden-num](https://count.getloli.com/@demo?theme=morden-num)
 
 ##### nixietube-1
 
