@@ -23,14 +23,7 @@ html
       }
 
     script.
-      var __global_data = {
-        site: "#{site}"
-      };
-
-    style.
-      html {
-        scroll-padding: 50px 0;
-      }
+      var __global_data = { site: "#{site}" };
 
   body
     h1#main_title(style='margin-top: 0.5em;')
@@ -60,23 +53,18 @@ html
       each theme in Object.keys(themeList)
         div.item(data-theme=theme)
           h5 #{theme}
-          img(src=`${site}/@demo?theme=${theme}` alt=theme)
+          img(data-src=`${site}/@demo?theme=${theme}` alt=theme)
 
     h3 Credits
     ul
-      li
-        a(href='https://glitch.com/', target='_blank', rel='nofollow') Glitch
-      li
-        a(href='https://space.bilibili.com/703007996', target='_blank', title='A-SOUL_Official') A-SOUL
-      li
-        a(href='https://github.com/moebooru/moebooru', target='_blank', rel='nofollow') moebooru
+      li: a(href='https://glitch.com/', target='_blank', rel='nofollow') Glitch
+      li: a(href='https://space.bilibili.com/703007996', target='_blank', title='A-SOUL_Official') A-SOUL
+      li: a(href='https://github.com/moebooru/moebooru', target='_blank', rel='nofollow') moebooru
       li
         a(href='javascript:alert("!!! NSFW LINK !!!\\nPlease enter the url manually")') gelbooru.com
         |  NSFW
-      li
-        a(href='https://icons8.com/icon/80355/star', target='_blank', rel='nofollow') Icons8
-      span
-        i And all booru site...
+      li: a(href='https://icons8.com/icon/80355/star', target='_blank', rel='nofollow') Icons8
+      span: i And all booru site...
 
     h3 Tool
     .tool
@@ -88,14 +76,11 @@ html
             th Value
         tbody
           tr
-            td
-              code name
+            td: code name
             td Unique counter name
-            td
-              input#name(type='text', placeholder=':name')
+            td: input#name(type='text', placeholder=':name')
           tr
-            td
-              code theme
+            td: code theme
             td Select a counter image theme, default is 
               code moebooru
             td
@@ -104,40 +89,30 @@ html
                 each theme in Object.keys(themeList)
                   option(value=theme) #{theme}
           tr
-            td
-              code padding
+            td: code padding
             td Set the minimum length, between 1-32, default is 
               code 7
-            td
-              input#padding(type='number', value='7', min='1', max='32', step='1', oninput='this.value = this.value.replace(/[^0-9]/g, "")')
+            td: input#padding(type='number', value='7', min='1', max='32', step='1', oninput='this.value = this.value.replace(/[^0-9]/g, "")')
           tr
-            td
-              code offset
+            td: code offset
             td Set the offset pixel value, between -500-500, default is 
               code 0
-            td
-              input#offset(type='number', value='0', min='-500', max='500', step='1', oninput='this.value = this.value.replace(/[^0-9|\-]/g, "")')
+            td: input#offset(type='number', value='0', min='-500', max='500', step='1', oninput='this.value = this.value.replace(/[^0-9|\-]/g, "")')
           tr
-            td
-              code scale
+            td: code scale
             td Set the image scale, between 0.1-2, default is
               code 1
-            td
-              input#scale(type='number', value='1', min='0.1', max='2', step='0.1', oninput='this.value = this.value.replace(/[^0-9|\.]/g, "")')
+            td: input#scale(type='number', value='1', min='0.1', max='2', step='0.1', oninput='this.value = this.value.replace(/[^0-9|\.]/g, "")')
           tr
-            td
-              code pixelated
+            td: code pixelated
             td Enable pixelated mode, Enum 0/1, default is 
               code 1
-            td
-              input#pixelated(type='checkbox', checked, style='margin: .5rem .75rem;')
+            td: input#pixelated(type='checkbox', checked, style='margin: .5rem .75rem;')
           tr
-            td
-              code darkmode
+            td: code darkmode
             td Enable dark mode, Enum 0/1/auto, default is 
               code auto
-            td
-              select#darkmode(name="darkmode")
+            td: select#darkmode(name="darkmode")
                 option(value="auto", selected) auto
                 option(value="1") yes
                 option(value="0") no

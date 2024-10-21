@@ -105,7 +105,63 @@
   }
 })();
 
+(() => {
+  function lazyLoad(options = {}) {
+    const {
+      selector = 'img[data-src]:not([src])',
+      loading = '',
+      failed = '',
+      rootMargin = '200px',
+      threshold = 0.01
+    } = options;
 
+    const images = document.querySelectorAll(selector);
+
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          observer.unobserve(img);
+
+          if (failed) {
+            const handleError = () => {
+              img.onerror = null;
+              img.src = failed;
+              img.setAttribute('data-failed', '');
+            };
+            img.onerror = handleError;
+          }
+
+          img.removeAttribute('data-loading');
+          img.src = img.getAttribute('data-src');
+        }
+      });
+    }, { rootMargin, threshold });
+
+    images.forEach(img => {
+      if (loading) {
+        img.src = loading;
+        img.setAttribute('data-loading', '');
+      }
+      observer.observe(img);
+    });
+  }
+
+  const lazyLoadOptions = {
+    selector: 'img[data-src]:not([src])',
+    loading: '/img/loading.svg',
+    failed: '/img/failed.svg',
+    rootMargin: '200px',
+    threshold: 0.01
+  };
+  if (document.readyState === 'loading') {
+    document.addEventListener("DOMContentLoaded", () => lazyLoad(lazyLoadOptions));
+  } else {
+    lazyLoad(lazyLoadOptions);
+  }
+})();
+
+// back to top
 (() => {
   let isShow = false;
   let lock = false;

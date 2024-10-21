@@ -1,3 +1,12 @@
+html {
+  scroll-padding: 50px 0;
+}
+
+img[data-loading],
+img[data-failed] {
+  width: 40px;
+}
+
 @media screen and (min-width: 800px) {
   body {
     max-width: min(90%, 800px);
