@@ -1,11 +1,12 @@
 html
   head
     title='Moe Counter!'
-    meta(name='viewport', content='width=device-width, initial-scale=1')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
     link(rel='icon', type='image/png', href='favicon.png')
-    link(rel='stylesheet', href='https://unpkg.com/normalize.css')
-    link(rel='stylesheet', href='https://unpkg.com/bamboo.css')
-    link(rel='stylesheet', href='style.css')
+    link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/normalize.css')
+    link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/bamboo.css')
+    link(rel='stylesheet/less', href='style.less')
+    script(less, src='https://cdn.jsdelivr.net/npm/less')
     <!-- Global site tag (gtag.js) - Google Analytics -->
     script(async, src='https://www.googletagmanager.com/gtag/js?id=G-2RLWN5JXRL')
     script.
@@ -26,7 +27,7 @@ html
       var __global_data = { site: "#{site}" };
 
   body
-    h1#main_title(style='margin-top: 0.5em;')
+    h1#main_title
       i Moe Counter!
 
     h3 How to use
@@ -46,10 +47,10 @@ html
     h5 e.g.
       img(src=`${site}/@index` alt="Moe Counter!")
 
-    details#themes(style='margin-top: 2em;')
+    details#themes
       summary#more_theme(onclick='_evt_push("click", "normal", "more_theme")')
-        h3(style='display: inline-block; margin: 0; cursor: pointer;') More theme✨
-      p(style='margin: 0;') Just use the query parameters <code>theme</code>, like this: <code>#{site}/@:name?theme=moebooru</code>
+        h3 More theme✨
+      p Just use the query parameters <code>theme</code>, like this: <code>#{site}/@:name?theme=moebooru</code>
       each theme in Object.keys(themeList)
         div.item(data-theme=theme)
           h5 #{theme}
@@ -107,7 +108,9 @@ html
             td: code pixelated
             td Enable pixelated mode, Enum 0/1, default is 
               code 1
-            td: input#pixelated(type='checkbox', checked, style='margin: .5rem .75rem;')
+            td
+              input#pixelated(type='checkbox', role='switch', checked)
+              label(for='pixelated'): span 
           tr
             td: code darkmode
             td Enable dark mode, Enum 0/1/auto, default is 
@@ -117,16 +120,16 @@ html
                 option(value="1") yes
                 option(value="0") no
 
-      button#get(style='margin-bottom: 1em;', onclick='_evt_push("click", "normal", "get_counter")') Generate
+      button#get(onclick='_evt_push("click", "normal", "get_counter")') Generate
 
       div
-        code#code(style='visibility: hidden; display: inline-block; margin-bottom: 1em;')
-        img#result(style='display: block;')
+        code#code
+        img#result
 
-    p(style='margin-top: 2em;')
+    p.github
       a(href='https://github.com/journey-ad/Moe-Counter', target='_blank', onclick='_evt_push("click", "normal", "go_github")') source code
 
     div.back-to-top
 
-    script(async, src='https://unpkg.com/party-js@2/bundle/party.min.js')
+    script(async, src='https://cdn.jsdelivr.net/npm/party-js@2/bundle/party.min.js')
     script(async, src='script.js')
