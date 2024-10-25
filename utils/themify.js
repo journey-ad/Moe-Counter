@@ -6,18 +6,26 @@ const mimeType = require('mime-types')
 const sizeOf = require('image-size')
 
 const themePath = path.resolve(__dirname, '../assets/theme')
+const imgExts = ['.jpg', '.jpeg', '.png', '.gif', '.webp']
 
 const themeList = {}
 
 fs.readdirSync(themePath).forEach(theme => {
+  const currentThemePath = path.resolve(themePath, theme)
+  // skip non-directory
+  if (!fs.statSync(currentThemePath).isDirectory()) return
+
   if (!(theme in themeList)) themeList[theme] = {}
-  const imgList = fs.readdirSync(path.resolve(themePath, theme))
+  const imgList = fs.readdirSync(currentThemePath)
   imgList.forEach(img => {
-    const imgPath = path.resolve(themePath, theme, img)
-    const num = path.parse(img).name
+    // skip non-image files
+    if (!imgExts.includes(path.extname(img).toLowerCase())) return
+
+    const imgPath = path.resolve(currentThemePath, img)
+    const char = path.parse(img).name
     const { width, height } = sizeOf(imgPath)
 
-    themeList[theme][num] = {
+    themeList[theme][char] = {
       width,
       height,
       data: convertToDatauri(imgPath)

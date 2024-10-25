@@ -11,6 +11,7 @@
     scale: document.getElementById('scale'),
     pixelated: document.getElementById('pixelated'),
     darkmode: document.getElementById('darkmode'),
+    num: document.getElementById('num')
   };
 
   btn.addEventListener('click', throttle(handleButtonClick, 500));
@@ -24,7 +25,7 @@
   moreTheme.addEventListener('click', scrollToThemes);
 
   function handleButtonClick() {
-    const { name, theme, padding, offset, scale, pixelated, darkmode } = elements;
+    const { name, theme, padding, offset, scale, pixelated, darkmode, num } = elements;
     const nameValue = name.value.trim();
 
     if (!nameValue) {
@@ -42,6 +43,10 @@
       darkmode: darkmode.value || 'auto'
     };
 
+    if (num.value > 0) {
+      params.num = num.value;
+    }
+
     const query = new URLSearchParams(params).toString();
     const imgSrc = `${__global_data.site}/@${nameValue}?${query}`;
 
@@ -58,7 +63,7 @@
 
     img.onerror = async () => {
       try {
-        const res = await fetch(imgSrc);
+        const res = await fetch(img.src);
         if (!res.ok) {
           const { message } = await res.json();
           alert(message);
@@ -191,7 +196,7 @@
   btn.addEventListener('click', handleClick);
 })();
 
-// Prevent gesture
+// Prevent safari gesture
 (() => {
   document.addEventListener('gesturestart', e => e.preventDefault());
 })();

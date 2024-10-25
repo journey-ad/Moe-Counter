@@ -37,6 +37,10 @@
 
 ![booru-koe](https://count.getloli.com/@demo?theme=booru-koe)
 
+##### booru-lewd
+
+![booru-lewd](https://count.getloli.com/@demo?theme=booru-lewd)
+
 ##### booru-lisu
 
 ![booru-lisu](https://count.getloli.com/@demo?theme=booru-lisu)
@@ -140,6 +144,10 @@
 ##### kyun
 
 ![kyun](https://count.getloli.com/@demo?theme=kyun)
+
+##### love-and-deepspace
+
+![love-and-deepspace](https://count.getloli.com/@demo?theme=love-and-deepspace)
 
 ##### minecraft
 

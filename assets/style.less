@@ -58,6 +58,10 @@ input[type="checkbox"][role="switch"] {
     position: relative;
     transition: 0.3s;
 
+    &:active:after {
+      width: 2.34em;
+    }
+
     &:after {
       content: "";
       position: absolute;
@@ -80,7 +84,7 @@ input[type="checkbox"][role="switch"] {
       justify-content: space-between;
       align-items: center;
       padding: 0 12.5%;
-      font-size: 0.54em;
+      font-size: 10px;
 
       &::before,
       &::after {
@@ -107,10 +111,6 @@ input[type="checkbox"][role="switch"] {
     &:after {
       left: calc(100% - 0.1em);
       transform: translateX(-100%);
-    }
-
-    &:active:after {
-      width: 2.34em;
     }
   }
 }
@@ -151,6 +151,14 @@ h3,
 h4,
 h5 {
   margin: 1.5em 0 0.6em;
+}
+
+table {
+  tr {
+    .caption {
+      margin: 1em 0 0;
+    }
+  }
 }
 
 .back-to-top {

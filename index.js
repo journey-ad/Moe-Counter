@@ -32,7 +32,8 @@ app.get(["/@:name", "/get/@:name"],
     }),
     query: z.object({
       theme: z.string().default("moebooru"),
-      padding: z.coerce.number().min(0).max(32).default(7),
+      num: z.coerce.number().min(0).max(1000000000000000).default(0), // a carry-safe integer, less than `2^53-1`, and aesthetically pleasing in decimal.
+      padding: z.coerce.number().min(0).max(16).default(7),
       offset: z.coerce.number().min(-500).max(500).default(0),
       scale: z.coerce.number().min(0.1).max(2).default(1),
       pixelated: z.enum(["0", "1"]).default("1"),
@@ -41,7 +42,7 @@ app.get(["/@:name", "/get/@:name"],
   }),
   async (req, res) => {
     const { name } = req.params;
-    let { theme = "moebooru", ...rest } = req.query;
+    let { theme = "moebooru", num = 0, ...rest } = req.query;
 
     // This helps with GitHub's image cache
     res.set({
@@ -49,7 +50,7 @@ app.get(["/@:name", "/get/@:name"],
       "cache-control": "max-age=0, no-cache, no-store, must-revalidate",
     });
 
-    const data = await getCountByName(name);
+    const data = await getCountByName(name, num);
 
     if (name === "demo") {
       res.set("cache-control", "max-age=31536000");
@@ -70,7 +71,7 @@ app.get(["/@:name", "/get/@:name"],
 
     console.log(
       data,
-      `theme: ${theme}`,
+      { theme, ...req.query },
       `ip: ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`,
       `ref: ${req.get("Referrer") || null}`,
       `ua: ${req.get("User-Agent") || null}`
@@ -129,10 +130,12 @@ async function pushDB() {
   }
 }
 
-async function getCountByName(name) {
+async function getCountByName(name, num) {
   const defaultCount = { name, num: 0 };
 
   if (name === "demo") return { name, num: "0123456789" };
+
+  if (num > 0) { return { name, num } };
 
   try {
     if (!(name in __cache_counter)) {
