@@ -7,13 +7,14 @@ const { z } = require("zod");
 
 const db = require("./db");
 const { themeList, getCountImage } = require("./utils/themify");
-const { ZodValid } = require("./utils/zod");
+const { cors, ZodValid } = require("./utils/middleware");
 const { randomArray } = require("./utils");
 
 const app = express();
 
 app.use(express.static("assets"));
 app.use(compression());
+app.use(cors());
 app.set("view engine", "pug");
 
 app.get('/', (req, res) => {
