@@ -13,6 +13,10 @@
 
 ![3d-num](https://count.getloli.com/@demo?theme=3d-num)
 
+##### ai-1
+
+![ai-1](https://count.getloli.com/@demo?theme=ai-1)
+
 ##### asoul
 
 ![asoul](https://count.getloli.com/@demo?theme=asoul)
@@ -224,35 +228,33 @@ $ pnpm run start
 
 ### Configuration
 
-`config.yml`
+Set `.env` file to specify the environment variables. *[.env.example](./.env.example)*
 
-```yaml
-app:
-  # site: https://count.getloli.com # your website
-  port: 3000
+```dosini
+# Specify your website URL
+# APP_SITE=https://count.getloli.com
 
-db:
-  type: sqlite # sqlite or mongodb
-  interval: 60 # write to db interval in seconds (0 for realtime)
+# Application port
+APP_PORT=3000
+
+# Database type: either 'sqlite' or 'mongodb'
+DB_TYPE=sqlite
+
+# If using MongoDB, provide the connection string
+# DB_URL=mongodb://127.0.0.1:27017
+
+# Database write interval in seconds (0 for real-time)
+DB_INTERVAL=60
 ```
-
-If using mongodb, you need to specify the environment variable `DB_URL`
-
-```shell
-# e.g.
-export DB_URL=mongodb+srv://account:passwd@***.***.***.mongodb.net/db_count
-```
-
-Glitch can use `.env` file, [documentation](https://help.glitch.com/hc/en-us/articles/16287550167437-Adding-Private-Data)
 
 ## Credits
 
 * [Glitch](https://glitch.com/)
 * [A-SOUL_Official](https://space.bilibili.com/703007996)
 * [moebooru](https://github.com/moebooru/moebooru)
-* rule34.xxx NSFW
 * gelbooru.com NSFW
 * [Icons8](https://icons8.com/icon/80355/star)
+* *And all booru site...*
 
 ## License
 

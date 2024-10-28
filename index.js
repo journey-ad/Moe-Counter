@@ -1,6 +1,6 @@
 "use strict";
 
-const config = require("config-yml");
+require('dotenv').config();
 const express = require("express");
 const compression = require("compression");
 const { z } = require("zod");
@@ -18,7 +18,7 @@ app.use(cors());
 app.set("view engine", "pug");
 
 app.get('/', (req, res) => {
-  const site = config.app.site || `${req.protocol}://${req.get('host')}`
+  const site = process.env.APP_SITE || `${req.protocol}://${req.get('host')}`
   res.render('index', {
     site,
     themeList,
@@ -95,18 +95,18 @@ app.get("/heart-beat", (req, res) => {
   console.log("heart-beat");
 });
 
-const listener = app.listen(config.app.port || 3000, () => {
+const listener = app.listen(process.env.APP_PORT || 3000, () => {
   console.log("Your app is listening on port " + listener.address().port);
 });
 
 let __cache_counter = {};
-let enablePushDelay = config.db.interval > 0
+let enablePushDelay = process.env.DB_INTERVAL > 0
 let needPush = false;
 
 if (enablePushDelay) {
   setInterval(() => {
     needPush = true;
-  }, 1000 * config.db.interval);
+  }, 1000 * process.env.DB_INTERVAL);
 }
 
 async function pushDB() {
