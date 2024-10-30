@@ -8,6 +8,7 @@
     theme: document.getElementById('theme'),
     padding: document.getElementById('padding'),
     offset: document.getElementById('offset'),
+    align: document.getElementById('align'),
     scale: document.getElementById('scale'),
     pixelated: document.getElementById('pixelated'),
     darkmode: document.getElementById('darkmode'),
@@ -38,6 +39,7 @@
       theme: theme.value || 'moebooru',
       padding: padding.value || '7',
       offset: offset.value || '0',
+      align: align.value || 'top',
       scale: scale.value || '1',
       pixelated: pixelated.checked ? '1' : '0',
       darkmode: darkmode.value || 'auto'
