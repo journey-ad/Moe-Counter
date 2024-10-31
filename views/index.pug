@@ -2,19 +2,20 @@ html
   head
     title='Moe Counter!'
     meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
-    link(rel='icon', type='image/png', href='favicon.png')
+    link(rel='icon', type='image/png', href=`${site}/favicon.png`)
     link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/normalize.css')
     link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/bamboo.css')
-    link(rel='stylesheet/less', href='style.less')
+    link(rel='stylesheet/less', href=`${site}/style.less`)
     script(less, src='https://cdn.jsdelivr.net/npm/less')
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    script(async, src='https://www.googletagmanager.com/gtag/js?id=G-2RLWN5JXRL')
+    if ga_id
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+      script(async, src='https://www.googletagmanager.com/gtag/js?id=#{ga_id}')
     script.
       window.dataLayer = window.dataLayer || [];
-      function gtag() {dataLayer.push(arguments); }
+      function gtag() { dataLayer.push(arguments); }
       gtag('js', new Date());
 
-      gtag('config', 'G-2RLWN5JXRL');
+      gtag('config', '#{ga_id}');
 
       function _evt_push(type, category, label) {
         gtag('event', type, {
@@ -148,4 +149,4 @@ html
     div.back-to-top
 
     script(async, src='https://cdn.jsdelivr.net/npm/party-js@2/bundle/party.min.js')
-    script(async, src='script.js')
+    script(async, src=`${site}/script.js`)

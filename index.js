@@ -8,7 +8,7 @@ const { z } = require("zod");
 const db = require("./db");
 const { themeList, getCountImage } = require("./utils/themify");
 const { cors, ZodValid } = require("./utils/middleware");
-const { randomArray } = require("./utils");
+const { randomArray, logger } = require("./utils");
 
 const app = express();
 
@@ -19,8 +19,10 @@ app.set("view engine", "pug");
 
 app.get('/', (req, res) => {
   const site = process.env.APP_SITE || `${req.protocol}://${req.get('host')}`
+  const ga_id = process.env.GA_ID || null
   res.render('index', {
     site,
+    ga_id,
     themeList,
   })
 });
@@ -71,7 +73,7 @@ app.get(["/@:name", "/get/@:name"],
 
     res.send(renderSvg);
 
-    console.log(
+    logger.debug(
       data,
       { theme, ...req.query },
       `ip: ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`,
@@ -93,11 +95,11 @@ app.get("/record/@:name", async (req, res) => {
 app.get("/heart-beat", (req, res) => {
   res.set("cache-control", "max-age=0, no-cache, no-store, must-revalidate");
   res.send("alive");
-  console.log("heart-beat");
+  logger.debug("heart-beat");
 });
 
 const listener = app.listen(process.env.APP_PORT || 3000, () => {
-  console.log("Your app is listening on port " + listener.address().port);
+  logger.info("Your app is listening on port " + listener.address().port);
 });
 
 let __cache_counter = {};
@@ -116,7 +118,7 @@ async function pushDB() {
 
   try {
     needPush = false;
-    console.log("pushDB", __cache_counter);
+    logger.info("pushDB", __cache_counter);
 
     const counters = Object.keys(__cache_counter).map((key) => {
       return {
@@ -128,7 +130,7 @@ async function pushDB() {
     await db.setNumMulti(counters);
     __cache_counter = {};
   } catch (error) {
-    console.log("pushDB is error: ", error);
+    logger.error("pushDB is error: ", error);
   }
 }
 
@@ -151,7 +153,7 @@ async function getCountByName(name, num) {
 
     return { name, num: __cache_counter[name] };
   } catch (error) {
-    console.log("get count by name is error: ", error);
+    logger.error("get count by name is error: ", error);
     return defaultCount;
   }
 }
