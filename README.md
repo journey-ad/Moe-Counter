@@ -1,11 +1,25 @@
-# Moe-Counter
+# *Moe Counter!*
 
 多种风格可选的萌萌计数器
 
-![Moe-Counter](https://count.getloli.com/@Moe-counter.github)
+<p align="center">
+  <a href="https://count.getloli.com" target="_blank">
+    <img alt="Moe Counter!" src="https://count.getloli.com/@Moe-counter.github?name=Moe-counter.github&theme=booru-lewd&padding=7&offset=0&align=top&scale=0.72&pixelated=0&darkmode=auto">
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://hellogithub.com/repository/ed741b376efe46789ce9bb140ac19a52" target="_blank">
+   <picture>
+     <source media="(prefers-color-scheme: dark)" srcset="https://api.hellogithub.com/v1/widgets/recommend.svg?rid=ed741b376efe46789ce9bb140ac19a52&claim_uid=NyJh2Vejq3984f5&theme=dark" />
+     <source media="(prefers-color-scheme: light)" srcset="https://api.hellogithub.com/v1/widgets/recommend.svg?rid=ed741b376efe46789ce9bb140ac19a52&claim_uid=NyJh2Vejq3984f5&theme=neutral" />
+     <img src="https://api.hellogithub.com/v1/widgets/recommend.svg?rid=ed741b376efe46789ce9bb140ac19a52&claim_uid=NyJh2Vejq3984f5&theme=neutral" alt="Featured｜HelloGitHub" style="width: 250px; height: 54px;" width="250" height="54" />
+   </picture>
+  </a>
+</p>
 
 <details>
-<summary>More theme</summary>
+<summary><h2>More theme</h2></summary>
 
 ### *[Contribute themes is welcome!](https://github.com/journey-ad/Moe-Counter/issues/new?assignees=&labels=theme&projects=&template=contribute-theme.yml&title=%5BTheme%5D%3A+)*
 
@@ -204,7 +218,7 @@
 
 ## How to use
 
-About the counter usage, please see the [website homepage](https://count.getloli.com).
+For information on counter usage and configuration, refer to the [demo website](https://count.getloli.com).
 
 ## Usage
 
@@ -259,3 +273,9 @@ DB_INTERVAL=60
 ## License
 
 [MIT License](./LICENSE), excluding all themes
+
+---
+
+<p>
+<img src="https://api.star-history.com/svg?repos=journey-ad/Moe-Counter&type=Date" alt="Star History Chart" style="width: 600px; height: 400px;" width="600" height="400" />
+</p>
