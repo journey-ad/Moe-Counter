@@ -259,6 +259,12 @@ DB_TYPE=sqlite
 
 # Database write interval in seconds (0 for real-time)
 DB_INTERVAL=60
+
+# Log level: either 'debug' | 'info' | 'warn' | 'error' | 'none'
+LOG_LEVEL=debug
+
+# Google Analytics `G-Tag` ID
+# GA_ID=G-XXXX
 ```
 
 ## Credits
