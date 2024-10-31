@@ -9,7 +9,7 @@ html
     script(less, src='https://cdn.jsdelivr.net/npm/less')
     if ga_id
       <!-- Global site tag (gtag.js) - Google Analytics -->
-      script(async, src='https://www.googletagmanager.com/gtag/js?id=#{ga_id}')
+      script(async, src=`https://www.googletagmanager.com/gtag/js?id=${ga_id}`)
     script.
       window.dataLayer = window.dataLayer || [];
       function gtag() { dataLayer.push(arguments); }
