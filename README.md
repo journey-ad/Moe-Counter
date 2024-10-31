@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://count.getloli.com" target="_blank">
-    <img alt="Moe Counter!" src="https://count.getloli.com/@Moe-counter.github?name=Moe-counter.github&theme=booru-lewd&padding=7&offset=0&align=top&scale=0.72&pixelated=0&darkmode=auto">
+    <img alt="Moe Counter!" src="https://count.getloli.com/@Moe-counter.github?name=Moe-counter.github&theme=booru-lewd&padding=7&offset=0&align=top&scale=1&pixelated=1&darkmode=auto">
   </a>
 </p>
 
@@ -282,6 +282,10 @@ LOG_LEVEL=debug
 
 ---
 
-<p>
-<img src="https://api.star-history.com/svg?repos=journey-ad/Moe-Counter&type=Date" alt="Star History Chart" style="width: 600px; height: 400px;" width="600" height="400" />
-</p>
+<a href="https://star-history.com/?repos=journey-ad/Moe-Counter&type=Date#journey-ad/Moe-Counter&Date">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=journey-ad/Moe-Counter&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=journey-ad/Moe-Counter&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=journey-ad/Moe-Counter&type=Date" />
+ </picture>
+</a>
