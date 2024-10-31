@@ -45,8 +45,9 @@ function getCountImage(params) {
   let { count, theme = 'moebooru', padding = 7, offset = 0, align = 'top', scale = 1, pixelated = '1', darkmode = 'auto' } = params
 
   if (!(theme in themeList)) theme = 'moebooru'
-  padding = parseInt(padding, 10)
-  offset = parseInt(offset, 10)
+  padding = parseInt(Number(padding), 10)
+  offset = parseFloat(Number(offset), 10)
+  scale = parseFloat(Number(scale), 10)
 
   // This is not the greatest way for generating an SVG but it'll do for now
   const countArray = count.toString().padStart(padding, '0').split('')

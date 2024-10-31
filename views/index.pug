@@ -135,7 +135,7 @@ html
             td: code num
             td Set counter display number, 0 for disable, default is 
               code 0
-            td: input#num(type='number', value='0', min='0', max='1000000000000000', step='1', oninput='this.value = this.value.replace(/[^0-9]/g, "")')
+            td: input#num(type='number', value='0', min='0', max='1e15', step='1', oninput='this.value = this.value.replace(/[^0-9]/g, "")')
 
       button#get(onclick='_evt_push("click", "normal", "get_counter")') Generate
 

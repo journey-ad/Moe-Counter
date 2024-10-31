@@ -35,8 +35,8 @@ app.get(["/@:name", "/get/@:name"],
     }),
     query: z.object({
       theme: z.string().default("moebooru"),
-      num: z.coerce.number().min(0).max(1000000000000000).default(0), // a carry-safe integer, less than `2^53-1`, and aesthetically pleasing in decimal.
-      padding: z.coerce.number().min(0).max(16).default(7),
+      num: z.coerce.number().int().min(0).max(1e15).default(0), // a carry-safe integer, less than `2^53-1`, and aesthetically pleasing in decimal.
+      padding: z.coerce.number().int().min(0).max(16).default(7),
       offset: z.coerce.number().min(-500).max(500).default(0),
       align: z.enum(["top", "center", "bottom"]).default("top"),
       scale: z.coerce.number().min(0.1).max(2).default(1),
@@ -54,7 +54,7 @@ app.get(["/@:name", "/get/@:name"],
       "cache-control": "max-age=0, no-cache, no-store, must-revalidate",
     });
 
-    const data = await getCountByName(name, num);
+    const data = await getCountByName(String(name), Number(num));
 
     if (name === "demo") {
       res.set("cache-control", "max-age=31536000");
