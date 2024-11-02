@@ -127,6 +127,14 @@
 
 ![booru-yuyuyui](https://count.getloli.com/@demo?theme=booru-yuyuyui)
 
+##### capoo-1
+
+![capoo-1](https://count.getloli.com/@demo?theme=capoo-1)
+
+##### capoo-2
+
+![capoo-2](https://count.getloli.com/@demo?theme=capoo-2)
+
 ##### e621
 
 ![e621](https://count.getloli.com/@demo?theme=e621)
@@ -210,6 +218,14 @@
 ##### shimmie2
 
 ![shimmie2](https://count.getloli.com/@demo?theme=shimmie2)
+
+##### sketch-1
+
+![sketch-1](https://count.getloli.com/@demo?theme=sketch-1)
+
+##### sketch-2
+
+![sketch-2](https://count.getloli.com/@demo?theme=sketch-2)
 
 </details>
 
