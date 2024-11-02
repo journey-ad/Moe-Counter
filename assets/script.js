@@ -12,7 +12,8 @@
     scale: document.getElementById('scale'),
     pixelated: document.getElementById('pixelated'),
     darkmode: document.getElementById('darkmode'),
-    num: document.getElementById('num')
+    num: document.getElementById('num'),
+    prefix: document.getElementById('prefix')
   };
 
   btn.addEventListener('click', throttle(handleButtonClick, 500));
@@ -47,6 +48,9 @@
 
     if (num.value > 0) {
       params.num = num.value;
+    }
+    if (prefix.value !== '') {
+      params.prefix = prefix.value;
     }
 
     const query = new URLSearchParams(params).toString();

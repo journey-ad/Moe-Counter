@@ -42,7 +42,7 @@ function convertToDatauri(path) {
 }
 
 function getCountImage(params) {
-  let { count, theme = 'moebooru', padding = 7, offset = 0, align = 'top', scale = 1, pixelated = '1', darkmode = 'auto' } = params
+  let { count, theme = 'moebooru', padding = 7, prefix = -1, offset = 0, align = 'top', scale = 1, pixelated = '1', darkmode = 'auto' } = params
 
   if (!(theme in themeList)) theme = 'moebooru'
   padding = parseInt(Number(padding), 10)
@@ -51,6 +51,20 @@ function getCountImage(params) {
 
   // This is not the greatest way for generating an SVG but it'll do for now
   const countArray = count.toString().padStart(padding, '0').split('')
+
+  // Add prefix if exist
+  if (prefix >= 0) {
+    countArray.unshift(...String(prefix).split(''))
+  }
+
+  // Add _start and _end if exist
+  if (themeList[theme]['_start']) {
+    countArray.unshift('_start')
+  }
+  if (themeList[theme]['_end']) {
+    countArray.push('_end')
+  }
+
   const uniqueChar = [...new Set(countArray)]
 
   let x = 0, y = 0

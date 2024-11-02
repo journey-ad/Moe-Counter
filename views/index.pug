@@ -92,7 +92,7 @@ html
                   option(value=theme) #{theme}
           tr
             td: code padding
-            td Set the minimum length, between 1-32, default is 
+            td Set the minimum length, between 1-16, default is 
               code 7
             td: input#padding(type='number', value='7', min='1', max='32', step='1', oninput='this.value = this.value.replace(/[^0-9]/g, "")')
           tr
@@ -136,6 +136,10 @@ html
             td Set counter display number, 0 for disable, default is 
               code 0
             td: input#num(type='number', value='0', min='0', max='1e15', step='1', oninput='this.value = this.value.replace(/[^0-9]/g, "")')
+          tr
+            td: code prefix
+            td Set the prefix number, empty for disable
+            td: input#prefix(type='number', value='', min='0', max='999999', step='1', oninput='this.value = this.value.replace(/[^0-9]/g, "")')
 
       button#get(onclick='_evt_push("click", "normal", "get_counter")') Generate
 
