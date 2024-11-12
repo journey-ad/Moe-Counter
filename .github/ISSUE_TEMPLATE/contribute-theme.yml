@@ -1,0 +1,39 @@
+name: Contribute Themes
+description: Contribute themes for everyone to use.
+title: "[Theme]: "
+labels: ["theme"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### Contribute themes is welcome! Please read this brief tips to get started: 
+        
+        - Create images of numbers from *0-9*, file type can be *jpeg, png, gif, webp*, 
+        - Then named these images as *0.gif, 1.gif, ..., 9.gif* (or other extension). 
+        - Try to ensure that each image has an equal height, and that the image size is not too large. 
+          > Online image compressor: [TinyPNG](https://tinypng.com/) [Ezgif](https://ezgif.com/optimize) 
+        - Then pack these images into a ZIP file. 
+        
+        Additionally, please refrain from using political figures or controversial figures or characters.
+  - type: checkboxes
+    id: tips
+    attributes:
+      label: Tips
+      options:
+        - label: I have read and understood the tips above
+          required: true
+  - type: input
+    id: name
+    attributes:
+      label: Theme Name
+      description: Describe this theme with a short name that can include letters, numbers, and hyphens
+      placeholder: ex. awesome
+    validations:
+      required: true
+  - type: textarea
+    id: theme
+    attributes:
+      label: Preview and ZIP file
+      description: Upload the theme preview, and ZIP file
+    validations:
+      required: true

@@ -1,10 +1,8 @@
 'use strict'
 
-const config = require('config-yml')
-
 let db
 
-switch(config.db.type){
+switch(process.env.DB_TYPE){
   case 'mongodb':
     db = require('./mongodb')
     break;
