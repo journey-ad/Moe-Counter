@@ -283,6 +283,14 @@ LOG_LEVEL=debug
 # GA_ID=G-XXXX
 ```
 
+### Deploy to Render
+
+Note 1: Credit card needed to use free tier service.
+Note 2: Render free tier has a timeout of 15 min. Please use some monitoring program to keep it alive.
+
+Keep all settings as default first, then go to `Environment` setting.  
+Put configurations above as Key-Value pairs, then click `Save, rebuild and deploy`.
+
 ## Credits
 
 * [Glitch](https://glitch.com/)
