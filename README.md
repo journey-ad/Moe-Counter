@@ -283,13 +283,40 @@ LOG_LEVEL=debug
 # GA_ID=G-XXXX
 ```
 
-### Deploy to Render
+### Deploy to Render & MongoDB Atlas
 
-Note 1: Credit card needed to use free tier service.
+Note 1: Visa/Mastercard credit card needed to use two free tier services.  
 Note 2: Render free tier has a timeout of 15 min. Please use some monitoring program to keep it alive.
 
-Keep all settings as default first, then go to `Environment` setting.  
-Put configurations above as Key-Value pairs, then click `Save, rebuild and deploy`.
+1. Register and create a MongoDB Atlas M0 (Free tier) Database
+
+Choose these zones to minimize latency (the left column):
+
+| MongoDB Atlas Location | Render Location |
+| :----: | :----: |
+| AWS: us-east-1 / Azure: eastus2 | Virginia, USA |
+| AWS: us-west-2 | Oregon, USA |
+| AWS: ap-southeast-1 / GCP: asia-southeast1 | Singapore |
+| AWS: eu-central-1 | Frankfurt, Germany |
+
+After creating the database, you will be redirected to security instruction page.  
+Please choose to allow all ips. And take a note of created user/pass.  
+After instruction process, go to Connect--Drivers, copy the connection string and replace pass with yours.
+
+2. Register and create the Render Service
+
+Choose New--"Web service"  
+Source code: Choose "Public Git Repository", and paste this repo's url `https://github.com/journey-ad/Moe-Counter`, then click Connect  
+Choose your own name  
+Language: Choose Node  
+Branch: default (Master)  
+Region: Choose the according location on the right column of the table above  
+Instance type: Choose Free  
+Environments: Just copy your configuration set before, and just paste into it. It will automatically parse the values.  
+Finally click Deploy.
+
+(Optional) set your own custom domain. (Don't forget to change environment value as well)  
+(Optional) set free monitoring using any monitor system. (Most services offer free monitoring per 5 minutes, which is enough.)
 
 ## Credits
 
