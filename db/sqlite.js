@@ -5,21 +5,33 @@ const Database = require('better-sqlite3')
 
 const db = new Database(path.resolve(__dirname, '../count.db'))
 
-db.exec(`CREATE TABLE IF NOT EXISTS tb_count (
-    id    INTEGER      PRIMARY KEY AUTOINCREMENT
-                       NOT NULL
-                       UNIQUE,
-    name  VARCHAR (32) NOT NULL
-                       UNIQUE,
-    num   BIGINT       NOT NULL
-                       DEFAULT (0) 
-);`)
+db.exec(`
+  CREATE TABLE IF NOT EXISTS tb_count (
+      id            INTEGER      PRIMARY KEY AUTOINCREMENT
+                                 NOT NULL
+                                 UNIQUE,
+      name          VARCHAR (32) NOT NULL
+                                 UNIQUE,
+      num           BIGINT       NOT NULL
+                                 DEFAULT (0),
+      password      VARCHAR (32) NOT NULL
+                                 DEFAULT ''
+  );
+  `);
 
 function getNum(name) {
   return new Promise((resolve, reject) => {
     const stmt = db.prepare('SELECT `name`, `num` from tb_count WHERE `name` = ?')
     const row = stmt.get(name)
     resolve(row || { name, num: 0 })
+  })
+}
+
+function getPassword(name) {
+  return new Promise((resolve, reject) => {
+    const stmt = db.prepare('SELECT `name`, `password` from tb_count WHERE `name` = ?')
+    const row = stmt.get(name)
+    resolve(row || { name, password: "" })
   })
 }
 
@@ -63,6 +75,7 @@ function setNumMulti(counters) {
 
 module.exports = {
   getNum,
+  getPassword,
   getAll,
   setNum,
   setNumMulti
