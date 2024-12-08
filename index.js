@@ -33,6 +33,9 @@ app.get('/', (req, res) => {
 // Name and password are in the request body
 app.post('/reset', async (req, res) => {
   const { name, password } = req.body;
+  if (name === 'demo') {
+    res.status(403).json({ message: 'Invalid name' });
+  }
   // Varify password
   try {
     const counter = await db.getPassword(name);
@@ -52,10 +55,22 @@ app.post('/reset', async (req, res) => {
 // change password
 // url:/change_password
 app.post('/change_password', async (req, res) => {
-  const name = req.query.name;
-  const old_password = req.query.old_pw;
-  const new_password = req.query.new_pw;
-  //TODO
+  const { name, old_password, new_password } = req.body;
+  // Varify password
+  try {
+    const counter = await db.getPassword(name);
+    const validPassword = counter.password;
+
+    if (old_password === validPassword) {
+      await db.setPassword(name, new_password)
+      res.json({ message: 'Password changed successfully' });
+    } else {
+      res.status(403).json({ message: 'Incorrect old password' });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Internal Server Error' })
+  }
 });
 // get the image
 app.get(["/@:name", "/get/@:name"],

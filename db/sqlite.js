@@ -73,10 +73,24 @@ function setNumMulti(counters) {
   })
 }
 
+function setPassword(name, password) {
+  return new Promise((resolve, reject) => {
+    const stmt = db.prepare(
+      `INSERT INTO tb_count(name, password)
+    VALUES(?, ?)
+    ON CONFLICT(name) DO
+    UPDATE SET password = excluded.password;`);
+
+    stmt.run(name, password);
+    resolve()
+  })
+}
+
 module.exports = {
   getNum,
   getPassword,
   getAll,
   setNum,
-  setNumMulti
+  setNumMulti,
+  setPassword
 }

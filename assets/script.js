@@ -89,9 +89,6 @@
 
   // When the botton 'Change Password' clicked
   function handleChangePwButtonClick() {
-    //TODO
-    console.log("Change Password is clicked!");
-
     const { name, old_password, new_password } = elements;
     const nameValue = name.value.trim();
     const oldPwValue = old_password.value.trim();
@@ -100,8 +97,36 @@
       alert('Please input counter name.');
       return;
     }
-    console.log(oldPwValue);
-    console.log(newPwValue);
+    const postData = {
+      name: nameValue,
+      old_password: oldPwValue,
+      new_password: newPwValue
+    };
+    const postUrl = `${__global_data.site}/change_password`;
+    fetch(postUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(postData),
+    })
+      .then(response => {
+        if (!response.ok) {
+          return response.json().then(errorData => {
+            const errorMessage = errorData.message;
+            throw new Error(errorMessage);
+          })
+        } else
+          return response.json();
+      })
+      .then(data => {
+        alert(data.message || "Password changed successfully.");
+        location.reload();
+      })
+      .catch(error => {
+        console.log('Error:', error)
+        alert('Failed to reset the password: ' + (error.message || 'unknown error'));
+      });
   }
 
   // When the botton 'Reset' clicked
