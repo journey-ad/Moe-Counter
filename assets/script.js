@@ -1,5 +1,7 @@
 (function () {
-  const btn = document.getElementById('get');
+  const generate_btn = document.getElementById('get');
+  const changePw_btn = document.getElementById('changePw');
+  const reset_btn = document.getElementById('reset');
   const img = document.getElementById('result');
   const code = document.getElementById('code');
 
@@ -13,10 +15,14 @@
     pixelated: document.getElementById('pixelated'),
     darkmode: document.getElementById('darkmode'),
     num: document.getElementById('num'),
-    prefix: document.getElementById('prefix')
+    prefix: document.getElementById('prefix'),
+    old_password: document.getElementById('old_password'),
+    new_password: document.getElementById('new_password')
   };
 
-  btn.addEventListener('click', throttle(handleButtonClick, 500));
+  generate_btn.addEventListener('click', throttle(handleGenerateButtonClick, 500));
+  reset_btn.addEventListener('click', throttle(handleResetButtonClick, 500));
+  changePw_btn.addEventListener('click', throttle(handleChangePwButtonClick, 500));
   code.addEventListener('click', selectCodeText);
 
   const mainTitle = document.querySelector('#main_title i');
@@ -26,7 +32,8 @@
   mainTitle.addEventListener('click', throttle(() => party.sparkles(document.documentElement, { count: party.variation.range(40, 100) }), 1000));
   moreTheme.addEventListener('click', scrollToThemes);
 
-  function handleButtonClick() {
+  // When the botton 'Generate' clicked
+  function handleGenerateButtonClick() {
     const { name, theme, padding, offset, scale, pixelated, darkmode, num } = elements;
     const nameValue = name.value.trim();
 
@@ -57,14 +64,14 @@
     const imgSrc = `${__global_data.site}/@${nameValue}?${query}`;
 
     img.src = `${imgSrc}&_=${Math.random()}`;
-    btn.setAttribute('disabled', '');
+    generate_btn.setAttribute('disabled', '');
 
     img.onload = () => {
       img.scrollIntoView({ block: 'start', behavior: 'smooth' });
       code.textContent = imgSrc;
       code.style.visibility = 'visible';
-      party.confetti(btn, { count: party.variation.range(20, 40) });
-      btn.removeAttribute('disabled');
+      party.confetti(generate_btn, { count: party.variation.range(20, 40) });
+      generate_btn.removeAttribute('disabled');
     };
 
     img.onerror = async () => {
@@ -75,9 +82,90 @@
           alert(message);
         }
       } finally {
-        btn.removeAttribute('disabled');
+        generate_btn.removeAttribute('disabled');
       }
     };
+  }
+
+  // When the botton 'Change Password' clicked
+  function handleChangePwButtonClick() {
+    const { name, old_password, new_password } = elements;
+    const nameValue = name.value.trim();
+    const oldPwValue = old_password.value.trim();
+    const newPwValue = new_password.value.trim();
+    if (!nameValue) {
+      alert('Please input counter name.');
+      return;
+    }
+    const postData = {
+      name: nameValue,
+      old_password: oldPwValue,
+      new_password: newPwValue
+    };
+    const postUrl = `${__global_data.site}/change_password`;
+    fetch(postUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(postData),
+    })
+      .then(response => {
+        if (!response.ok) {
+          return response.json().then(errorData => {
+            const errorMessage = errorData.message;
+            throw new Error(errorMessage);
+          })
+        } else
+          return response.json();
+      })
+      .then(data => {
+        alert(data.message || "Password changed successfully.");
+        location.reload();
+      })
+      .catch(error => {
+        console.log('Error:', error)
+        alert('Failed to reset the password: ' + (error.message || 'unknown error'));
+      });
+  }
+
+  // When the botton 'Reset' clicked
+  function handleResetButtonClick() {
+    const { name, old_password } = elements;
+    const nameValue = name.value.trim();
+    const oldPwValue = old_password.value.trim();
+    if (!nameValue) {
+      alert('Please input counter name.');
+      return;
+    }
+    const postData = {
+      name: nameValue,
+      password: oldPwValue
+    };
+    const postUrl = `${__global_data.site}/reset`;
+    fetch(postUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(postData),
+    })
+      .then(response => {
+        if (!response.ok) {
+          return response.json().then(errorData => {
+            const errorMessage = errorData.message;
+            throw new Error(errorMessage);
+          })
+        } else
+          return response.json();
+      })
+      .then(data => {
+        alert(data.message || "Counter reset successfully.");
+      })
+      .catch(error => {
+        console.log('Error:', error)
+        alert('Failed to reset the counter: ' + (error.message || 'unknown error'));
+      });
   }
 
   function selectCodeText(e) {
