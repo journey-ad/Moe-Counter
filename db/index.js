@@ -9,6 +9,9 @@ switch(process.env.DB_TYPE){
   case 'redis':
     db = require('./redis')
     break;
+  case 'mysql':
+    db = require('./mysql')
+    break;
   case 'sqlite':
   default:
     db = require('./sqlite')
