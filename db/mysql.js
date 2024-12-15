@@ -16,27 +16,36 @@ async function initDb() {
 
 async function getNum(name) {
   const [rows] = await connection.execute("SELECT num FROM tb_count WHERE name = ?", [name]);
-  console.log(rows)
   return rows[0];
 }
 
 async function getAll() {
   const [rows] = await connection.execute("SELECT * FROM tb_count");
-  console.log(rows)
   return rows;
 }
 
 async function setNum(name, num) {
-  connection.execute("INSERT INTO tb_count (name, num) VALUES (?, ?) ON DUPLICATE KEY UPDATE num = ?", [name, num, num]);
-//   await connection.execute("INSERT INTO tb_count (name, num) VALUES (?, ?) ON DUPLICATE KEY UPDATE num = ?", [name, num, num]);
+  await connection.execute("INSERT INTO tb_count (name, num) VALUES (?, ?) ON DUPLICATE KEY UPDATE num = ?", [name, num, num]);
 }
 
 async function setNumMulti(counters) {
+  const values = [];
+  const placeholders = [];
+
   for (let counter of counters) {
-    setNum(counter.name, counter.num);
-    // await setNum(counter.name, counter.num);
+    values.push(counter.name, counter.num);
+    placeholders.push("(?, ?)");
   }
+
+  const sql = `
+    INSERT INTO tb_count (name, num) 
+    VALUES ${placeholders.join(", ")} 
+    ON DUPLICATE KEY UPDATE num = VALUES(num)
+  `;
+
+  await connection.execute(sql, values);
 }
+
 
 initDb();
 
