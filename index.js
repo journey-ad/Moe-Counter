@@ -16,6 +16,7 @@ app.use(express.static("assets"));
 app.use(compression());
 app.use(cors());
 app.set("view engine", "pug");
+app.use(express.json()); //in order to use request body
 
 app.get('/', (req, res) => {
   const site = process.env.APP_SITE || `${req.protocol}://${req.get('host')}`
@@ -27,6 +28,50 @@ app.get('/', (req, res) => {
   })
 });
 
+// reset the counter
+// url:/reset
+// Name and password are in the request body
+app.post('/reset', async (req, res) => {
+  const { name, password } = req.body;
+  if (name === 'demo') {
+    res.status(403).json({ message: 'Invalid name' });
+  }
+  // Varify password
+  try {
+    const counter = await db.getPassword(name);
+    const validPassword = counter.password;
+
+    if (password === validPassword) {
+      __cache_counter[name] = 0;
+      pushDB();
+      res.json({ message: 'Counter reset successfully', count: __cache_counter[name] });
+    } else {
+      res.status(403).json({ message: 'Invalid password' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Internal Server Error' })
+  }
+});
+// change password
+// url:/change_password
+app.post('/change_password', async (req, res) => {
+  const { name, old_password, new_password } = req.body;
+  // Varify password
+  try {
+    const counter = await db.getPassword(name);
+    const validPassword = counter.password;
+
+    if (old_password === validPassword) {
+      await db.setPassword(name, new_password)
+      res.json({ message: 'Password changed successfully' });
+    } else {
+      res.status(403).json({ message: 'Incorrect old password' });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Internal Server Error' })
+  }
+});
 // get the image
 app.get(["/@:name", "/get/@:name"],
   ZodValid({

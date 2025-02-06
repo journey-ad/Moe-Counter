@@ -140,6 +140,25 @@ html
             td: code prefix
             td Set the prefix number, empty for disable
             td: input#prefix(type='number', value='', min='0', max='999999', step='1', oninput='this.value = this.value.replace(/[^0-9]/g, "")')
+          tr
+            td(colspan=3)
+              h4.caption <p style="color:red;">Danger Zone</p>
+          tr
+            td: code current password
+            td Available if you want to change password/reset the counter. Leave empty if never set before.
+            td: input#old_password(type='password')
+          tr
+            td: code new password
+            td Set/Change the password. Password is only used to reset the counter. Can be empty (Everyone else can reset your counter).
+            td: input#new_password(type='password')
+          tr
+            td: code change password
+            td Change the password. Current password required.
+            td: button#changePw(onclick='_evt_push("click", "normal", "reset_password")') Change Password
+          tr
+            td: code reset counter
+            td Reset the counter to <b>ZERO</b>. Previous counts will be permanently lost. Current password required. 
+            td: button#reset(onclick='_evt_push("click", "normal", "reset_counter")') Reset
 
       button#get(onclick='_evt_push("click", "normal", "get_counter")') Generate
 
