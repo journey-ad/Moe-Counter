@@ -57,7 +57,7 @@ app.get(["/@:name", "/get/@:name"],
       "cache-control": "max-age=0, no-cache, no-store, must-revalidate",
     });
 
-    const data = await getCountByName(String(name), Number(num));
+    const data = getCountByName(String(name), Number(num));
 
     if (name === "demo") {
       res.set("cache-control", "max-age=31536000");
@@ -90,7 +90,7 @@ app.get(["/@:name", "/get/@:name"],
 app.get("/record/@:name", async (req, res) => {
   const { name } = req.params;
 
-  const data = await getCountByName(name);
+  const data = getCountByName(name);
 
   res.json(data);
 });
@@ -121,7 +121,7 @@ async function pushDB() {
 
   try {
     needPush = false;
-    logger.info("pushDB", __cache_counter);
+    logger.debug("pushDB", __cache_counter);
 
     const counters = Object.keys(__cache_counter).map((key) => {
       return {
@@ -130,14 +130,14 @@ async function pushDB() {
       };
     });
 
-    await db.setNumMulti(counters);
+    db.setNumMulti(counters);
     __cache_counter = {};
   } catch (error) {
     logger.error("pushDB is error: ", error);
   }
 }
 
-async function getCountByName(name, num) {
+function getCountByName(name, num) {
   const defaultCount = { name, num: 0 };
 
   if (name === "demo") return { name, num: "0123456789" };
@@ -145,16 +145,13 @@ async function getCountByName(name, num) {
   if (num > 0) { return { name, num } };
 
   try {
-    if (!(name in __cache_counter)) {
-      const counter = (await db.getNum(name)) || defaultCount;
-      __cache_counter[name] = counter.num + 1;
-    } else {
-      __cache_counter[name]++;
-    }
+    // Try to first get counter for this name from cache, then from db, then use default value
+    const count = (__cache_counter[name] || (db.getNum(name) || defaultCount).num) + 1
+    __cache_counter[name] = count;
 
     pushDB();
 
-    return { name, num: __cache_counter[name] };
+    return { name, num: count };
   } catch (error) {
     logger.error("get count by name is error: ", error);
     return defaultCount;
