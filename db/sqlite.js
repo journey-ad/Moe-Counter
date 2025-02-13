@@ -31,34 +31,29 @@ function getAll(name) {
   })
 }
 
-function setNum(name, num) {
-  return new Promise((resolve, reject) => {
-    db.exec(`INSERT INTO tb_count(\`name\`, \`num\`)
-            VALUES($name, $num)
-            ON CONFLICT(name) DO
-            UPDATE SET \`num\` = $num;`
-      ,
-      { $name: name, $num: num }
-    )
-
-    resolve()
-  })
+async function setNum(name, num) {
+  const stmt = db.prepare(
+    `INSERT INTO tb_count(name, num)
+          VALUES(?, ?)
+          ON CONFLICT(name) DO
+          UPDATE SET num = excluded.num;`
+  );
+  stmt.run(name, num);
 }
 
-function setNumMulti(counters) {
-  return new Promise((resolve, reject) => {
-    const stmt = db.prepare(`INSERT INTO tb_count(\`name\`, \`num\`)
-    VALUES($name, $num)
-    ON CONFLICT(name) DO
-    UPDATE SET \`num\` = $num;`)
+async function setNumMulti(counters) {
+  const stmt = db.prepare(
+    `INSERT INTO tb_count(name, num)
+          VALUES(?, ?)
+          ON CONFLICT(name) DO
+          UPDATE SET num = excluded.num;`
+  );
 
-    const setMany = db.transaction((counters) => {
-      for (const counter of counters) stmt.run(counter)
-    })
-
-    setMany(counters)
-    resolve()
-  })
+  db.transaction((counters) => {
+    counters.forEach((counter) => {
+      stmt.run(counter.name, counter.num);
+    });
+  })(counters);
 }
 
 module.exports = {
