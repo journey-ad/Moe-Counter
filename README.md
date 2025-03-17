@@ -202,6 +202,10 @@ Multiple styles of Moe-Counters to choose from
 
 ![love-and-deepspace](https://count.getloli.com/@demo?theme=love-and-deepspace)
 
+##### miku
+
+![miku](https://count.getloli.com/@demo?theme=miku)
+
 ##### minecraft
 
 ![minecraft](https://count.getloli.com/@demo?theme=minecraft)
