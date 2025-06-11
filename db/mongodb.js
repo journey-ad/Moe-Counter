@@ -12,12 +12,7 @@ const schema = new mongoose.Schema(
 
 // the default mongodb url (local server)
 const mongodbURL = process.env.DB_URL || "mongodb://127.0.0.1:27017";
-
-mongoose.connect(mongodbURL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false,
-});
+mongoose.connect(mongodbURL);
 
 const Count = mongoose.connection.model("Count", schema);
 
