@@ -11,14 +11,18 @@
   "author": "journey-ad",
   "license": "MIT",
   "dependencies": {
-    "better-sqlite3": "^8.2.0",
-    "compression": "^1.7.4",
-    "dotenv": "^16.4.5",
-    "express": "^4.18.2",
+    "better-sqlite3": "^8.7.0",
+    "compression": "^1.8.0",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2",
     "image-size": "^0.8.3",
-    "mime-types": "^2.1.27",
-    "mongoose": "^5.9.28",
-    "pug": "^3.0.0",
-    "zod": "^3.23.8"
-  }
+    "mime-types": "^2.1.35",
+    "mongoose": "^8.15.1",
+    "pug": "^3.0.3",
+    "zod": "^3.25.61"
+  },
+  "engines": {
+    "node": "22.13.1"
+  },
+  "packageManager": "pnpm@10.11.0+sha512.6540583f41cc5f628eb3d9773ecee802f4f9ef9923cc45b69890fb47991d4b092964694ec3a4f738a420c918a333062c8b925d312f42e4f0c263eb603551f977"
 }
