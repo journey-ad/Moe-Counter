@@ -11,6 +11,7 @@
   "author": "journey-ad",
   "license": "MIT",
   "dependencies": {
+    "@svgdotjs/svg.js": "3.2.4",
     "better-sqlite3": "^8.2.0",
     "compression": "^1.7.4",
     "dotenv": "^16.4.5",
@@ -19,6 +20,8 @@
     "mime-types": "^2.1.27",
     "mongoose": "^5.9.28",
     "pug": "^3.0.0",
+    "svg.js": "^2.7.1",
+    "svgdom": "^0.1.21",
     "zod": "^3.23.8"
   }
 }
