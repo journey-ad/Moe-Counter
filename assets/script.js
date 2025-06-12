@@ -27,7 +27,10 @@
   moreTheme.addEventListener('click', scrollToThemes);
 
   function handleButtonClick() {
+    // 分解参数
     const { name, theme, padding, offset, scale, pixelated, darkmode, num } = elements;
+    
+    // 去除两端空白
     const nameValue = name.value.trim();
 
     if (!nameValue) {
@@ -35,6 +38,7 @@
       return;
     }
 
+    // 重新构建参数，填上默认值
     const params = {
       name: nameValue,
       theme: theme.value || 'moebooru',
@@ -53,9 +57,14 @@
       params.prefix = prefix.value;
     }
 
+    // 构建url，其中把所有参数以一个get请求发送
+    // 最后query可能是这样的：name=example&theme=moebooru&padding=7&offset=0&align=top&scale=1&pixelated=1&darkmode=auto&num=100&prefix=abc
     const query = new URLSearchParams(params).toString();
+
+    // 拼接网址
     const imgSrc = `${__global_data.site}/@${nameValue}?${query}`;
 
+    // 填充网址，之所以要有random后缀是为了避免缓存
     img.src = `${imgSrc}&_=${Math.random()}`;
     btn.setAttribute('disabled', '');
 
@@ -101,6 +110,7 @@
   }
 
   function throttle(fn, threshold = 250) {
+    // 一个闭包，实际上可以看作为全局变量
     let last, deferTimer;
     return function (...args) {
       const now = Date.now();
@@ -108,6 +118,7 @@
         clearTimeout(deferTimer);
         deferTimer = setTimeout(() => {
           last = now;
+          // 这里使用apply调用，是为了传递上下文的this
           fn.apply(this, args);
         }, threshold);
       } else {
