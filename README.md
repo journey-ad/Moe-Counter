@@ -242,22 +242,14 @@ For information on counter usage and configuration, refer to the [demo website](
 
 ## Usage
 
-### Install
-
-#### Run on Glitch
-
-- Open [Glitch project](https://glitch.com/~moe-counter-api)
-- Just hit the **Remix your own** button
-- That's it!
-
-#### Deploying on your own server
+### Deploying
 
 ```shell
 $ git clone https://github.com/journey-ad/Moe-Counter.git
 $ cd Moe-Counter
 $ pnpm install
 
-$ pnpm run start
+$ pnpm start
 ```
 
 ### Configuration
@@ -289,7 +281,7 @@ LOG_LEVEL=debug
 
 ## Credits
 
-* [Glitch](https://glitch.com/)
+* [Render](https://render.com/)
 * [A-SOUL_Official](https://space.bilibili.com/703007996)
 * [moebooru](https://github.com/moebooru/moebooru)
 * gelbooru.com NSFW
