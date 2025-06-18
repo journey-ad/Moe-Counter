@@ -1,3 +1,30 @@
+<div align="center">
+  
+# Moe-Counter
+
+Multiple styles of Moe-Counters to choose from
+
+**English** | [简体中文](docs/README-zhcn.md)
+
+![Moe-Counter](https://count.getloli.com/get/@Moe-counter.github)
+
+</div>
+
+<details>
+<summary>More theme</summary>
+
+##### asoul
+![asoul](https://count.getloli.com/get/@demo?theme=asoul)
+
+##### moebooru
+![moebooru](https://count.getloli.com/get/@demo?theme=moebooru)
+
+##### rule34
+![Rule34](https://count.getloli.com/get/@demo?theme=rule34)
+
+##### gelbooru
+![Gelbooru](https://count.getloli.com/get/@demo?theme=gelbooru)</details>
+=======
 # *Moe Counter!*
 
 多种风格可选的萌萌计数器
@@ -244,6 +271,12 @@ For information on counter usage and configuration, refer to the [demo website](
 
 ### Install
 
+#### Run on Replit
+
+- Open the url [https://replit.com/@journeyad/Moe-Counter](https://replit.com/@journeyad/Moe-Counter)
+- Just hit the **Fork** button
+- And hit the **Run** button
+
 #### Run on Glitch
 
 - Open [Glitch project](https://glitch.com/~moe-counter-api)
@@ -255,6 +288,11 @@ For information on counter usage and configuration, refer to the [demo website](
 ```shell
 $ git clone https://github.com/journey-ad/Moe-Counter.git
 $ cd Moe-Counter
+
+$ yarn install
+
+$ yarn start
+
 $ pnpm install
 
 $ pnpm run start
@@ -262,6 +300,29 @@ $ pnpm run start
 
 ### Configuration
 
+`config.yml`
+
+```yaml
+app:
+  # site: https://count.getloli.com # your website
+  port: 3000
+
+db:
+  type: sqlite # sqlite or mongodb
+```
+
+If you use mongodb, you need to specify the environment variable `DB_URL`
+
+```shell
+# eg:
+export DB_URL=mongodb+srv://account:passwd@***.***.***.mongodb.net/db_count
+```
+
+Replit can use Secrets, check [documentation](https://docs.replit.com/programming-ide/storing-sensitive-information-environment-variables)
+
+```
+DB_URL="mongodb+srv://account:passwd@***.***.***.mongodb.net/db_count"
+=======
 Set `.env` file to specify the environment variables. *[.env.example](./.env.example)*
 
 ```dosini
@@ -289,6 +350,17 @@ LOG_LEVEL=debug
 
 ## Credits
 
+*   [replit](https://replit.com/)
+*   [A-SOUL_Official](https://space.bilibili.com/703007996)
+*   [moebooru](https://github.com/moebooru/moebooru)
+*   rule34.xxx NSFW
+*   gelbooru.com NSFW
+*   [Icons8](https://icons8.com/icons/set/star)
+
+## License
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fjourney-ad%2FMoe-Counter.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fjourney-ad%2FMoe-Counter?ref=badge_large)
+=======
 * [Glitch](https://glitch.com/)
 * [A-SOUL_Official](https://space.bilibili.com/703007996)
 * [moebooru](https://github.com/moebooru/moebooru)
