@@ -28,7 +28,7 @@
 
   function handleButtonClick() {
     const { name, theme, padding, offset, scale, pixelated, darkmode, num } = elements;
-    const nameValue = name.value.trim();
+    const nameValue = encodeURIComponent(name.value.trim());
 
     if (!nameValue) {
       alert('Please input counter name.');
@@ -37,13 +37,13 @@
 
     const params = {
       name: nameValue,
-      theme: theme.value || 'moebooru',
-      padding: padding.value || '7',
-      offset: offset.value || '0',
-      align: align.value || 'top',
-      scale: scale.value || '1',
+      theme: encodeURIComponent(theme.value || "moebooru"),
+      padding: encodeURIComponent(padding.value || "7"),
+      offset: encodeURIComponent(offset.value || "0"),
+      align: encodeURIComponent(align.value || "top"),
+      scale: encodeURIComponent(scale.value || "1"),
       pixelated: pixelated.checked ? '1' : '0',
-      darkmode: darkmode.value || 'auto'
+      darkmode: encodeURIComponent(darkmode.value || "auto"),
     };
 
     if (num.value > 0) {

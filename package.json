@@ -14,6 +14,7 @@
     "better-sqlite3": "^8.7.0",
     "compression": "^1.8.0",
     "dotenv": "^16.5.0",
+    "escape-html": "^1.0.3",
     "express": "^4.21.2",
     "image-size": "^0.8.3",
     "mime-types": "^2.1.35",

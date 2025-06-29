@@ -17,6 +17,9 @@ importers:
       dotenv:
         specifier: ^16.5.0
         version: 16.5.0
+      escape-html:
+        specifier: ^1.0.3
+        version: 1.0.3
       express:
         specifier: ^4.21.2
         version: 4.21.2
