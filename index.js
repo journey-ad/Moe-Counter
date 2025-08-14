@@ -145,16 +145,13 @@ async function getCountByName(name, num) {
   if (num > 0) { return { name, num } };
 
   try {
-    if (!(name in __cache_counter)) {
-      const counter = (await db.getNum(name)) || defaultCount;
-      __cache_counter[name] = counter.num + 1;
-    } else {
-      __cache_counter[name]++;
-    }
+    // Try to first get counter for this name from cache, then from db, then use default value
+    const count = (__cache_counter[name] || (db.getNum(name) || defaultCount).num) + 1
+    __cache_counter[name] = count;
 
     pushDB();
 
-    return { name, num: __cache_counter[name] };
+    return { name, num: count };
   } catch (error) {
     logger.error("get count by name is error: ", error);
     return defaultCount;
