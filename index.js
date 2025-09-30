@@ -95,6 +95,22 @@ app.get("/record/@:name", async (req, res) => {
   res.json(data);
 });
 
+app.get("/metrics", async (req, res) => {
+    try {
+        const allKeys = await db.getAll();
+        let metrics = '';
+        allKeys.forEach(item => {
+            metrics += `counter{name="${item.name}"} ${item.num}\n`;
+        });
+        res.set('Content-Type', 'text/plain');
+        res.send(metrics);
+
+    } catch (error) {
+        logger.error("metrics is error: ", error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
 app.get("/heart-beat", (req, res) => {
   res.set("cache-control", "max-age=0, no-cache, no-store, must-revalidate");
   res.send("alive");
