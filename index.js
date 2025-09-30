@@ -58,7 +58,7 @@ app.get(["/@:name", "/get/@:name"],
 
         // If the path is /get/ and the name does not exist, return 404
         if (req.path.startsWith("/get/@") && !await ifExistName(String(name))) {
-            res.status(404).send('<p>Not Found</p>');
+            res.status(404).send('Not Found');
 
             logger.warn(
                 name,
