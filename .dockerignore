@@ -1,1 +1,10 @@
 node_modules
+*.md
+LICENSE
+.env.example
+.idea
+.vscode
+.DS_Store
+.github
+docker-compose.yml
+extras

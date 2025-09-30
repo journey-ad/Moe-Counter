@@ -4,3 +4,8 @@ services:
     build: .
     ports:
       - "3000:3000"
+    healthcheck:
+      test: wget -nv -t1 --spider 'http://localhost:3000/heart-beat'
+      interval: 30s
+      timeout: 5s
+      retries: 3
