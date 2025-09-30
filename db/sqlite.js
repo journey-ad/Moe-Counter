@@ -23,7 +23,7 @@ function getNum(name) {
   })
 }
 
-function getAll(name) {
+function getAll() {
   return new Promise((resolve, reject) => {
     const stmt = db.prepare('SELECT * from tb_count')
     const rows = stmt.all()
