@@ -15,6 +15,11 @@ db.exec(`CREATE TABLE IF NOT EXISTS tb_count (
                        DEFAULT (0) 
 );`)
 
+/**
+ *
+ * @param name
+ * @returns {Promise<{name: *, num: number}>}
+ */
 function getNum(name) {
   return new Promise((resolve, reject) => {
     const stmt = db.prepare('SELECT `name`, `num` from tb_count WHERE `name` = ?')
