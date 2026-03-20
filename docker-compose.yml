@@ -4,3 +4,8 @@ services:
     build: .
     ports:
       - "3000:3000"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - APP_PORT=3000
+      - DB_TYPE=sqlite

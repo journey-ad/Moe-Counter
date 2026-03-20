@@ -3,7 +3,7 @@
 const path = require('path')
 const Database = require('better-sqlite3')
 
-const db = new Database(path.resolve(__dirname, '../count.db'))
+const db = new Database(path.resolve(__dirname, '../data/count.db'))
 
 db.exec(`CREATE TABLE IF NOT EXISTS tb_count (
     id    INTEGER      PRIMARY KEY AUTOINCREMENT

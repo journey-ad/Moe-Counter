@@ -10,6 +10,8 @@ RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store pnpm install
 
 COPY . .
 
+RUN mkdir -p /app/data
+
 EXPOSE 3000
 
 CMD ["pnpm", "start"]
