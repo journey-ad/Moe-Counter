@@ -43,13 +43,13 @@ app.get(["/@:name", "/get/@:name"],
       darkmode: z.enum(["0", "1", "auto"]).default("auto"),
 
       // Unusual Options
-      num: z.coerce.number().int().min(0).max(1e15).default(0), // a carry-safe integer, less than `2^53-1`, and aesthetically pleasing in decimal.
+      num: z.coerce.number().int().min(-1).max(1e15).default(-1), // a carry-safe integer, less than `2^53-1`, and aesthetically pleasing in decimal.
       prefix: z.coerce.number().int().min(-1).max(999999).default(-1)
     })
   }),
   async (req, res) => {
     const { name } = req.params;
-    let { theme = "moebooru", num = 0, ...rest } = req.query;
+    let { theme = "moebooru", num = -1, ...rest } = req.query;
 
     // This helps with GitHub's image cache
     res.set({
@@ -141,8 +141,8 @@ async function getCountByName(name, num) {
   const defaultCount = { name, num: 0 };
 
   if (name === "demo") return { name, num: "0123456789" };
-
-  if (num > 0) { return { name, num } };
+// If num >= 0, bypass the database and return the explicit number (including 0)
+  if (num >= 0) { return { name, num } };
 
   try {
     if (!(name in __cache_counter)) {
