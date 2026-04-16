@@ -240,6 +240,24 @@
 ## Demo
 [https://count.getloli.com](https://count.getloli.com)
 
+## Sponsor / 赞助
+
+This service handles over **10 million** requests every month. If *Moe Counter!* has been useful to you, please consider sponsoring to help keep the server running. Every little bit helps! 💖
+
+*Moe Counter!* 每月处理超过 **1000万** 次请求。如果这个项目对你有帮助，恳请赞助支持服务器的持续运行，感谢每一份支持！
+
+- **Ko-fi**: https://ko-fi.com/journey_ad
+- **爱发电**: https://ifdian.net/a/journey-ad
+
+<details>
+<summary>Alipay / WeChat Pay（支付宝 / 微信支付）</summary>
+<p>
+  <img src="https://cdn.jsdelivr.net/gh/journey-ad/blog-img/about/alipay.jpg" alt="Alipay" width="200">
+  <img src="https://cdn.jsdelivr.net/gh/journey-ad/blog-img/about/wechatpay.jpg" alt="WeChat Pay" width="200">
+</p>
+</details>
+
+
 ## How to use
 
 For information on counter usage and configuration, refer to the [demo website](https://count.getloli.com).
