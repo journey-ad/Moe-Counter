@@ -101,13 +101,111 @@ app.get("/heart-beat", (req, res) => {
   logger.debug("heart-beat");
 });
 
+app.get("/api/stats/:name",
+  ZodValid({
+    params: z.object({
+      name: z.string().max(32),
+    }),
+    query: z.object({
+      range: z.enum(["day", "week", "month"]).default("day"),
+    })
+  }),
+  async (req, res) => {
+    const { name } = req.params;
+    const { range } = req.query;
+
+    try {
+      const dateRange = getDateRange(range);
+      const rawStats = await db.getStats(name, dateRange.start, dateRange.end);
+      const stats = fillMissingDates(rawStats, dateRange.start, dateRange.end);
+
+      let total = 0;
+      stats.forEach(day => {
+        total += day.count;
+      });
+
+      const counter = await db.getNum(name);
+      
+      res.json({
+        name,
+        range,
+        total,
+        currentTotal: counter ? counter.num : 0,
+        startDate: dateRange.start,
+        endDate: dateRange.end,
+        daily: stats
+      });
+    } catch (error) {
+      logger.error("get stats error: ", error);
+      res.status(500).json({
+        error: "Failed to get stats",
+        message: error.message
+      });
+    }
+  }
+);
+
 const listener = app.listen(process.env.APP_PORT || 3000, () => {
   logger.info("Your app is listening on port " + listener.address().port);
 });
 
 let __cache_counter = {};
+let __cache_stats = {};
 let enablePushDelay = process.env.DB_INTERVAL > 0
 let needPush = false;
+
+function getTodayDate() {
+  return new Date().toISOString().split('T')[0];
+}
+
+function getDateRange(rangeType) {
+  const today = new Date();
+  let startDate;
+  
+  switch (rangeType) {
+    case 'week':
+      const dayOfWeek = today.getDay();
+      const diffToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+      startDate = new Date(today);
+      startDate.setDate(today.getDate() - diffToMonday);
+      break;
+    case 'month':
+      startDate = new Date(today.getFullYear(), today.getMonth(), 1);
+      break;
+    case 'day':
+    default:
+      startDate = new Date(today);
+      startDate.setDate(today.getDate() - 6);
+      break;
+  }
+  
+  return {
+    start: startDate.toISOString().split('T')[0],
+    end: today.toISOString().split('T')[0]
+  };
+}
+
+function fillMissingDates(data, startDate, endDate) {
+  const result = [];
+  const dataMap = {};
+  
+  data.forEach(item => {
+    dataMap[item.date] = item.count;
+  });
+  
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  
+  for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+    const dateStr = d.toISOString().split('T')[0];
+    result.push({
+      date: dateStr,
+      count: dataMap[dateStr] || 0
+    });
+  }
+  
+  return result;
+}
 
 if (enablePushDelay) {
   setInterval(() => {
@@ -116,22 +214,41 @@ if (enablePushDelay) {
 }
 
 async function pushDB() {
-  if (Object.keys(__cache_counter).length === 0) return;
+  const hasCounterData = Object.keys(__cache_counter).length > 0;
+  const hasStatsData = Object.keys(__cache_stats).length > 0;
+  
+  if (!hasCounterData && !hasStatsData) return;
   if (enablePushDelay && !needPush) return;
 
   try {
     needPush = false;
-    logger.info("pushDB", __cache_counter);
-
-    const counters = Object.keys(__cache_counter).map((key) => {
-      return {
-        name: key,
-        num: __cache_counter[key],
-      };
-    });
-
-    await db.setNumMulti(counters);
-    __cache_counter = {};
+    
+    if (hasCounterData) {
+      logger.info("pushDB counters", __cache_counter);
+      const counters = Object.keys(__cache_counter).map((key) => {
+        return {
+          name: key,
+          num: __cache_counter[key],
+        };
+      });
+      await db.setNumMulti(counters);
+      __cache_counter = {};
+    }
+    
+    if (hasStatsData) {
+      logger.info("pushDB stats", __cache_stats);
+      const statsList = [];
+      for (const nameDateKey in __cache_stats) {
+        const [name, date] = nameDateKey.split('|');
+        statsList.push({
+          name,
+          date,
+          count: __cache_stats[nameDateKey]
+        });
+      }
+      await db.incrementStatsMulti(statsList);
+      __cache_stats = {};
+    }
   } catch (error) {
     logger.error("pushDB is error: ", error);
   }
@@ -150,6 +267,14 @@ async function getCountByName(name, num) {
       __cache_counter[name] = counter.num + 1;
     } else {
       __cache_counter[name]++;
+    }
+
+    const today = getTodayDate();
+    const statsKey = `${name}|${today}`;
+    if (!(statsKey in __cache_stats)) {
+      __cache_stats[statsKey] = 1;
+    } else {
+      __cache_stats[statsKey]++;
     }
 
     pushDB();
