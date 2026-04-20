@@ -27,6 +27,46 @@ app.get('/', (req, res) => {
   })
 });
 
+// display counter page
+app.get(["/view/@:name", "/display/@:name"],
+  ZodValid({
+    params: z.object({
+      name: z.string().max(64),
+    }),
+    query: z.object({
+      theme: z.string().default("moebooru"),
+      padding: z.coerce.number().int().min(0).max(16).default(7),
+      offset: z.coerce.number().min(-500).max(500).default(0),
+      align: z.enum(["top", "center", "bottom"]).default("top"),
+      scale: z.coerce.number().min(0.1).max(2).default(1),
+      pixelated: z.enum(["0", "1"]).default("1"),
+      darkmode: z.enum(["0", "1", "auto"]).default("auto"),
+    })
+  }),
+  async (req, res) => {
+    const { name } = req.params;
+    const { theme, padding, offset, align, scale, pixelated, darkmode } = req.query;
+    const site = process.env.APP_SITE || `${req.protocol}://${req.get('host')}`
+    const ga_id = process.env.GA_ID || null
+
+    const data = await getCountOnly(String(name));
+
+    res.render('display', {
+      site,
+      ga_id,
+      name: data.name,
+      count: data.num,
+      theme,
+      padding,
+      offset,
+      align,
+      scale,
+      pixelated,
+      darkmode,
+    });
+  }
+);
+
 // get the image
 app.get(["/@:name", "/get/@:name"],
   ZodValid({
