@@ -33,14 +33,12 @@ function getAll(name) {
 
 function setNum(name, num) {
   return new Promise((resolve, reject) => {
-    db.exec(`INSERT INTO tb_count(\`name\`, \`num\`)
-            VALUES($name, $num)
-            ON CONFLICT(name) DO
-            UPDATE SET \`num\` = $num;`
-      ,
-      { $name: name, $num: num }
-    )
+    const stmt = db.prepare(`INSERT INTO tb_count(\`name\`, \`num\`)
+    VALUES($name, $num)
+    ON CONFLICT(name) DO
+    UPDATE SET \`num\` = $num;`)
 
+    stmt.run({ name, num })
     resolve()
   })
 }
