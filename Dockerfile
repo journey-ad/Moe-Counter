@@ -1,17 +1,16 @@
+# Dockerfile for Moe-Counter
 FROM node:22-alpine
-
-RUN corepack enable && corepack prepare pnpm@10 --activate
 
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+# Install dependencies
+COPY package*.json ./
+RUN npm install
 
-RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store pnpm install --frozen-lockfile
-
+# Copy source code
 COPY . .
 
-RUN mkdir -p /app/data
-
+# Expose Moe-Counter port
 EXPOSE 3000
 
-CMD ["pnpm", "start"]
+CMD ["npm", "start"]
