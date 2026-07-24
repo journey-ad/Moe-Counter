@@ -46,7 +46,7 @@
       darkmode: darkmode.value || 'auto'
     };
 
-    if (num.value > 0) {
+    if (num.value.trim() !== '') {
       params.num = num.value;
     }
     if (prefix.value !== '') {
