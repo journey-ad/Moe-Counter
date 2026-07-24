@@ -23,7 +23,7 @@ fs.readdirSync(themePath).forEach(theme => {
     if (!imgExts.includes(path.extname(img).toLowerCase())) return
 
     const imgPath = path.resolve(currentThemePath, img)
-    const char = path.parse(img).name
+    const char = path.parse(img).name.toLowerCase()
     const { width, height } = sizeOf(imgPath)
 
     themeList[theme][char] = {
@@ -50,7 +50,11 @@ function getCountImage(params) {
   scale = parseFloat(Number(scale), 10)
 
   // This is not the greatest way for generating an SVG but it'll do for now
-  const countArray = count.toString().padStart(padding, '0').split('')
+  // 仅对纯数字 count 做前导零补齐（padding 是为数字计数器设计的）；
+  // 字母/单词不应被补零，否则可见内容会被推到最右侧（前面都是空白）
+  const countStr = count.toString()
+  const paddedStr = /^\d+$/.test(countStr) ? countStr.padStart(padding, '0') : countStr
+  const countArray = paddedStr.toLowerCase().split('')
 
   // Add prefix if exist
   if (prefix >= 0) {
@@ -70,7 +74,7 @@ function getCountImage(params) {
   let x = 0, y = 0
 
   const defs = uniqueChar.reduce((ret, cur) => {
-    let { width, height, data } = themeList[theme][cur]
+    let { width, height, data } = themeList[theme][cur] || themeList[theme]['0'] || { width: 45, height: 100, data: '' }
     width *= scale
     height *= scale
 
@@ -83,7 +87,7 @@ function getCountImage(params) {
   }, '')
 
   const parts = countArray.reduce((ret, cur) => {
-    let { width, height } = themeList[theme][cur]
+    let { width, height } = themeList[theme][cur] || themeList[theme]['0'] || { width: 45, height: 100 }
     width *= scale
     height *= scale
 
@@ -131,3 +135,7 @@ module.exports = {
   themeList,
   getCountImage
 }
+
+
+
+

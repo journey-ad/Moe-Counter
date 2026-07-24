@@ -13,11 +13,37 @@
     pixelated: document.getElementById('pixelated'),
     darkmode: document.getElementById('darkmode'),
     num: document.getElementById('num'),
-    prefix: document.getElementById('prefix')
+    prefix: document.getElementById('prefix'),
+    syncNum: document.getElementById('sync-num')
   };
+
+  const syncNumRow = document.getElementById('sync-num-row');
 
   btn.addEventListener('click', throttle(handleButtonClick, 500));
   code.addEventListener('click', selectCodeText);
+
+  // 选择 rule34-letters 主题时显示联动数字 checkbox，否则隐藏
+  elements.theme.addEventListener('change', () => {
+    const isLetterTheme = elements.theme.value === 'rule34-letters';
+    syncNumRow.style.display = isLetterTheme ? '' : 'none';
+    if (!isLetterTheme) {
+      elements.syncNum.checked = false;
+      elements.num.placeholder = '数字或字母';
+    } else {
+      updateNumPlaceholder();
+    }
+  });
+
+  // 联动开关变化时更新提示
+  elements.syncNum.addEventListener('change', updateNumPlaceholder);
+
+  function updateNumPlaceholder() {
+    if (elements.syncNum.checked) {
+      elements.num.placeholder = '字母或数字，如 abc123';
+    } else {
+      elements.num.placeholder = '数字或字母';
+    }
+  }
 
   const mainTitle = document.querySelector('#main_title i');
   const themes = document.querySelector('#themes');
@@ -46,7 +72,7 @@
       darkmode: darkmode.value || 'auto'
     };
 
-    if (num.value > 0) {
+    if (num.value.trim() !== '') {
       params.num = num.value;
     }
     if (prefix.value !== '') {

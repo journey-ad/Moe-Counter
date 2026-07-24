@@ -43,13 +43,13 @@ app.get(["/@:name", "/get/@:name"],
       darkmode: z.enum(["0", "1", "auto"]).default("auto"),
 
       // Unusual Options
-      num: z.coerce.number().int().min(0).max(1e15).default(0), // a carry-safe integer, less than `2^53-1`, and aesthetically pleasing in decimal.
+      num: z.string().default(''),
       prefix: z.coerce.number().int().min(-1).max(999999).default(-1)
     })
   }),
   async (req, res) => {
     const { name } = req.params;
-    let { theme = "moebooru", num = 0, ...rest } = req.query;
+    let { theme = "moebooru", num = "", ...rest } = req.query;
 
     // This helps with GitHub's image cache
     res.set({
@@ -57,7 +57,7 @@ app.get(["/@:name", "/get/@:name"],
       "cache-control": "max-age=0, no-cache, no-store, must-revalidate",
     });
 
-    const data = await getCountByName(String(name), Number(num));
+    const data = await getCountByName(String(name), num);
 
     if (name === "demo") {
       res.set("cache-control", "max-age=31536000");
@@ -140,9 +140,12 @@ async function pushDB() {
 async function getCountByName(name, num) {
   const defaultCount = { name, num: 0 };
 
-  if (name === "demo") return { name, num: "0123456789" };
+  if (name === "demo") {
+    // 若提供了 num（例如字母主题预览），优先显示自定义内容，否则展示默认数字
+    return { name, num: (num && num !== '0') ? num : "0123456789" };
+  }
 
-  if (num > 0) { return { name, num } };
+  if (num !== '' && num !== undefined && num !== null && num !== '0') { return { name, num } };
 
   try {
     if (!(name in __cache_counter)) {
@@ -160,3 +163,8 @@ async function getCountByName(name, num) {
     return defaultCount;
   }
 }
+
+
+
+
+
