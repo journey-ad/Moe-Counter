@@ -22,6 +22,10 @@ async function bulk(model, operations) {
 
 async function initStats() {
   await connection
+  // convert legacy string num values to numbers
+  await Count.collection.updateMany({ num: { $type: 'string' } }, [
+    { $set: { num: { $convert: { input: '$num', to: 'double', onError: 0, onNull: 0 } } } }
+  ])
   await Promise.all([Count.init(), Stat.init(), Hour.init(), Meta.init()])
   await Meta.updateOne({ _id: 'startedAt' }, { $setOnInsert: { value: Date.now() } }, { upsert: true })
   return Object.fromEntries((await Meta.find().lean()).map(row => [row._id, row.value]))
