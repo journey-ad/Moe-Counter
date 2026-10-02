@@ -52,7 +52,13 @@ export default {
     top: 'Back to top'
   },
   hero: {
-    note: 'Try a theme. See how it looks.',
+    notes: [
+      'Try a theme. See how it looks.',
+      'Swap in your own name and it works.',
+      'Looks right at home in a README.',
+      'Pick a number style you like.',
+      'One visit, one number.'
+    ],
     kicker: 'VISITOR COUNTER',
     line1: 'Every visit.',
     line2: 'Make it ',
