@@ -1,0 +1,68 @@
+html
+  head
+    title='Moe Counter - #{name}'
+    meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
+    link(rel='icon', type='image/png', href=`${site}/favicon.png`)
+    link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/normalize.css')
+    link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/bamboo.css')
+    link(rel='stylesheet/less', href=`${site}/style.less`)
+    script(less, src='https://cdn.jsdelivr.net/npm/less')
+    if ga_id
+      script(async, src=`https://www.googletagmanager.com/gtag/js?id=${ga_id}`)
+    script.
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', '#{ga_id}');
+
+      function _evt_push(type, category, label) {
+        gtag('event', type, {
+          'event_category' : category,
+          'event_label' : label
+        });
+      }
+
+    script.
+      var __global_data = { site: "#{site}" };
+
+  body
+    .container
+      h1#main_title
+        i Moe Counter!
+
+      .section-card
+        h3 Counter: #{name}
+        
+        .example-counter
+          img(src=`${site}/@${name}?theme=${theme}&padding=${padding}&offset=${offset}&scale=${scale}&align=${align}&pixelated=${pixelated}&darkmode=${darkmode}` alt="Moe Counter for #{name}")
+        
+        p Current visits: 
+          strong= count
+
+      .section-card
+        h3 How to use this counter
+        
+        p You can embed this counter in your website or GitHub README using the following code:
+
+        h5 SVG address
+        code #{site}/@#{name}
+
+        h5 Img tag
+        code &lt;img src="#{site}/@#{name}" alt="#{name}" />
+
+        h5 Markdown
+        code ![:name](#{site}/@#{name})
+
+        h5 Customize
+        p Want to customize the appearance? Go back to the 
+          a(href=`${site}/`) home page
+          |  to use the tool to generate a custom counter URL.
+
+      p.github
+        a(href='https://github.com/journey-ad/Moe-Counter', target='_blank') View on GitHub
+
+    div.back-to-top
+
+    script(async, src='https://cdn.jsdelivr.net/npm/party-js@2/bundle/party.min.js')
+    script(async, src=`${site}/script.js`)
