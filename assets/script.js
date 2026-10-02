@@ -36,7 +36,6 @@
     }
 
     const params = {
-      name: nameValue,
       theme: theme.value || 'moebooru',
       padding: padding.value || '7',
       offset: offset.value || '0',
