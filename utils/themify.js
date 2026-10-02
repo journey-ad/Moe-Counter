@@ -138,12 +138,13 @@ const themeGroupRules = [
   [/^original-/, 'original'],
 ]
 
+// Only the ids travel to the client; the visible names come from the locale files
 const themeGroups = [
-  { id: 'imageboard', en: 'IMAGEBOARD', label: '图站风格' },
-  { id: 'illustration', en: 'ILLUSTRATION', label: '插画与角色' },
-  { id: 'numeric', en: 'NUMERIC', label: '数字风格' },
-  { id: 'original', en: 'ORIGINAL', label: '原版' },
-  { id: 'animated', en: 'ANIMATED', label: '动态' },
+  { id: 'imageboard' },
+  { id: 'illustration' },
+  { id: 'numeric' },
+  { id: 'original' },
+  { id: 'animated' },
 ]
 
 function getThemeGroups(theme) {
