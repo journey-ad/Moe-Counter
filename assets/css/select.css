@@ -5,9 +5,12 @@
 .select-trigger > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .select-trigger .ui-icon { flex-shrink: 0; color: var(--muted); font-size: 12px; transition: rotate 0.2s; }
 .select-trigger:hover { border-color: var(--line-strong); }
+.select-trigger-preview { flex-shrink: 0; width: 80px; height: 24px; object-fit: cover; object-position: left center; }
 .custom-select.is-open .select-trigger { border-color: var(--blue); box-shadow: 0 0 0 3px color-mix(in srgb, var(--blue) 15%, transparent); }
 .custom-select.is-open .select-trigger .ui-icon { rotate: 180deg; }
 .select-popup { position: absolute; left: 0; right: 0; z-index: 20; display: flex; flex-direction: column; max-height: var(--select-max-height); padding: 5px; border: 1px solid var(--line-strong); border-radius: 9px; background: var(--surface); box-shadow: 0 12px 30px var(--shadow-strong); }
+.custom-select.is-wide .select-popup { right: auto; width: max(100%, 280px); }
+.select-popup--right { left: auto; right: 0; }
 .select-popup--bottom { top: calc(100% + 7px); }
 .select-popup--top { bottom: calc(100% + 7px); }
 .select-search { position: relative; flex-shrink: 0; padding-bottom: 5px; margin-bottom: 4px; border-bottom: 1px solid var(--line); }
@@ -15,10 +18,12 @@
 .select-search input { width: 100%; min-height: 38px; padding: 9px 8px 9px 28px; border: 0; border-radius: 5px; background: var(--code-bg); font-size: 11px; }
 .select-search input:focus { outline: 1px solid var(--blue); outline-offset: -1px; }
 .select-options { min-height: 0; overflow-y: auto; scrollbar-width: thin; overscroll-behavior: contain; }
-.select-option { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 36px; padding: 8px; border-radius: 5px; font-size: 11px; cursor: pointer; overflow-wrap: anywhere; }
+.select-option { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 36px; padding: 8px; border-radius: 5px; font-size: 12px; cursor: pointer; overflow-wrap: anywhere; }
+.select-option > span { max-width: 100%; line-height: 1.5; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.select-option-preview { width: 100%; height: auto; object-fit: contain; }
 .select-option.is-active { background: var(--surface-hover); }
 .select-option.is-selected { color: var(--pink-dark); }
-.select-option .ui-icon { flex-shrink: 0; font-size: 11px; }
+.select-option .ui-icon { position: absolute; top: 12px; right: 6px; font-size: 12px; }
 .select-empty { padding: 14px 8px; color: var(--muted); font-size: 11px; }
 
 @media (max-width: 600px) {

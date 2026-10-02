@@ -3,7 +3,7 @@ import { html } from '../lib/html.js'
 import { useLanguage } from '../lib/i18n.js'
 import { Icon } from './ui.js'
 
-export function Select({ id, value, options, onChange, searchable = false }) {
+export function Select({ id, value, options, onChange, searchable = false, wide = false }) {
   const { t } = useLanguage()
   const root = useRef(null)
   const trigger = useRef(null)
@@ -12,6 +12,7 @@ export function Select({ id, value, options, onChange, searchable = false }) {
   const [query, setQuery] = useState('')
   const [active, setActive] = useState(0)
   const [placement, setPlacement] = useState('bottom')
+  const [align, setAlign] = useState('left')
   const [height, setHeight] = useState(320)
   const selected = options.find((option) => option.value === value)
   const filtered = options.filter((option) => option.label.toLowerCase().includes(query.trim().toLowerCase()))
@@ -30,8 +31,11 @@ export function Select({ id, value, options, onChange, searchable = false }) {
     const below = window.innerHeight - rect.bottom - banner - 12
     const above = rect.top - header - 12
     const upwards = below < 260 && above > below
+    const popupWidth = Math.max(rect.width, wide ? 320 : 0)
+    const flip = rect.left + popupWidth > window.innerWidth - 12
     setPlacement(upwards ? 'top' : 'bottom')
-    setHeight(Math.max(100, Math.min(320, upwards ? above : below)))
+    setAlign(flip ? 'right' : 'left')
+    setHeight(Math.max(100, Math.min(460, upwards ? above : below)))
     setQuery('')
     setActive(Math.max(0, options.findIndex((option) => option.value === value)))
     setOpen(true)
@@ -82,17 +86,18 @@ export function Select({ id, value, options, onChange, searchable = false }) {
   }
 
   return html`
-    <div ref=${root} class="custom-select ${open ? 'is-open' : ''}" onKeyDown=${handleKey}
+    <div ref=${root} class="custom-select ${wide ? 'is-wide' : ''} ${open ? 'is-open' : ''}" onKeyDown=${handleKey}
       onBlur=${(event) => { if (!event.currentTarget.contains(event.relatedTarget)) close() }}>
       <button ref=${trigger} id=${id} type="button" class="select-trigger" role="combobox"
         aria-expanded=${open} aria-haspopup="listbox" aria-controls=${listId}
         aria-labelledby=${`${id}-label ${id}-value`} aria-describedby=${`${id}-hint`}
         aria-activedescendant=${open && !searchable ? activeId : undefined}
         onClick=${() => open ? close() : show()}>
+        ${selected?.preview ? html`<img class="select-trigger-preview" src=${selected.preview} alt="" />` : null}
         <span id=${`${id}-value`}>${selected?.label || value}</span><${Icon} name="chevron-down" />
       </button>
       ${open ? html`
-        <div class="select-popup select-popup--${placement}" style=${`--select-max-height: ${height}px`}>
+        <div class="select-popup select-popup--${placement} select-popup--${align}" style=${`--select-max-height: ${height}px`}>
           ${searchable ? html`
             <div class="select-search"><${Icon} name="search" />
               <input ref=${search} type="text" role="combobox" aria-expanded="true" aria-autocomplete="list"
@@ -107,6 +112,7 @@ export function Select({ id, value, options, onChange, searchable = false }) {
                 class="select-option ${active === index ? 'is-active' : ''} ${value === option.value ? 'is-selected' : ''}"
                 onPointerDown=${(event) => event.preventDefault()}
                 onPointerMove=${(event) => { if (event.pointerType === 'mouse') setActive(index) }} onClick=${() => choose(option)}>
+                ${option.preview ? html`<img class="select-option-preview" src=${option.preview} alt="" loading="lazy" decoding="async" />` : null}
                 <span>${option.label}</span>${value === option.value ? html`<${Icon} name="check" />` : null}
               </div>
             `)}

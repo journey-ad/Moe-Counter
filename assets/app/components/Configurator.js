@@ -57,7 +57,8 @@ function Field({ field, value, onChange, options, invalid, onEnter }) {
     if (field.control === 'select') {
       return html`
         <${Select} id=${field.key} value=${value} options=${options}
-          searchable=${field.key === 'theme'} onChange=${(next) => onChange(field.key, next)} />
+          searchable=${field.key === 'theme'} wide=${field.key === 'theme'}
+          onChange=${(next) => onChange(field.key, next)} />
       `
     }
 
@@ -143,7 +144,8 @@ export function Configurator({ site, config, onChange, onReset, themeNames, copi
     if (field.key === 'theme') {
       return [
         { value: 'random', label: t('config.options.random') },
-        ...themeNames.map((name) => ({ value: name, label: name }))
+        // 走 demo 计数器，不给真实计数加数
+        ...themeNames.map((name) => ({ value: name, label: name, preview: `${site}/@demo?theme=${encodeURIComponent(name)}&darkmode=0` }))
       ]
     }
     if (field.key === 'align') {
