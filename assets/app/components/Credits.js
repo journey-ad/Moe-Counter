@@ -61,7 +61,7 @@ export function Credits({ showSponsor, onTrack }) {
             Ko-fi<${Icon} name="arrow-up-right" />
           <//>
           <${PillButton}
-            href="https://ifdian.net/a/journey_ad"
+            href="https://ifdian.net/a/journey-ad"
             variant="ghost"
             onClick=${() => onTrack('click', 'normal', 'go_afdian')}
           >

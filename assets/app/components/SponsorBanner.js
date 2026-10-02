@@ -30,7 +30,7 @@ export function SponsorBanner({ visible, onDismiss, onTrack }) {
         <div class="sponsor-banner-copy"><span class="eyebrow">${t('sponsor.eyebrow')}</span><b>${t('sponsor.title')}</b><p>${t('sponsor.description')}</p></div>
         <div class="sponsor-banner-links">
           <a href="https://ko-fi.com/journey_ad" target="_blank" rel="noopener" onClick=${() => onTrack('click', 'normal', 'go_kofi')}>Ko-fi<${Icon} name="arrow-up-right" /></a>
-          <a href="https://ifdian.net/a/journey_ad" target="_blank" rel="noopener" onClick=${() => onTrack('click', 'normal', 'go_afdian')}>${t('sponsor.afdian')}<${Icon} name="arrow-up-right" /></a>
+          <a href="https://ifdian.net/a/journey-ad" target="_blank" rel="noopener" onClick=${() => onTrack('click', 'normal', 'go_afdian')}>${t('sponsor.afdian')}<${Icon} name="arrow-up-right" /></a>
         </div>
         <button class="sponsor-banner-close" type="button" aria-label=${t('sponsor.close')} onClick=${onDismiss}><${Icon} name="close" /></button>
       </div>
