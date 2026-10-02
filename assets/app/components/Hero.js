@@ -3,6 +3,13 @@ import { html } from '../lib/html.js'
 import { useLanguage } from '../lib/i18n.js'
 import { Icon, PillButton } from './ui.js'
 
+const NOTE_COUNT = 5
+const NOTE_INTERVAL = 5000
+// Delay between two characters being typed or erased
+const CHAR_STEP = 40
+// The gap between a note being erased and the next one being typed
+const NOTE_PAUSE = 150
+
 const pickTheme = (themes, exclude) => {
   const choices = themes.filter(({ name }) => name !== exclude)
   return choices.length ? choices[Math.floor(Math.random() * choices.length)].name : themes[0]?.name || 'moebooru'
@@ -22,6 +29,33 @@ export function Hero({ site, themes, onSparkle, onTrack }) {
     const timer = setTimeout(() => { if (!document.hidden) shuffle() }, 10000)
     return () => clearTimeout(timer)
   }, [themes, cycle])
+  const [note, setNote] = useState(() => Math.floor(Math.random() * NOTE_COUNT))
+  const [phase, setPhase] = useState('idle')
+  const text = t(`hero.notes.${note}`)
+  const [typed, setTyped] = useState(text.length)
+  useEffect(() => {
+    if (phase === 'idle') {
+      const timer = setTimeout(() => { if (!document.hidden) setPhase('erasing') }, NOTE_INTERVAL)
+      return () => clearTimeout(timer)
+    }
+    if (phase === 'erasing') {
+      if (!typed) {
+        const timer = setTimeout(() => {
+          setNote((current) => (current + 1 + Math.floor(Math.random() * (NOTE_COUNT - 1))) % NOTE_COUNT)
+          setPhase('typing')
+        }, NOTE_PAUSE)
+        return () => clearTimeout(timer)
+      }
+      const timer = setTimeout(() => setTyped((count) => count - 1), CHAR_STEP)
+      return () => clearTimeout(timer)
+    }
+    if (typed >= text.length) {
+      setPhase('idle')
+      return
+    }
+    const timer = setTimeout(() => setTyped((count) => count + 1), CHAR_STEP)
+    return () => clearTimeout(timer)
+  }, [phase, typed, text.length])
   const showcase = `${site}/@demo?theme=${encodeURIComponent(theme)}&darkmode=0`
 
   return html`
@@ -48,7 +82,10 @@ export function Hero({ site, themes, onSparkle, onTrack }) {
       </div>
 
       <div class="hero-art">
-        <span class="hero-art-note">${t('hero.note')}<span aria-hidden="true">↘</span></span>
+        <span class="hero-art-note">
+          <span class="hero-note-text">${text.slice(0, typed)}</span>
+          <span class="hero-art-note-arrow" aria-hidden="true">↘</span>
+        </span>
         <div class="hero-poster">
           <div class="hero-poster-sheet">
             <div class="hero-poster-top">

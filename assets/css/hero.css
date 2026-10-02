@@ -31,7 +31,8 @@
 .hero-facts .ui-icon { color: var(--pink); font-size: 11px; }
 .hero-art { position: relative; min-width: 0; padding-top: 40px; animation: enter 0.9s 0.12s var(--ease) both; }
 .hero-art-note { display: flex; justify-content: center; align-items: center; gap: 14px; position: absolute; top: -8px; left: 0; right: 0; color: var(--muted); font-family: Georgia, "Times New Roman", serif; font-size: 16px; font-style: italic; transform: rotate(-3deg); }
-.hero-art-note > span { font-size: 36px; font-style: normal; }
+.hero-art-note > .hero-art-note-arrow { font-size: 36px; font-style: normal; }
+.hero-note-text { display: inline-block; white-space: nowrap; }
 .hero-poster { position: relative; isolation: isolate; margin: 14px 10px; }
 .hero-poster::before { content: ""; position: absolute; z-index: -1; inset: 4px 9px -5px; border: 1px solid var(--line-pink); border-radius: 18px; background: var(--poster-back); transform: rotate(-5deg); }
 .hero-poster-sheet { padding: 24px; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); box-shadow: 0 16px 40px var(--shadow); transform: rotate(2deg); }
