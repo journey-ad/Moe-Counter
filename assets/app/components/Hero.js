@@ -18,7 +18,7 @@ export function Hero({ site, themes, onSparkle, onTrack }) {
     const timer = setInterval(() => { if (!document.hidden) shuffle() }, 10000)
     return () => clearInterval(timer)
   }, [themes])
-  const showcase = `${site}/@Moe-counter.github?theme=${encodeURIComponent(theme)}&darkmode=0`
+  const showcase = `${site}/@demo?theme=${encodeURIComponent(theme)}&darkmode=0`
 
   return html`
     <section class="hero">
