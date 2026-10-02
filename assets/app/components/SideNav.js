@@ -9,16 +9,17 @@ const NAV_ITEMS = [
   { id: 'credits', label: 'nav.credits' }
 ]
 
-export function SideNav() {
+export function SideNav({ site, page = 'home' }) {
   const active = useScrollSpy(NAV_ITEMS.map(({ id }) => id))
   const { t } = useLanguage()
 
   return html`
     <nav class="side-nav" aria-label=${t('nav.label')}>
       ${NAV_ITEMS.map(({ id, label }) => html`
-        <a key=${id} href=${`#${id}`} class=${active === id ? 'is-active' : ''}
-          aria-current=${active === id ? 'location' : undefined}>${t(label)}</a>
+        <a key=${id} href=${page === 'home' ? `#${id}` : `${site}/#${id}`} class=${page === 'home' && active === id ? 'is-active' : ''}
+          aria-current=${page === 'home' && active === id ? 'location' : undefined}>${t(label)}</a>
       `)}
+      <a href=${`${site}/rank`} class=${page === 'rank' ? 'is-active' : ''} aria-current=${page === 'rank' ? 'page' : undefined}>${t('nav.rank')}</a>
     </nav>
   `
 }

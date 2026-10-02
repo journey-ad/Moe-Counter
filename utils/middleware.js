@@ -1,36 +1,19 @@
 function parseError(error) {
-  const err = JSON.parse(error)[0];
+  const err = error.issues[0];
 
   return {
     code: 400,
-    message: `The field \`${err.path[0]}\` is invalid. ${err.message}`,
+    message: `The field \`${err.path.join('.') || 'request'}\` is invalid. ${err.message}`,
   }
 }
-function validateInput(parseFn, input) {
-  const result = parseFn(input);
-  if (!result.success) {
-    return parseError(result.error);
-  }
-  return null;
-}
-
 module.exports = {
   ZodValid: ({ headers, params, query, body }) => {
     const handler = (req, res, next) => {
-      const validations = [
-        { input: req.headers, parseFn: headers?.safeParse },
-        { input: req.params, parseFn: params?.safeParse },
-        { input: req.query, parseFn: query?.safeParse },
-        { input: req.body, parseFn: body?.safeParse },
-      ];
-
-      for (const { input, parseFn } of validations) {
-        if (parseFn) {
-          const error = validateInput(parseFn, input);
-          if (error) {
-            return res.status(400).send(error);
-          }
-        }
+      for (const [key, schema] of Object.entries({ headers, params, query, body })) {
+        if (!schema) continue;
+        const result = schema.safeParse(req[key]);
+        if (!result.success) return res.status(400).send(parseError(result.error));
+        req[key] = result.data;
       }
 
       next();

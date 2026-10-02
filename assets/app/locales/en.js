@@ -1,4 +1,27 @@
 export default {
+  rank: {
+    page: { title: 'Rank · Moe Counter!', description: 'Counter rankings, referring websites and request traffic for Moe Counter.' },
+    kicker: 'MOE COUNTER / SERVICE ACTIVITY', title: 'Counter rankings',
+    intro: 'Top 100 counters and referring websites',
+    home: 'Back to home', loading: 'Updating statistics…', updated: 'Updated {time}', refreshNote: 'Updates every minute', refresh: 'Refresh',
+    error: 'Unable to load statistics', stale: 'Refresh failed · showing previous data',
+    siteRpm: 'Site request rate', rpmNote: '5-minute average',
+    site24h: '24h requests', siteNote: 'Total over the last 24 hours',
+    unknown: 'Unknown sources', unknownNote: '{total} all time · {rpm} RPM',
+    warming: 'Collecting data',
+    counters: 'Counters',
+    sources: 'Referring websites',
+    position: 'Position', id: 'Counter ID', hostname: 'Hostname', total: 'All time', empty: 'No data yet',
+    topNote: 'TOP 100', boards: 'Most active', sort: 'Ranking order',
+    sort_rpm: 'By RPM', sort_24h: 'By 24h calls', sort_total: 'By all time',
+    chart: {
+      kicker: 'SITE REQUESTS / TRAFFIC', title: 'Request traffic', range: 'Traffic time range',
+      minute_24h: '24h · minutes', hour_24h: '24h · hours', hour_7d: '7 days · hours',
+      perMinute: 'Requests / minute', perHour: 'Requests / hour',
+      description: 'Counter request traffic',
+      empty: 'No data yet', missing: 'No data', requests: '{count} requests'
+    }
+  },
   page: {
     title: 'Moe Counter! · A visitor counter for your website',
     description: 'An image-based visitor counter for your README, blog or website, with {count} themes to choose from.'
@@ -18,6 +41,7 @@ export default {
     switchToDark: 'Switch to dark mode'
   },
   nav: {
+    rank: 'Rank',
     home: 'Moe Counter! — Back to top',
     source: 'GitHub',
     label: 'Main navigation',
@@ -209,6 +233,7 @@ export default {
     close: 'Close the support banner'
   },
   footer: {
+    requestsPerSecond: 'Currently receiving about {count} requests per second',
     description: 'A visitor counter for your website. Host it on your own server to manage your data.',
     license: 'MIT License, except for themes.',
     communityThemes: '{count} themes, made by the community.',

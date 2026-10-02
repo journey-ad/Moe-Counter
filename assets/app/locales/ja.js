@@ -1,4 +1,27 @@
 export default {
+  rank: {
+    page: { title: 'ランキング · Moe Counter!', description: 'カウンターと参照元サイトのランキング、リクエスト数の推移を確認できます。' },
+    kicker: 'MOE COUNTER / 利用状況', title: 'カウンターランキング',
+    intro: 'カウンターと参照元サイトの Top 100',
+    home: 'ホームへ', loading: '統計を更新中…', updated: '更新日時 {time}', refreshNote: '毎分更新', refresh: '更新',
+    error: '読み込み失敗', stale: '更新失敗 · 前回のデータを表示',
+    siteRpm: '全体のリクエスト速度', rpmNote: '直近 5 分間の平均',
+    site24h: '24 時間のリクエスト', siteNote: '直近 24 時間の合計',
+    unknown: '参照元不明', unknownNote: '累計 {total} 回 · {rpm} RPM',
+    warming: 'データ収集中',
+    counters: 'カウンター',
+    sources: '参照元サイト',
+    position: '順位', id: 'カウンター ID', hostname: 'ホスト名', total: '累計', empty: 'データなし',
+    topNote: 'TOP 100', boards: '利用ランキング', sort: 'ランキングの並び順',
+    sort_rpm: 'RPM 順', sort_24h: '24h 件数順', sort_total: '累計順',
+    chart: {
+      kicker: '全体のリクエスト / TRAFFIC', title: 'リクエスト推移', range: 'グラフの表示期間',
+      minute_24h: '24h · 分単位', hour_24h: '24h · 時間単位', hour_7d: '7 日 · 時間単位',
+      perMinute: 'リクエスト数 / 分', perHour: 'リクエスト数 / 時間',
+      description: 'カウンターのリクエスト推移',
+      empty: 'データなし', missing: 'データなし', requests: '{count} リクエスト'
+    }
+  },
   page: {
     title: 'Moe Counter! · サイトのアクセスカウンター',
     description: 'ブログやウェブサイトにアクセス数を表示する画像カウンターです。{count} 種類のテーマから選べます。'
@@ -18,6 +41,7 @@ export default {
     switchToDark: 'ダークモードに切り替える'
   },
   nav: {
+    rank: 'ランキング',
     home: 'Moe Counter! — ページの先頭へ',
     source: 'ソースコード',
     label: 'メインナビゲーション',
@@ -209,6 +233,7 @@ export default {
     close: '支援の案内を閉じる'
   },
   footer: {
+    requestsPerSecond: '現在、毎秒約 {count} 件のリクエストを受信',
     description: 'サイトのアクセス数を記録します。自分のサーバーで運用して、データを管理することもできます。',
     license: 'MIT ライセンスで公開しています（テーマ素材を除く）。',
     communityThemes: '{count} 種類のテーマがコミュニティから提供されています。',

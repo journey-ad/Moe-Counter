@@ -3,8 +3,8 @@ html(lang='en')
   head
     meta(charset='UTF-8')
     meta(name='viewport', content='width=device-width, initial-scale=1')
-    title='Moe Counter! · A visitor counter for your website'
-    meta(name='description', content=`An image-based visitor counter for your README, blog or website, with ${themeCount} themes to choose from.`)
+    title=page === 'rank' ? 'Rank · Moe Counter!' : 'Moe Counter! · A visitor counter for your website'
+    meta(name='description', content=page === 'rank' ? 'Counter rankings, referring websites and request traffic for Moe Counter.' : `An image-based visitor counter for your README, blog or website, with ${themeCount} themes to choose from.`)
     meta(name='theme-color', content='#faf8f5')
     link(rel='icon', type='image/png', href=`${site}/favicon.png`)
     script.
@@ -40,7 +40,8 @@ html(lang='en')
       }
 
     script(type='application/json', id='global-data') !{globalData}
-    script(defer, src=`${site}/vendor/party.min.js`)
+    if page !== 'rank'
+      script(defer, src=`${site}/vendor/party.min.js`)
 
   body
     a.skip-link(href='#main') Skip to content
@@ -49,11 +50,15 @@ html(lang='en')
 
     noscript
       h1 Moe Counter!
-      p A visitor counter for your website. Replace <code>:name</code> with your own unique counter name.
-      ul
-        li Image URL: <code>#{site}/@:name</code>
-        li HTML: <code>&lt;img src="#{site}/@:name" alt=":name" /&gt;</code>
-        li Markdown: <code>![:name](#{site}/@:name)</code>
-      p Enable JavaScript to customize your counter and browse themes.
+      if page === 'rank'
+        p Enable JavaScript to view rankings and request traffic.
+        a(href=`${site}/`) Back to Moe Counter
+      else
+        p A visitor counter for your website. Replace <code>:name</code> with your own unique counter name.
+        ul
+          li Image URL: <code>#{site}/@:name</code>
+          li HTML: <code>&lt;img src="#{site}/@:name" alt=":name" /&gt;</code>
+          li Markdown: <code>![:name](#{site}/@:name)</code>
+        p Enable JavaScript to customize your counter and browse themes.
 
     script(type='module', src=`${site}/app/main.js`)

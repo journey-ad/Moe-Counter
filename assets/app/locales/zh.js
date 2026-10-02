@@ -1,4 +1,27 @@
 export default {
+  rank: {
+    page: { title: '排行榜 · Moe Counter!', description: '查看计数器与来源网站排行榜，以及计数服务的请求趋势。' },
+    kicker: 'MOE COUNTER / 服务统计', title: '计数器排行榜',
+    intro: '计数器与来源网站 Top 100',
+    home: '返回首页', loading: '正在更新统计…', updated: '更新 {time}', refreshNote: '每分钟更新', refresh: '刷新',
+    error: '加载失败', stale: '刷新失败 · 显示上次数据',
+    siteRpm: '整站请求速率', rpmNote: '近 5 分钟均值',
+    site24h: '24 小时调用量', siteNote: '近 24 小时累计',
+    unknown: '未知来源', unknownNote: '累计 {total} · {rpm} RPM',
+    warming: '数据积累中',
+    counters: '计数器',
+    sources: '来源网站',
+    position: '排名', id: '计数器 ID', hostname: '来源域名', total: '累计', empty: '暂无数据',
+    topNote: 'TOP 100', boards: '调用排行', sort: '排行榜排序',
+    sort_rpm: '按 RPM', sort_24h: '按 24h 次数', sort_total: '按累计次数',
+    chart: {
+      kicker: '整站请求 / TRAFFIC', title: '请求趋势', range: '趋势图时间范围',
+      minute_24h: '24h · 分钟', hour_24h: '24h · 小时', hour_7d: '7 天 · 小时',
+      perMinute: '请求数 / 分钟', perHour: '请求数 / 小时',
+      description: '整站请求趋势',
+      empty: '暂无数据', missing: '无数据', requests: '{count} 次请求'
+    }
+  },
   page: {
     title: 'Moe Counter! · 网站访问计数器',
     description: '用一张图片在项目说明、博客或网页中显示访问次数，支持 {count} 种主题。'
@@ -18,6 +41,7 @@ export default {
     switchToDark: '切换为深色模式'
   },
   nav: {
+    rank: '排行榜',
     home: 'Moe Counter! — 回到顶部',
     source: '源代码',
     label: '主导航',
@@ -209,6 +233,7 @@ export default {
     close: '关闭赞助横幅'
   },
   footer: {
+    requestsPerSecond: '目前每秒收到约 {count} 次请求',
     description: '为网站记录访问次数。也可以部署到自己的服务器上，自行管理数据。',
     license: '采用 MIT 许可证，主题素材除外。',
     communityThemes: '{count} 种主题，由社区提供。',

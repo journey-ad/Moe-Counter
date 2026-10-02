@@ -48,7 +48,7 @@ export async function loadInitialLanguage() {
   }
 }
 
-export function LanguageProvider({ initialLocale, themeCount, children }) {
+export function LanguageProvider({ initialLocale, themeCount, page = 'home', children }) {
   const [{ language, messages }, setLocale] = useState(initialLocale)
   const [pendingLanguage, setPendingLanguage] = useState(null)
   const request = useRef(0)
@@ -59,11 +59,12 @@ export function LanguageProvider({ initialLocale, themeCount, children }) {
 
   useEffect(() => {
     document.documentElement.lang = language === 'zh' ? 'zh-CN' : language
-    document.title = t('page.title')
-    document.querySelector('meta[name="description"]')?.setAttribute('content', t('page.description', { count: themeCount }))
+    const prefix = page === 'rank' ? 'rank.page' : 'page'
+    document.title = t(`${prefix}.title`)
+    document.querySelector('meta[name="description"]')?.setAttribute('content', t(`${prefix}.description`, { count: themeCount }))
     const skip = document.querySelector('.skip-link')
     if (skip) skip.textContent = t('common.skip')
-  }, [language, themeCount, t])
+  }, [language, themeCount, page, t])
 
   const changeLanguage = async (next) => {
     if (!languages.some(({ code }) => code === next)) return

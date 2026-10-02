@@ -7,7 +7,7 @@ import { Icon } from './ui.js'
 
 const REPO_URL = 'https://github.com/journey-ad/Moe-Counter'
 
-export function SiteHeader({ site, onTrack }) {
+export function SiteHeader({ site, onTrack = () => {}, page = 'home' }) {
   const scrolled = useScrolled(8)
   const { language, pendingLanguage, setLanguage, t } = useLanguage()
   const { appearance, toggleAppearance } = useAppearance()
@@ -15,11 +15,11 @@ export function SiteHeader({ site, onTrack }) {
 
   return html`
     <header class="site-header ${scrolled ? 'is-scrolled' : ''}">
-      <a class="brand" href="#top" aria-label=${t('nav.home')}>
+      <a class="brand" href=${page === 'rank' ? `${site}/` : '#top'} aria-label=${t('nav.home')}>
         <span class="brand-mark" aria-hidden="true"><img src=${`${site}/favicon.png`} alt="" /></span>
         <span class="brand-text">Moe Counter<i>!</i></span>
       </a>
-      <${SideNav} />
+      <${SideNav} site=${site} page=${page} />
       <div class="header-actions">
         <div class="language-switch" role="group" aria-label=${t('common.language')} aria-busy=${Boolean(pendingLanguage)}>
           ${languages.map(({ code, label, name }) => html`
