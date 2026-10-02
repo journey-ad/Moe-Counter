@@ -135,6 +135,10 @@
 
 ![capoo-2](https://count.getloli.com/@demo?theme=capoo-2)
 
+##### cat-girls-yay
+
+![cat-girls-yay](https://count.getloli.com/@demo?theme=cat-girls-yay)
+
 ##### e621
 
 ![e621](https://count.getloli.com/@demo?theme=e621)
