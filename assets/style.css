@@ -245,8 +245,8 @@ fieldset { margin: 0; padding: 0; border: 0; }
 .hero-poster-top { color: var(--muted); }
 .hero-poster-top b { display: flex; align-items: center; gap: 7px; font-size: 8px; font-weight: 500; white-space: nowrap; color: var(--blue-deep); }
 .hero-poster-top .status-dot { width: 5px; height: 5px; }
-.hero-poster-stage { display: grid; place-items: center; min-height: 178px; margin: 16px 0; padding: 24px 12px; border: 1px solid var(--line); border-radius: 9px; background: var(--square-fill), var(--stage); }
-.hero-poster-stage img { width: 100%; height: auto; max-height: 150px; object-fit: contain; image-rendering: pixelated; animation: enter 0.35s var(--ease) both; }
+.hero-poster-stage { display: grid; place-items: center; height: 178px; margin: 16px 0; padding: 24px 12px; border: 1px solid var(--line); border-radius: 9px; background: var(--square-fill), var(--stage); }
+.hero-poster-stage img { width: 100%; height: 100%; object-fit: contain; image-rendering: pixelated; animation: enter 0.35s var(--ease) both; }
 .hero-poster-bottom { color: var(--purple); letter-spacing: 0; }
 .title-star { display: grid; place-items: center; width: 24px; height: 24px; padding: 0; color: var(--pink); font-size: 19px; transition: transform 0.35s; }
 .title-star:hover { transform: rotate(90deg); }
@@ -535,7 +535,7 @@ fieldset { margin: 0; padding: 0; border: 0; }
   :lang(zh) .hero h1 { font-size: clamp(38px, 7vw, 56px); }
   :lang(ja) .hero h1 { font-size: clamp(31px, 5.5vw, 46px); }
   .hero-art { width: min(100%, 510px); margin-inline: auto; }
-  .hero-poster-stage { min-height: 180px; }
+  .hero-poster-stage { height: 180px; }
   .hero::before { top: calc(var(--header-h) + 12px); right: 12px; width: 140px; height: 94px; opacity: 0.75; }
   .section::after { top: 20px; width: 110px; height: 90px; }
   #tool::after, #credits::after { width: 130px; height: 87px; }
@@ -586,7 +586,7 @@ fieldset { margin: 0; padding: 0; border: 0; }
   .hero-poster-sheet { padding: 18px; }
   .hero-poster-top { font-size: 7px; }
   .hero-poster-top b { font-size: 7px; gap: 5px; }
-  .hero-poster-stage { min-height: 137px; padding: 22px 9px; }
+  .hero-poster-stage { height: 137px; padding: 22px 9px; }
   .hero-poster-bottom { font-size: 8px; }
   .hero-sticker { width: 66px; height: 66px; right: -9px; bottom: -14px; gap: 4px; }
   .hero-sticker > .ui-icon { font-size: 11px; }
