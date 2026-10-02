@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "node --test"
+    "test": "node --test --test-timeout=15000"
   },
   "keywords": [],
   "author": "journey-ad",

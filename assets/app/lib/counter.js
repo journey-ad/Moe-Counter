@@ -1,6 +1,6 @@
 export function readGlobalData() {
   const node = document.getElementById('global-data')
-  const fallback = { site: '', page: 'home', groups: [], themes: [] }
+  const fallback = { site: '', page: 'home', name: '', groups: [], themes: [] }
 
   try {
     return { ...fallback, ...JSON.parse(node?.textContent || '{}') }

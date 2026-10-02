@@ -91,6 +91,28 @@ test('maintainStats 把整站分钟数据汇总成小时数据并清理过期明
   assert.deepEqual(left.map(row => row.name), ['keep'])
 })
 
+test('getSeries 只返回指定计数器的分钟数据并按时间升序', async () => {
+  const now = Math.floor(Date.now() / MINUTE) * MINUTE
+  await db.writeSnapshot({
+    counters: [],
+    stats: [
+      { dimension: 'counter', name: 'series-a', bucket: now - 2 * MINUTE, num: 2 },
+      { dimension: 'counter', name: 'series-a', bucket: now - MINUTE, num: 5 },
+      { dimension: 'counter', name: 'series-b', bucket: now - MINUTE, num: 9 },
+      // The lifetime row sits at bucket -1 and must stay out of the series
+      { dimension: 'counter', name: 'series-a', bucket: -1, num: 100 },
+      { dimension: 'site', name: '', bucket: now - MINUTE, num: 7 }
+    ],
+    updatedAt: now
+  })
+
+  const rows = await db.getSeries('series-a', now - 3 * MINUTE, now)
+  assert.deepEqual(rows, [
+    { bucket: now - 2 * MINUTE, num: 2 },
+    { bucket: now - MINUTE, num: 5 }
+  ])
+})
+
 test.after(async () => {
   await db.close()
   fs.rmSync(tempDir, { recursive: true, force: true })

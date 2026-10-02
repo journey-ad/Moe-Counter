@@ -7,10 +7,8 @@ const os = require('node:os')
 const path = require('node:path')
 const Module = require('node:module')
 
-const INTERFACE = [
-  'getNum', 'getAll', 'setNum', 'setNumMulti', 'initStats', 'getStats',
-  'writeSnapshot', 'getRank', 'getSummary', 'getTraffic', 'maintainStats', 'close'
-]
+// The contract is asserted in db/index.js, so read the list from there
+const { INTERFACE } = require('../db/interface')
 
 const indexPath = require.resolve('../db')
 const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'moe-counter-interface-'))

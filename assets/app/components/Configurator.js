@@ -144,7 +144,7 @@ export function Configurator({ site, config, onChange, onReset, themeNames, copi
     if (field.key === 'theme') {
       return [
         { value: 'random', label: t('config.options.random') },
-        // 走 demo 计数器，不给真实计数加数
+        // The demo counter is not stored, so previews never touch a real count
         ...themeNames.map((name) => ({ value: name, label: name, preview: `${site}/@demo?theme=${encodeURIComponent(name)}&darkmode=0` }))
       ]
     }
