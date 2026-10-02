@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master
+    tags:
+      - 'v*'
     # Optional: trigger only on specific file changes
     # paths:
     #   - 'Dockerfile'
@@ -40,8 +42,10 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=ref,event=branch
-            type=sha,prefix=
-            type=raw,value=latest,enable={{is_default_branch}}
+            type=ref,event=tag
+            type=semver,pattern=v{{major}}.{{minor}}
+            type=sha,prefix=,enable=${{ github.ref_type == 'branch' }}
+            type=raw,value=latest,enable=${{ github.ref_type == 'branch' && github.ref_name == 'master' }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
