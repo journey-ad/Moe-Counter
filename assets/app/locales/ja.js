@@ -233,7 +233,7 @@ export default {
     close: '支援の案内を閉じる'
   },
   footer: {
-    requestsPerSecond: '現在、毎秒約 {count} 件のリクエストを受信',
+    requestsPerMinute: '現在、毎分約 {count} 件のリクエストを受信',
     description: 'サイトのアクセス数を記録します。自分のサーバーで運用して、データを管理することもできます。',
     license: 'MIT ライセンスで公開しています（テーマ素材を除く）。',
     communityThemes: '{count} 種類のテーマがコミュニティから提供されています。',

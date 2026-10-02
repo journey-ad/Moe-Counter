@@ -28,8 +28,8 @@ export function SiteFooter({ site, themeCount, page = 'home', rpm }) {
     return () => { controller.abort(); clearInterval(timer); document.removeEventListener('visibilitychange', load) }
   }, [site, page])
   const currentRpm = page === 'rank' ? rpm : siteRpm
-  const requestsPerSecond = Number.isFinite(currentRpm)
-    ? new Intl.NumberFormat(language, { maximumSignificantDigits: 3 }).format(currentRpm / 60)
+  const requestsPerMinute = Number.isFinite(currentRpm)
+    ? new Intl.NumberFormat(language, { maximumSignificantDigits: 3 }).format(currentRpm)
     : '—'
   const home = page === 'rank' ? `${site}/` : ''
   return html`
@@ -66,7 +66,7 @@ export function SiteFooter({ site, themeCount, page = 'home', rpm }) {
       </div>
 
       <div class="footer-bottom">
-        <span>Moe Counter! ${t('footer.requestsPerSecond', { count: requestsPerSecond })}</span>
+        <span>Moe Counter! ${t('footer.requestsPerMinute', { count: requestsPerMinute })}</span>
       </div>
     </footer>
   `

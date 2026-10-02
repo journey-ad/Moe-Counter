@@ -233,7 +233,7 @@ export default {
     close: '关闭赞助横幅'
   },
   footer: {
-    requestsPerSecond: '目前每秒收到约 {count} 次请求',
+    requestsPerMinute: '目前每分钟收到约 {count} 次请求',
     description: '为网站记录访问次数。也可以部署到自己的服务器上，自行管理数据。',
     license: '采用 MIT 许可证，主题素材除外。',
     communityThemes: '{count} 种主题，由社区提供。',

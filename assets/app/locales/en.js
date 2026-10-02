@@ -233,7 +233,7 @@ export default {
     close: 'Close the support banner'
   },
   footer: {
-    requestsPerSecond: 'Currently receiving about {count} requests per second',
+    requestsPerMinute: 'Currently receiving about {count} requests per minute',
     description: 'A visitor counter for your website. Host it on your own server to manage your data.',
     license: 'MIT License, except for themes.',
     communityThemes: '{count} themes, made by the community.',
