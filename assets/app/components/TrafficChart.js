@@ -2,8 +2,12 @@ import { useEffect, useRef, useState } from 'preact/hooks'
 import { html } from '../lib/html.js'
 import { useLanguage } from '../lib/i18n.js'
 
-export function TrafficChart({ data }) {
+const RANK_LABELS = ['description', 'empty', 'missing']
+
+export function TrafficChart({ data, labels }) {
   const { t, language } = useLanguage()
+  const text = labels || Object.fromEntries(RANK_LABELS.map(key => [key, t(`rank.chart.${key}`)]))
+  const requests = labels?.requests || ((count) => t('rank.chart.requests', { count }))
   const ref = useRef(null)
   const [width, setWidth] = useState(960)
   const [active, setActive] = useState(null)
@@ -48,14 +52,14 @@ export function TrafficChart({ data }) {
   return html`
     <div class="traffic-plot">
       <svg ref=${ref} viewBox=${`0 0 ${width} 300`} role="img" tabIndex="0"
-        aria-label=${t('rank.chart.description')} onPointerMove=${select} onPointerDown=${select}
+        aria-label=${text.description} onPointerMove=${select} onPointerDown=${select}
         onPointerLeave=${() => setActive(null)} onBlur=${() => setActive(null)}
         onKeyDown=${event => {
           if (!points.length || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return
           event.preventDefault()
           setActive(event.key === 'Home' ? 0 : event.key === 'End' ? points.length - 1 : Math.max(0, Math.min(points.length - 1, (active ?? points.length - 1) + (event.key === 'ArrowRight' ? 1 : -1))))
         }}>
-        <title>${t('rank.chart.description')}</title>
+        <title>${text.description}</title>
         ${Array.from({ length: 5 }, (_, i) => html`
           <g key=${i}><line class="traffic-grid" x1=${left} x2=${right} y1=${y(ceiling * i / 4)} y2=${y(ceiling * i / 4)} />
             <text class="traffic-label" x=${left - 10} y=${y(ceiling * i / 4) + 4} text-anchor="end">${number.format(ceiling * i / 4)}</text></g>
@@ -70,9 +74,9 @@ export function TrafficChart({ data }) {
         ${point ? html`<line class="traffic-cursor" x1=${x(active)} x2=${x(active)} y1=${top} y2=${bottom} />
           ${point.count !== null ? html`<circle class="traffic-dot" cx=${x(active)} cy=${y(point.count)} r="4" />` : null}` : null}
       </svg>
-      ${!segments.length ? html`<p class="traffic-no-data">${t('rank.chart.empty')}</p>` : null}
+      ${!segments.length ? html`<p class="traffic-no-data">${text.empty}</p>` : null}
       ${point ? html`<div class="traffic-tooltip" role="status"><span>${date(point.time, true)}</span>
-        <b>${point.count === null ? t('rank.chart.missing') : t('rank.chart.requests', { count: new Intl.NumberFormat(language).format(point.count) })}</b></div>` : null}
+        <b>${point.count === null ? text.missing : requests(new Intl.NumberFormat(language).format(point.count))}</b></div>` : null}
     </div>
   `
 }

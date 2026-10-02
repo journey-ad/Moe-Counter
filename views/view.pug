@@ -1,0 +1,13 @@
+extends layout
+
+block meta
+  title #{name} · Moe Counter!
+  meta(name='description', content=`Visit statistics for the counter ${name} on Moe Counter.`)
+
+block noscript
+  h1 Moe Counter!
+  p Enable JavaScript to view the counter detail.
+  ul
+    li Counter ID: <code>#{name}</code>
+    li Image URL: <code>#{site}/@#{name}</code>
+  a(href=`${site}/`) Back to Moe Counter

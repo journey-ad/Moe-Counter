@@ -15,11 +15,27 @@ export default {
     topNote: 'TOP 100', boards: '利用ランキング', sort: 'ランキングの並び順',
     sort_rpm: 'RPM 順', sort_24h: '24h 件数順', sort_total: '累計順',
     chart: {
-      kicker: '全体のリクエスト / TRAFFIC', title: 'リクエスト推移', range: 'グラフの表示期間',
+      kicker: '全体のリクエスト / TRAFFIC', title: 'リクエスト推移',
       minute_24h: '24h · 分単位', hour_24h: '24h · 時間単位', hour_7d: '7 日 · 時間単位',
       perMinute: 'リクエスト数 / 分', perHour: 'リクエスト数 / 時間',
       description: 'カウンターのリクエスト推移',
       empty: 'データなし', missing: 'データなし', requests: '{count} リクエスト'
+    }
+  },
+  view: {
+    page: { title: '{name} · Moe Counter!', description: 'カウンター {name} のアクセス数とリクエストの推移。' },
+    kicker: 'カウンターの詳細',
+    intro: '{name} の累計アクセス数と最近のリクエスト推移。',
+    rank: 'ランキングを見る', loading: '統計を更新中…', updated: '{time} 更新', refreshNote: '1 分ごとに更新', refresh: '更新',
+    error: '読み込みに失敗しました', stale: '更新に失敗 · 前回のデータを表示しています',
+    total: '累計アクセス', totalNote: 'カウンター作成からの累計回数',
+    calls24h: '24 時間の呼び出し数', callsNote: '直近 24 時間の合計',
+    embed: '埋め込み URL', embedNote: 'README やページーに貼ると计数が始まります',
+    warming: 'データ収集中です。24 時間の範囲はまだ完全ではありません',
+    chart: {
+      kicker: 'リクエスト推移', title: '5 分あたりの呼び出し数',
+      perMinute: 'リクエスト / 5 分', description: 'このカウンターが 5 分間に何回呼び出されたかの折れ線グラフ',
+      empty: 'データがありません', missing: 'データなし', requests: '{count} リクエスト'
     }
   },
   page: {

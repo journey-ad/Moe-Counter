@@ -15,11 +15,27 @@ export default {
     topNote: 'TOP 100', boards: '调用排行', sort: '排行榜排序',
     sort_rpm: '按 RPM', sort_24h: '按 24h 次数', sort_total: '按累计次数',
     chart: {
-      kicker: '整站请求 / TRAFFIC', title: '请求趋势', range: '趋势图时间范围',
+      kicker: '整站请求 / TRAFFIC', title: '请求趋势',
       minute_24h: '24h · 分钟', hour_24h: '24h · 小时', hour_7d: '7 天 · 小时',
       perMinute: '请求数 / 分钟', perHour: '请求数 / 小时',
       description: '整站请求趋势',
       empty: '暂无数据', missing: '无数据', requests: '{count} 次请求'
+    }
+  },
+  view: {
+    page: { title: '{name} · Moe Counter!', description: '计数器 {name} 的访问次数与调用趋势。' },
+    kicker: '计数器详情',
+    intro: '{name} 的累计访问次数与最近调用趋势。',
+    rank: '查看排行榜', loading: '正在更新统计…', updated: '更新 {time}', refreshNote: '每分钟更新', refresh: '刷新',
+    error: '加载失败', stale: '刷新失败 · 显示上次数据',
+    total: '累计访问', totalNote: '自创建以来的累计次数',
+    calls24h: '24 小时调用量', callsNote: '近 24 小时累计',
+    embed: '嵌入地址', embedNote: '放到 README 或网页中即可开始计数',
+    warming: '数据积累中，24 小时范围尚不完整',
+    chart: {
+      kicker: '调用趋势', title: '每 5 分钟调用次数',
+      perMinute: '请求数 / 5 分钟', description: '该计数器每 5 分钟被调用的次数折线图',
+      empty: '暂无数据', missing: '数据缺失', requests: '{count} 次请求'
     }
   },
   page: {

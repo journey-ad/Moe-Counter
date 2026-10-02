@@ -15,10 +15,26 @@ export default {
     topNote: 'TOP 100', boards: 'Most active', sort: 'Ranking order',
     sort_rpm: 'By RPM', sort_24h: 'By 24h calls', sort_total: 'By all time',
     chart: {
-      kicker: 'SITE REQUESTS / TRAFFIC', title: 'Request traffic', range: 'Traffic time range',
+      kicker: 'SITE REQUESTS / TRAFFIC', title: 'Request traffic',
       minute_24h: '24h · minutes', hour_24h: '24h · hours', hour_7d: '7 days · hours',
       perMinute: 'Requests / minute', perHour: 'Requests / hour',
       description: 'Counter request traffic',
+      empty: 'No data yet', missing: 'No data', requests: '{count} requests'
+    }
+  },
+  view: {
+    page: { title: '{name} · Moe Counter!', description: 'Visit count and request trend for the counter {name}.' },
+    kicker: 'Counter detail',
+    intro: 'Total visits and the recent request trend for {name}.',
+    rank: 'View rankings', loading: 'Updating statistics…', updated: 'Updated {time}', refreshNote: 'Updates every minute', refresh: 'Refresh',
+    error: 'Could not load', stale: 'Refresh failed · showing the last data',
+    total: 'Total visits', totalNote: 'Counted since the counter was created',
+    calls24h: 'Calls in 24h', callsNote: 'Total over the last 24 hours',
+    embed: 'Embed URL', embedNote: 'Put this in your README or page to start counting',
+    warming: 'Still collecting, the 24 hour range is not complete yet',
+    chart: {
+      kicker: 'Request trend', title: 'Calls per 5 minutes',
+      perMinute: 'Requests / 5 min', description: 'Line chart of how often this counter is called every 5 minutes',
       empty: 'No data yet', missing: 'No data', requests: '{count} requests'
     }
   },
