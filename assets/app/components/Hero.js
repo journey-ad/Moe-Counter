@@ -6,7 +6,7 @@ import { Icon, PillButton } from './ui.js'
 const NOTE_COUNT = 5
 const NOTE_INTERVAL = 5000
 // Delay between two characters being typed or erased
-const CHAR_STEP = 40
+const CHAR_STEP = 32
 // The gap between a note being erased and the next one being typed
 const NOTE_PAUSE = 150
 
