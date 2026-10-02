@@ -1,4 +1,4 @@
-// htm 绑定到 preact 的 h，模板字面量即可当 JSX 用
+// htm bound to preact's h, so template literals work as JSX
 import { h } from 'preact'
 import htm from 'htm'
 

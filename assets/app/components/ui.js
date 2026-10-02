@@ -6,7 +6,7 @@ export function Icon({ name, className = '' }) {
   return html`<span class="ui-icon ui-icon--${name} ${className}" aria-hidden="true"></span>`
 }
 
-/* 进入视口后上浮显现，用在版块标题上 */
+/* Fades up once in view, used on section headings */
 export function Reveal({ className = '', children }) {
   const [ref, inView] = useInView()
 

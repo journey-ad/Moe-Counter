@@ -131,7 +131,7 @@ function getCountImage(params) {
 `
 }
 
-// 分类规则可同时匹配多个类别
+// A theme may match several rules at once
 const themeGroupRules = [
   [/(num$|^nixietube-|^(normal|sketch)-[12]$|^booru-(mof|rfck)$)/, 'numeric'],
   [/^(booru-|moebooru|gelbooru|rule34|e621|shimmie2)/, 'imageboard'],

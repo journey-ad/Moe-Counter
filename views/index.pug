@@ -13,7 +13,7 @@ html(lang='en')
         if (appearance === 'dark' || appearance === 'light') document.documentElement.dataset.appearance = appearance;
       } catch {}
     link(rel='stylesheet', href=`${site}/style.css`)
-    //- 无构建，浏览器直接加载 ESM，裸模块名由 import map 解析
+    //- No build step: the browser loads ESM directly and the import map resolves bare specifiers
     script(type='importmap').
       {
         "imports": {

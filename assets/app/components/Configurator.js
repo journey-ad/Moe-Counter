@@ -81,7 +81,7 @@ function Field({ field, value, onChange, options, invalid, onEnter }) {
             onInput=${(event) => {
               const el = event.currentTarget
               const cleaned = sanitize(el.value, field)
-              // 同步清洗后的 DOM 值
+              // Sync the sanitized value back to the DOM
               if (el.value !== cleaned) el.value = cleaned
               emit(event, cleaned)
             }}

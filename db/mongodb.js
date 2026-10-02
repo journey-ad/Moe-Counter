@@ -109,7 +109,7 @@ async function maintainStats(now) {
 }
 
 module.exports = {
-  getNum: (name) => Count.findOne({ name }, '-_id').lean(),
+  getNum: (name) => Count.findOne({ name }, '-_id').lean().then(row => row || { name, num: 0 }),
   getAll: () => Count.find({}, '-_id').lean(),
   setNum: (name, num) => Count.updateOne({ name }, { $set: { num } }, { upsert: true }),
   setNumMulti: (counters) => bulk(Count, counters.map(({ name, num }) => ({ updateOne: { filter: { name }, update: { $set: { num } }, upsert: true } }))),

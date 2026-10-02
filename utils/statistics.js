@@ -39,7 +39,7 @@ function createStatistics(db, logger) {
     let state = counters.get(name)
     if (!state) {
       state = { num: 0, readers: 0 }
-      state.ready = Promise.resolve().then(() => db.getNum(name)).then(row => { state.num = row?.num || 0 })
+      state.ready = Promise.resolve().then(() => db.getNum(name)).then(row => { state.num = row.num })
       counters.set(name, state)
     }
     state.readers++

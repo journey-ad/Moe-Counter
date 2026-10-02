@@ -32,7 +32,6 @@ export function App({ site, themes, groups }) {
     try { sessionStorage.setItem('moe-counter-sponsor-dismissed', '1') } catch {}
   }
 
-  // 事件名与分类沿用原有约定
   const track = useCallback((type, category, label) => {
     window._evt_push?.(type, category, label)
   }, [])

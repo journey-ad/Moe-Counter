@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'preact/hooks'
 
-/* 所有主题预览共用同一个观察器，元素进入视口前不请求图片 */
+/* One shared observer for every theme preview; no image is requested before the element enters the viewport */
 const inViewCallbacks = new WeakMap()
 let inViewObserver = null
 
@@ -58,7 +58,7 @@ export function useScrolled(threshold = 8) {
   return scrolled
 }
 
-/* 视口中间开一条判定带，落在带内的版块即为当前版块 */
+/* A band in the middle of the viewport decides which section counts as current */
 export function useScrollSpy(ids) {
   const [active, setActive] = useState(ids[0])
 
@@ -75,7 +75,7 @@ export function useScrollSpy(ids) {
         })
         if (!inView.size) return
 
-        // 同时进入观察范围时取靠上的那个版块
+        // When several sections enter at once, take the topmost one
         const topmost = [...inView.entries()].sort((a, b) => a[1] - b[1])[0][0]
         setActive(topmost.id)
       },
@@ -101,7 +101,7 @@ export function useDebounced(value, delay = 320) {
   return debounced
 }
 
-/* 自托管多半跑在内网 http 下，此时剪贴板接口不可用，退回选中复制 */
+/* Self-hosted instances usually run over plain http, where the clipboard API is unavailable, so fall back to selection copy */
 async function writeClipboard(text) {
   if (navigator.clipboard && window.isSecureContext) {
     await navigator.clipboard.writeText(text)
@@ -143,7 +143,7 @@ export function useCopy() {
   return [copiedKey, copy]
 }
 
-/* 复制与套用主题的轻提示，1.8s 后自动收起 */
+/* Toast for copy and theme apply, dismissed after 1.8s */
 export function useToast() {
   const [toast, setToast] = useState({ message: '', visible: false })
   const timer = useRef(0)

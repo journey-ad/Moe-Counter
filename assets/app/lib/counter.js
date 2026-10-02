@@ -9,7 +9,7 @@ export function readGlobalData() {
   }
 }
 
-// 预览用的固定数字，短到能看出 padding 的补零效果
+// Fixed number for previews, short enough to show the zero padding
 export const PREVIEW_NUMBER = '514'
 export const PREVIEW_NAME = 'preview'
 
@@ -107,7 +107,7 @@ export const darkmodeOptions = [
   { value: '0', label: 'no' }
 ]
 
-// 与服务端 zod 校验保持同一套默认值
+// Same defaults as the server-side zod schema
 export function buildParams(config) {
   const params = {
     theme: config.theme || 'moebooru',
@@ -125,13 +125,13 @@ export function buildParams(config) {
   return params
 }
 
-// 给用户的嵌入地址，带真实名字
+// Embed URL for the user, carrying the real name
 export function buildEmbedUrl(site, config) {
   const query = new URLSearchParams(buildParams(config))
   return `${site}/@${encodeURIComponent(config.name.trim())}?${query}`
 }
 
-// 预览始终走 num 分支，服务端在这条分支上不会写库，因此不会影响真实计数
+// Previews always take the num branch, which never writes to the database
 export function buildPreviewUrl(site, config) {
   const params = buildParams(config)
   if (!(Number(config.num) > 0)) params.num = PREVIEW_NUMBER

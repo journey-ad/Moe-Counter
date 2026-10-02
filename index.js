@@ -41,7 +41,7 @@ app.get(['/', '/rank'], (req, res) => {
     ga_id,
     themeCount: themes.length,
     page,
-    // 主题名与分组交给前端，图片由 /@:name 按需生成
+    // Theme names and groups go to the front end; images are rendered on demand by /@:name
     globalData: JSON.stringify({ site, page, groups: themeGroups, themes }).replace(/</g, '\\u003c'),
   })
 });
