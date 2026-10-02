@@ -6,7 +6,7 @@ const compression = require("compression");
 const { z } = require("zod");
 
 const db = require("./db");
-const { themeList, getCountImage } = require("./utils/themify");
+const { themeList, themeGroups, getThemeGroups, getCountImage } = require("./utils/themify");
 const { cors, ZodValid } = require("./utils/middleware");
 const { randomArray, logger } = require("./utils");
 
@@ -20,10 +20,14 @@ app.set("view engine", "pug");
 app.get('/', (req, res) => {
   const site = process.env.APP_SITE || `${req.protocol}://${req.get('host')}`
   const ga_id = process.env.GA_ID || null
+  const themes = Object.keys(themeList).map((name) => ({ name, groups: getThemeGroups(name) }))
+
   res.render('index', {
     site,
     ga_id,
-    themeList,
+    themeCount: themes.length,
+    // 主题名与分组交给前端，图片由 /@:name 按需生成
+    globalData: JSON.stringify({ site, groups: themeGroups, themes }).replace(/</g, '\\u003c'),
   })
 });
 
