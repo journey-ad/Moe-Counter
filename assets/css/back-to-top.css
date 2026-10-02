@@ -1,0 +1,11 @@
+.back-to-top { position: fixed; right: -108px; bottom: var(--sponsor-space); z-index: 20; width: 108px; height: 150px; padding: 0; opacity: 0.6; visibility: hidden; transition: opacity 0.3s, right 0.8s; transform: scale(0.8); transform-origin: right bottom;}
+.back-to-top::before, .back-to-top::after { content: ""; position: absolute; inset: 0; background: url("../img/back-to-top.png") no-repeat 0 0 / 108px 450px; pointer-events: none; }
+.back-to-top::after { background-position: 0 -300px; opacity: 0; }
+.back-to-top.is-visible { right: 0; visibility: visible; }
+.back-to-top:hover, .back-to-top:focus-visible, .back-to-top.is-leaving { opacity: 1; }
+.back-to-top:hover::before, .back-to-top:focus-visible::before { background-position: 0 -150px; }
+.back-to-top.is-leaving { pointer-events: none; }
+.back-to-top.is-leaving::before { background-position: 0 -150px; animation: back-to-top-leave 390ms ease-in-out forwards; }
+.back-to-top.is-leaving::after { animation: back-to-top-poof 2s forwards; }
+@keyframes back-to-top-leave { to { transform: translateX(108px); } }
+@keyframes back-to-top-poof { 0%, 23.5% { opacity: 0; } 38.5%, 85% { opacity: 1; } 100% { opacity: 0; } }

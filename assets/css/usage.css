@@ -1,0 +1,32 @@
+/* Usage */
+.usage-grid { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+.usage-grid > li { min-width: 0; }
+.usage-card { display: grid; grid-template-columns: 30px minmax(180px, 0.75fr) minmax(0, 1.5fr); align-items: center; gap: 24px; padding: 24px; }
+.usage-step { display: grid; place-items: center; width: 30px; height: 30px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-soft); color: var(--muted); font: 11px var(--font-mono); }
+.usage-copy { min-width: 0; }
+.usage-copy h3 { margin-bottom: 4px; font-size: 16px; font-weight: 650; }
+.usage-copy p { max-width: 280px; color: var(--muted); font-size: 12px; line-height: 1.7; }
+.usage-card .code-block { padding: 13px; }
+.usage-card .code-row pre { padding-block: 3px; }
+.usage-card .code-row code { font-size: 11px; white-space: pre; overflow-wrap: normal; }
+.note-panel { display: flex; align-items: flex-start; gap: 13px; margin-top: 20px; padding: 20px 24px; border-color: transparent; background: var(--surface-soft); }
+.note-mark { display: grid; place-items: center; flex: 0 0 24px; width: 24px; height: 24px; border: 1px solid var(--line-strong); border-radius: 50%; color: var(--blue-deep); font-size: 13px; }
+.note-panel b { display: block; margin-bottom: 3px; font-size: 12px; font-weight: 600; }
+.note-panel p { color: var(--muted); font-size: 12px; line-height: 1.8; }
+
+@media (max-width: 860px) {
+  .usage-card { grid-template-columns: 30px minmax(0, 1fr); gap: 14px; padding: 22px; }
+  .usage-card .code-block { grid-column: 2; }
+  .usage-copy p { max-width: none; }
+}
+
+@media (max-width: 600px) {
+  .usage-card { grid-template-columns: 25px minmax(0, 1fr); column-gap: 12px; padding: 20px; }
+  .usage-step { width: 25px; height: 25px; font-size: 10px; }
+  .usage-copy h3 { font-size: 15px; }
+  .usage-copy p { font-size: 11px; }
+  .usage-card .code-block { grid-column: 1 / -1; }
+  .usage-card .code-row code { font-size: 10px; }
+  .note-panel { padding: 18px; }
+  .note-panel p { font-size: 11px; }
+}

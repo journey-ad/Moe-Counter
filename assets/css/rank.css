@@ -1,0 +1,84 @@
+/* Rank */
+.rank-main { padding: calc(var(--header-h) + 64px) var(--page-inset) 64px; }
+.rank-intro .section-label { margin-bottom: 20px; }
+.rank-title-row { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.rank-title-row h1 { font-family: var(--font-display); font-size: clamp(36px, 4.8vw, 62px); line-height: 1.2; letter-spacing: -2px; font-weight: 750; }
+.rank-intro .lede { margin-top: 20px; margin-bottom: 24px; }
+.rank-status { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; color: var(--muted); font-size: 11px; }
+.rank-status .text-button { margin-left: auto; }
+.rank-status button:disabled { cursor: wait; opacity: 0.5; }
+.rank-error { margin-top: 16px; padding: 12px 16px; border: 1px solid var(--line-pink); border-radius: 9px; background: var(--paper-blush); color: var(--pink-dark); font-size: 12px; }
+.rank-summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 20px; }
+.rank-stat { position: relative; overflow: hidden; padding: 25px 26px 22px; }
+.rank-stat--rpm { background: var(--selected-bg); border-color: var(--line-strong); }
+.rank-stat .eyebrow { color: var(--muted); font-size: 10px; letter-spacing: 1px; }
+.rank-stat-value { display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px; margin: 10px 0 8px; font-size: clamp(26px, 3.3vw, 43px); font-weight: 650; line-height: 1.2; letter-spacing: -1.8px; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.rank-stat--rpm .rank-stat-value { color: var(--blue-deep); }
+.rank-stat-value small { color: var(--muted); font: 500 10px / 1.5 var(--font-mono); letter-spacing: 0.5px; }
+.rank-stat p, .rank-coverage { color: var(--muted); font-size: 11px; }
+.rank-coverage { margin-top: 14px; }
+.rank-traffic { margin-top: 40px; padding: 28px 30px 20px; }
+.rank-panel-heading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; }
+.rank-panel-heading h2 { margin-top: 7px; font-size: 22px; line-height: 1.4; letter-spacing: -0.6px; }
+.rank-filters { display: flex; gap: 4px; flex-wrap: wrap; padding: 4px; border: 1px solid var(--line); border-radius: 9px; }
+.rank-filters button { padding: 6px 10px; border-radius: 5px; color: var(--muted); font-size: 11px; white-space: nowrap; transition: color 0.2s, background 0.2s; }
+.rank-filters button:hover { color: var(--pink-dark); background: var(--surface-soft); }
+.rank-filters button.is-active { color: var(--selected-text); background: var(--selected-bg); }
+.rank-chart-unit { margin-top: 24px; color: var(--muted); font: 10px / 1.5 var(--font-mono); }
+.traffic-plot { position: relative; margin-top: 8px; }
+.traffic-plot svg { display: block; width: 100%; height: 300px; overflow: visible; border-radius: 5px; }
+.traffic-grid { stroke: var(--line); stroke-width: 1; }
+.traffic-label { fill: var(--muted); font: 10px var(--font-mono); }
+.traffic-line { fill: none; stroke: var(--blue); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.traffic-area { fill: var(--blue); opacity: 0.09; }
+.traffic-cursor { stroke: var(--pink); stroke-width: 1; stroke-dasharray: 3 4; }
+.traffic-dot { fill: var(--pink); stroke: var(--surface); stroke-width: 2; }
+.traffic-no-data { position: absolute; top: 40%; left: 50px; right: 12px; text-align: center; color: var(--muted); font-size: 12px; pointer-events: none; }
+.traffic-tooltip { position: absolute; top: 8px; right: 8px; display: flex; align-items: center; gap: 12px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); box-shadow: 0 3px 10px var(--shadow); font: 10px / 1.6 var(--font-mono); pointer-events: none; }
+.traffic-tooltip span { color: var(--muted); }
+.rank-leaderboards { margin-top: 48px; }
+.rank-boards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: 24px; align-items: start; }
+.rank-board { min-width: 0; padding: 0; overflow: hidden; }
+.rank-board-heading { padding: 24px 24px 20px; }
+.rank-board-heading h2 { margin-top: 7px; font-size: 21px; letter-spacing: -0.4px; }
+.rank-table-scroll { overflow-x: auto; scrollbar-width: thin; }
+.rank-table { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 11px; font-variant-numeric: tabular-nums; }
+.rank-table th, .rank-table td { padding: 12px 10px; border-top: 1px solid var(--line); text-align: right; vertical-align: middle; }
+.rank-table thead { background: var(--surface-soft); color: var(--muted); font-size: 10px; }
+.rank-table thead th { font-weight: 500; }
+.rank-table th:first-child, .rank-table td:first-child { width: 44px; padding-left: 18px; text-align: left; }
+.rank-table th:nth-child(2) { width: 34%; text-align: left; }
+.rank-table th:last-child, .rank-table td:last-child { padding-right: 18px; }
+.rank-table tbody tr:has(.rank-name):hover { background: var(--surface-hover); }
+.rank-position { color: var(--muted); font: 10px / 1.7 var(--font-mono); }
+.rank-position.is-leading { color: var(--pink-dark); font-weight: 650; }
+.rank-name { font-weight: 500; }
+.rank-name a, .rank-name span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rank-name a:hover { color: var(--pink-dark); text-decoration: underline; }
+.rank-rate { color: var(--blue-deep); font-weight: 650; }
+.rank-table td.rank-empty { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 12px; }
+@media (max-width: 860px) {
+  .rank-main { padding-top: calc(var(--header-h) + 42px); }
+  .rank-summary { gap: 12px; }
+  .rank-stat { padding: 20px; }
+  .rank-stat-value { font-size: 30px; }
+  .rank-boards { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 600px) {
+  .rank-main { padding-bottom: 40px; }
+  .rank-title-row { align-items: flex-start; flex-direction: column; gap: 12px; }
+  .rank-title-row h1 { font-size: 34px; letter-spacing: -1.2px; }
+  .rank-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rank-stat--rpm { grid-column: 1 / -1; }
+  .rank-stat-value { font-size: 30px; }
+  .rank-stat--rpm .rank-stat-value { font-size: 46px; }
+  .rank-stat { padding: 20px 16px; }
+  .rank-stat .eyebrow { font-size: 9px; }
+  .rank-stat p { font-size: 10px; }
+  .rank-traffic { margin-top: 28px; padding: 22px 16px 18px; }
+  .rank-panel-heading h2 { font-size: 20px; }
+  .rank-filters button { padding: 6px 8px; font-size: 10px; }
+  .rank-board-heading { padding: 22px 18px 18px; }
+  .rank-table { min-width: 390px; }
+  .traffic-tooltip { gap: 8px; font-size: 9px; }
+}

@@ -1,0 +1,74 @@
+/* Configurator */
+#tool { background: var(--surface-section); }
+.tool-layout { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); align-items: start; gap: 38px; }
+.tool-fields { min-width: 0; }
+.tool-group { padding: 26px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+.tool-group + .tool-group { margin-top: 18px; }
+.tool-group-title { margin-bottom: 16px; font-size: 14px; font-weight: 650; }
+.tool-group-note { margin: -7px 0 16px; font-size: 12px; color: var(--muted); }
+.tool-field { display: grid; grid-template-columns: minmax(0, 1fr) minmax(135px, 190px); align-items: center; gap: 18px; padding: 16px 0; border-top: 1px solid var(--line); }
+.tool-field:last-child { padding-bottom: 0; }
+.tool-field-copy { min-width: 0; }
+.tool-field-copy label { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; font-size: 12px; font-weight: 600; cursor: pointer; }
+.tool-field-copy code { color: var(--muted); font: 9px var(--font-mono); }
+.tool-field-copy p { margin-top: 4px; font-size: 11px; line-height: 1.65; color: var(--muted); }
+.tool-field-input { position: relative; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.tool-field-input > input[type="text"] { width: 100%; min-height: 40px; padding: 9px 11px; border: 1px solid var(--line-strong); border-radius: 7px; background: var(--surface); color: var(--ink); font-size: 11px; transition: border-color 0.2s, box-shadow 0.2s; }
+.tool-field-input > input[type="text"]::placeholder { color: var(--muted); }
+.tool-field-input > input[type="text"]:hover { border-color: var(--line-strong); }
+.tool-field-input > input[type="text"]:focus { border-color: var(--blue); outline: none; box-shadow: 0 0 0 3px color-mix(in srgb, var(--blue) 15%, transparent); }
+.tool-field.is-invalid .tool-field-input > input { border-color: var(--pink); }
+.tool-field-error { color: var(--pink-dark); font-size: 11px; }
+.number-field { display: flex; align-items: stretch; border: 1px solid var(--line-strong); border-radius: 7px; overflow: hidden; background: var(--surface); }
+.number-field:focus-within { border-color: var(--blue); box-shadow: 0 0 0 3px color-mix(in srgb, var(--blue) 15%, transparent); }
+.number-field input { width: 100%; min-width: 0; height: 38px; padding: 8px 0; border: 0; background: none; text-align: center; font: 11px var(--font-mono); }
+.number-field input:focus { outline: none; }
+.number-step { display: grid; place-items: center; flex: 0 0 32px; padding: 0; color: var(--muted); font-size: 16px; }
+.number-step:hover { background: var(--surface-hover); color: var(--ink); }
+.tool-field-input input[type="checkbox"] { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.switch { position: relative; display: block; width: 42px; height: 24px; margin-left: auto; border: 1px solid var(--line-strong); border-radius: 20px; background: var(--surface-soft); cursor: pointer; transition: background 0.2s; }
+.switch > span { position: absolute; left: 3px; top: 3px; width: 16px; height: 16px; border-radius: 50%; background: white; box-shadow: 0 1px 4px var(--shadow-strong); transition: transform 0.25s var(--ease); }
+.tool-field-input input:checked + .switch { background: var(--blue); border-color: var(--blue); }
+.tool-field-input input:checked + .switch > span { transform: translateX(18px); }
+.tool-field-input input:focus-visible + .switch { outline: var(--focus-ring); outline-offset: var(--focus-offset); }
+.tool-preview { position: sticky; top: calc(var(--header-h) + 24px); min-width: 0; }
+.preview-card { display: flex; flex-direction: column; gap: 18px; padding: 26px; border: 1px solid var(--line-strong); border-radius: 14px; background: var(--surface); box-shadow: 0 10px 30px var(--shadow); }
+.preview-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; font: 500 9px var(--font-mono); letter-spacing: 1px; }
+.preview-head > span { display: inline-flex; align-items: center; gap: 8px; }
+.preview-stage { display: grid; place-items: center; min-height: 210px; padding: 30px 20px; border: 1px solid var(--line); border-radius: 8px; background: var(--square-fill), var(--stage); }
+.preview-stage img { max-width: 100%; max-height: 270px; height: auto; object-fit: contain; }
+.preview-empty { text-align: center; font-size: 12px; color: var(--muted); max-width: 220px; }
+.preview-empty > .ui-icon { margin-bottom: 12px; width: 30px; height: 27px; color: var(--line-strong); }
+.preview-safe { display: flex; align-items: flex-start; justify-content: center; gap: 6px; margin-top: -4px; font-size: 10px; color: var(--muted); }
+.preview-safe .ui-icon { margin-top: 3px; color: var(--blue); flex-shrink: 0; }
+.preview-actions { display: flex; }
+.preview-actions .pill-button { width: 100%; background: var(--accent-button-bg); border-color: var(--accent-button-bg); color: var(--accent-button-text); }
+.preview-actions .pill-button:hover { background: var(--accent-button-hover); border-color: var(--accent-button-hover); }
+.preview-out { display: flex; flex-direction: column; gap: 10px; }
+.preview-out-label { display: flex; align-items: center; gap: 7px; color: var(--blue-deep); font: 500 9px var(--font-mono); letter-spacing: 0.6px; }
+
+
+@media (max-width: 1100px) {
+  .tool-layout { gap: 22px; }
+  .tool-field { grid-template-columns: minmax(0, 1fr) 150px; gap: 14px; }
+  .tool-group, .preview-card { padding: 22px; }
+}
+
+@media (max-width: 860px) {
+  .tool-layout { grid-template-columns: minmax(0, 1fr); }
+  .tool-preview { position: static; grid-row: 1; }
+  .preview-stage { min-height: 180px; }
+  .tool-field { grid-template-columns: minmax(0, 1fr) minmax(160px, 240px); }
+}
+
+@media (max-width: 600px) {
+  .tool-group, .preview-card { padding: 20px; }
+  .tool-field { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .tool-field-copy label { font-size: 13px; }
+  .tool-field-copy p { font-size: 11px; }
+  .tool-field-input > input[type="text"], .select-trigger { font-size: 16px; min-height: 44px; }
+  .number-field input { font-size: 16px; height: 42px; }
+  .number-step { flex-basis: 40px; }
+  .switch { margin-left: 0; }
+  .tool-field:has(input[role="switch"]) { grid-template-columns: minmax(0, 1fr) auto; }
+}

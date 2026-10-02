@@ -1,0 +1,32 @@
+/* Credits */
+#credits { background: var(--surface-section); }
+.credit-list { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; margin: 32px 0 0; padding: 0; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; list-style: none; background: var(--line); }
+.credit-list li { min-width: 0; background: var(--surface); }
+.credit-list a, .credit-plain { display: flex; align-items: center; gap: 12px; min-height: 86px; padding: 22px; font-size: 13px; font-weight: 600; }
+.credit-list a .ui-icon { margin-left: auto; color: var(--muted); font-size: 14px; }
+.credit-list a:hover { color: var(--pink-dark); background: var(--paper-blush); }
+.credit-list a:focus-visible { outline-offset: -4px; }
+.credit-plain .tag { margin-left: auto; }
+.credit-list .credit-contributors { grid-column: 1 / -1; background: var(--surface-soft); }
+.credit-contributors a { justify-content: center; min-height: 60px; padding: 16px 22px; font-size: 12px; font-weight: 500; }
+.credit-contributors a::before { content: ""; flex: 0 0 13px; width: 13px; height: 13px; background: var(--pink); mask: var(--icon-heart) center / contain no-repeat; }
+.credit-contributors a .ui-icon { margin-left: 0; }
+
+.sponsor-card { margin-top: 28px; display: flex; align-items: center; flex-wrap: wrap; gap: 34px; padding: 34px; border: 1px solid var(--support-line); border-radius: 14px; background: var(--support-bg); }
+.sponsor-copy { flex: 1 1 480px; min-width: 0; }
+.sponsor-copy .eyebrow { color: var(--blue-deep); }
+.sponsor-copy h3 { margin: 12px 0; font-family: var(--font-display); font-size: 26px; font-weight: 600; line-height: 1.35; letter-spacing: -0.6px; }
+.sponsor-copy p { max-width: 660px; font-size: 12px; color: var(--support-text); line-height: 1.85; }
+.sponsor-links { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+
+@media (max-width: 860px) {
+  .credit-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 600px) {
+  .credit-list { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 24px; }
+  .credit-list a, .credit-plain { min-height: 74px; padding: 16px 12px; gap: 6px; font-size: 11px; }
+  .credit-contributors a { min-height: 64px; padding: 16px; text-align: center; font-size: 11px; }
+  .sponsor-card { padding: 25px; gap: 24px; }
+  .sponsor-copy h3 { font-size: 23px; }
+}

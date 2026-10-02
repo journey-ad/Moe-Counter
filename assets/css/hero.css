@@ -1,0 +1,117 @@
+/* Hero */
+.hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 64px;
+  padding: calc(var(--header-h) + 86px) var(--page-inset) 100px;
+  min-height: 658px;
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
+}
+.hero-copy { min-width: 0; animation: enter 0.8s var(--ease) both; }
+.hero-kicker { display: flex; align-items: center; gap: 10px; margin-bottom: 25px; font-size: 10px; font-weight: 600; letter-spacing: 1.7px; }
+.status-dot { display: inline-block; flex: 0 0 auto; width: 6px; height: 6px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 3px color-mix(in srgb, var(--blue) 10%, transparent); }
+.hero h1 { font-family: var(--font-display); font-size: clamp(50px, 5.9vw, 80px); font-weight: 750; line-height: 1.08; letter-spacing: -4px; }
+.hero h1 > span { display: block; }
+.hero h1 em { position: relative; font-family: Georgia, "Times New Roman", serif; font-weight: 400; font-style: italic; color: var(--pink); letter-spacing: -3px; }
+.hero h1 em::after { content: ""; position: absolute; left: 4px; right: 8px; bottom: -5px; height: 9px; border-top: 2px solid var(--pink); border-radius: 50%; transform: rotate(-3deg); opacity: 0.55; }
+:lang(zh) .hero h1 { font-size: clamp(40px, 4.8vw, 64px); line-height: 1.35; letter-spacing: -2px; }
+:lang(ja) .hero h1 { font-size: clamp(32px, 3.55vw, 52px); line-height: 1.5; letter-spacing: -2px; }
+:lang(zh) .hero h1 em, :lang(ja) .hero h1 em { font-family: var(--font-display); font-style: normal; font-weight: 700; letter-spacing: -2px; }
+.hero-intro { margin-top: 28px; max-width: 490px; color: var(--muted); font-size: 14px; line-height: 1.9; }
+.hero-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 26px; margin-top: 30px; }
+.hero-secondary { display: inline-flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 600; }
+.hero-secondary .ui-icon { font-size: 12px; }
+.hero-secondary:hover { color: var(--pink-dark); }
+.hero-facts { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 34px; font-size: 11px; color: var(--muted); }
+.hero-facts > span { display: inline-flex; align-items: center; gap: 7px; }
+.hero-facts > span + span::before { content: ""; width: 3px; height: 3px; margin-right: 8px; border-radius: 50%; background: var(--line-strong); }
+.hero-facts .ui-icon { color: var(--pink); font-size: 11px; }
+.hero-art { position: relative; min-width: 0; padding-top: 40px; animation: enter 0.9s 0.12s var(--ease) both; }
+.hero-art-note { display: flex; justify-content: center; align-items: center; gap: 14px; position: absolute; top: -8px; left: 0; right: 0; color: var(--muted); font-family: Georgia, "Times New Roman", serif; font-size: 16px; font-style: italic; transform: rotate(-3deg); }
+.hero-art-note > span { font-size: 36px; font-style: normal; }
+.hero-poster { position: relative; isolation: isolate; margin: 14px 10px; }
+.hero-poster::before { content: ""; position: absolute; z-index: -1; inset: 4px 9px -5px; border: 1px solid var(--line-pink); border-radius: 18px; background: var(--poster-back); transform: rotate(-5deg); }
+.hero-poster-sheet { padding: 24px; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); box-shadow: 0 16px 40px var(--shadow); transform: rotate(2deg); }
+.hero-poster-top, .hero-poster-bottom { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.7px; }
+.hero-poster-top { color: var(--muted); }
+.hero-poster-top b { display: flex; align-items: center; gap: 7px; font-size: 8px; font-weight: 500; white-space: nowrap; color: var(--blue-deep); }
+.hero-poster-top .status-dot { width: 5px; height: 5px; }
+.hero-poster-stage { display: grid; place-items: center; height: 178px; margin: 16px 0; padding: 24px 12px; border: 1px solid var(--line); border-radius: 9px; background: var(--square-fill), var(--stage); }
+.hero-poster-stage img { width: 100%; height: 100%; object-fit: contain; image-rendering: pixelated; animation: enter 0.35s var(--ease) both; }
+.hero-poster-bottom { color: var(--purple); letter-spacing: 0; }
+.title-star { display: grid; place-items: center; width: 24px; height: 24px; padding: 0; color: var(--pink); font-size: 19px; transition: transform 0.35s; }
+.title-star:hover { transform: rotate(90deg); }
+.hero-sticker { position: absolute; right: -19px; bottom: -20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; width: 83px; height: 83px; border: 4px double var(--pink); border-radius: 50%; background: var(--badge-bg); color: var(--pink-dark); transform: rotate(13deg); box-shadow: 0 3px 8px color-mix(in srgb, var(--pink) 10%, transparent); }
+.hero-sticker > .ui-icon { font-size: 15px; }
+.hero-sticker b { font: 700 11px / 1.2 var(--font-mono); text-align: center; letter-spacing: 1px; }
+.demo-picker { display: flex; justify-content: center; margin-top: 34px; }
+.demo-picker button { display: inline-flex; align-items: center; gap: 8px; min-height: 38px; padding: 8px 16px; border: 1px solid var(--line-strong); border-radius: 8px; background: var(--surface); font-size: 12px; color: var(--ink); transition: background 0.2s, border-color 0.2s; }
+.demo-picker button .ui-icon { font-size: 13px; color: var(--muted); transition: rotate 0.3s; }
+.demo-picker button:hover { border-color: var(--line-strong); background: var(--surface-hover); }
+.demo-picker button:hover .ui-icon { rotate: 45deg; }
+.demo-picker button:disabled { opacity: 0.5; cursor: default; }
+
+@media (min-width: 1500px) {
+  .hero { min-height: 700px; }
+}
+
+@media (max-width: 1100px) {
+  .hero { gap: 32px; }
+  .hero h1 { font-size: 6vw; }
+  :lang(zh) .hero h1 { font-size: 4.7vw; }
+  :lang(ja) .hero h1 { font-size: 3.6vw; }
+  .hero-art-note { font-size: 14px; }
+  .hero-poster-sheet { padding: 20px; }
+  .hero-poster-top { font-size: 8px; letter-spacing: 0; }
+}
+
+@media (max-width: 860px) {
+  .hero { grid-template-columns: minmax(0, 1fr); gap: 50px; padding-top: calc(var(--header-h) + 55px); padding-bottom: 65px; }
+  .hero-copy { text-align: center; }
+  .hero-kicker, .hero-actions, .hero-facts { justify-content: center; }
+  .hero-intro { margin-inline: auto; }
+  .hero h1 { font-size: clamp(54px, 9vw, 75px); letter-spacing: -3px; }
+  :lang(zh) .hero h1 { font-size: clamp(38px, 7vw, 56px); }
+  :lang(ja) .hero h1 { font-size: clamp(31px, 5.5vw, 46px); }
+  .hero-art { width: min(100%, 510px); margin-inline: auto; }
+  .hero-poster-stage { height: 180px; }
+  .hero::before { top: calc(var(--header-h) + 12px); right: 12px; width: 140px; height: 94px; opacity: 0.75; }
+}
+
+@media (max-width: 600px) {
+  .hero { gap: 45px; padding-top: calc(var(--header-h) + 42px); padding-bottom: 45px; }
+  .hero::before { top: calc(var(--header-h) + 6px); width: 100px; height: 67px; opacity: 0.6; }
+  .hero::after { bottom: 7px; width: 110px; height: 33px; }
+  .hero-kicker { font-size: 8px; letter-spacing: 1px; margin-bottom: 23px; }
+  .hero h1 { font-size: clamp(45px, 11.7vw, 62px); line-height: 1.12; letter-spacing: -2.5px; }
+  .hero h1 em { letter-spacing: -2px; }
+  :lang(zh) .hero h1 { font-size: clamp(31px, 8.2vw, 45px); }
+  :lang(ja) .hero h1 { font-size: clamp(26px, 7vw, 37px); }
+  .hero-intro { font-size: 12px; line-height: 1.9; margin-top: 26px; }
+  .hero-actions { gap: 20px; margin-top: 26px; }
+  .hero-actions .pill-button { padding-inline: 18px; font-size: 12px; }
+  .hero-secondary { font-size: 11px; }
+  .hero-facts { gap: 12px; margin-top: 24px; font-size: 9px; }
+  .hero-facts > span + span::before { margin-right: 4px; }
+  .hero-art { padding-top: 34px; }
+  .hero-art-note { font-size: 13px; }
+  .hero-poster { margin: 12px 4px; }
+  .hero-poster-sheet { padding: 18px; }
+  .hero-poster-top { font-size: 7px; }
+  .hero-poster-top b { font-size: 7px; gap: 5px; }
+  .hero-poster-stage { height: 137px; padding: 22px 9px; }
+  .hero-poster-bottom { font-size: 8px; }
+  .hero-sticker { width: 66px; height: 66px; right: -9px; bottom: -14px; gap: 4px; }
+  .hero-sticker > .ui-icon { font-size: 11px; }
+  .hero-sticker b { font-size: 9px; }
+  .demo-picker { margin-top: 26px; }
+}
+
+@media (max-width: 360px) {
+  .hero-actions { gap: 16px; }
+  .hero-actions .pill-button { font-size: 11px; padding-inline: 14px; }
+  .hero-poster-top { letter-spacing: 0; }
+}
