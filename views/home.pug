@@ -1,0 +1,17 @@
+extends layout
+
+block meta
+  title Moe Counter! · A visitor counter for your website
+  meta(name='description', content=`An image-based visitor counter for your README, blog or website, with ${themeCount} themes to choose from.`)
+
+block noscript
+  h1 Moe Counter!
+  p A visitor counter for your website. Replace <code>:name</code> with your own unique counter name.
+  ul
+    li Image URL: <code>#{site}/@:name</code>
+    li HTML: <code>&lt;img src="#{site}/@:name" alt=":name" /&gt;</code>
+    li Markdown: <code>![:name](#{site}/@:name)</code>
+  p Enable JavaScript to customize your counter and browse themes.
+
+block scripts
+  script(defer, src=`${site}/vendor/party.min.js`)

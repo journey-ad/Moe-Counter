@@ -3,8 +3,7 @@ html(lang='en')
   head
     meta(charset='UTF-8')
     meta(name='viewport', content='width=device-width, initial-scale=1')
-    title=page === 'rank' ? 'Rank · Moe Counter!' : 'Moe Counter! · A visitor counter for your website'
-    meta(name='description', content=page === 'rank' ? 'Counter rankings, referring websites and request traffic for Moe Counter.' : `An image-based visitor counter for your README, blog or website, with ${themeCount} themes to choose from.`)
+    block meta
     meta(name='theme-color', content='#faf8f5')
     link(rel='icon', type='image/png', href=`${site}/favicon.png`)
     script.
@@ -17,9 +16,9 @@ html(lang='en')
     script(type='importmap').
       {
         "imports": {
-          "preact": "#{site}/vendor/preact.module.js",
-          "preact/hooks": "#{site}/vendor/preact-hooks.module.js",
-          "htm": "#{site}/vendor/htm.module.js"
+          "preact": "https://unpkg.com/preact@10.29.8/dist/preact.module.js",
+          "preact/hooks": "https://unpkg.com/preact@10.29.8/hooks/dist/hooks.module.js",
+          "htm": "https://unpkg.com/htm@3.1.1/dist/htm.module.js"
         }
       }
     if ga_id
@@ -40,8 +39,6 @@ html(lang='en')
       }
 
     script(type='application/json', id='global-data') !{globalData}
-    if page !== 'rank'
-      script(defer, src=`${site}/vendor/party.min.js`)
 
   body
     a.skip-link(href='#main') Skip to content
@@ -49,16 +46,7 @@ html(lang='en')
     div#app
 
     noscript
-      h1 Moe Counter!
-      if page === 'rank'
-        p Enable JavaScript to view rankings and request traffic.
-        a(href=`${site}/`) Back to Moe Counter
-      else
-        p A visitor counter for your website. Replace <code>:name</code> with your own unique counter name.
-        ul
-          li Image URL: <code>#{site}/@:name</code>
-          li HTML: <code>&lt;img src="#{site}/@:name" alt=":name" /&gt;</code>
-          li Markdown: <code>![:name](#{site}/@:name)</code>
-        p Enable JavaScript to customize your counter and browse themes.
+      block noscript
 
+    block scripts
     script(type='module', src=`${site}/app/main.js`)

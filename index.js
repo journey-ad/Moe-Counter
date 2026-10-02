@@ -36,7 +36,7 @@ app.get(['/', '/rank'], (req, res) => {
   const ga_id = process.env.GA_ID || null
   const themes = Object.keys(themeList).map((name) => ({ name, groups: getThemeGroups(name) }))
 
-  res.render('index', {
+  res.render(page, {
     site,
     ga_id,
     themeCount: themes.length,
