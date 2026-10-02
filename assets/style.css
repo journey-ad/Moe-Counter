@@ -405,7 +405,7 @@ fieldset { margin: 0; padding: 0; border: 0; }
 .theme-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 18px; margin: 0; padding: 0; list-style: none; }
 .theme-card { display: flex; flex-direction: column; min-width: 0; padding: 10px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); transition: transform 0.3s var(--ease), border-color 0.3s, box-shadow 0.3s; }
 .theme-stage { display: grid; place-items: center; height: 136px; padding: 20px 12px; border-radius: 6px; background: var(--square-fill), var(--stage); overflow: hidden; }
-.theme-stage img { max-width: 100%; max-height: 100%; opacity: 0; transition: opacity 0.4s; }
+.theme-stage img { --zoom: 1; --pan: 0px; max-width: 100%; max-height: 100%; opacity: 0; transform: translateX(var(--pan)) scale(var(--zoom)); transform-origin: center; transition: opacity 0.4s, transform 0.34s var(--ease); }
 .theme-stage img.is-ready { opacity: 1; }
 .theme-stage .theme-failed { padding: 10px; text-align: center; color: var(--muted); font-size: 11px; }
 .theme-card-body { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 14px 4px 5px; }

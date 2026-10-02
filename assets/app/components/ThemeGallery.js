@@ -1,23 +1,53 @@
-import { useState } from 'preact/hooks'
+import { useRef, useState } from 'preact/hooks'
 import { html } from '../lib/html.js'
 import { useInView } from '../lib/hooks.js'
 import { Icon, SectionHead, Tag } from './ui.js'
 import { useLanguage } from '../lib/i18n.js'
 
 const PAGE_SIZE = 20
+const ZOOM_FILL = 0.9
+const PAN_EDGE = 0.86
 
 function ThemeCard({ theme, site, selected, onUse }) {
   const { t } = useLanguage()
   const [ref, inView] = useInView()
   const [status, setStatus] = useState('idle')
+  const stageRef = useRef(null)
+  const imgRef = useRef(null)
   const previewUrl = `${site}/@demo?theme=${encodeURIComponent(theme.name)}&darkmode=0`
 
+  // Scale is derived from layout boxes, so it stays stable while the pointer moves
+  const trackPointer = (clientX) => {
+    const stage = stageRef.current
+    const img = imgRef.current
+    if (!stage || !img || !img.offsetHeight) return
+    const box = stage.getBoundingClientRect()
+    const zoom = (stage.clientHeight * ZOOM_FILL) / img.offsetHeight
+    const slide = Math.max(0, img.offsetWidth * zoom - stage.clientWidth)
+    const ratio = box.width ? Math.min(1, Math.max(0, (clientX - box.left) / box.width)) : 0.5
+    const progress = Math.min(1, Math.max(-1, (ratio - 0.5) / (PAN_EDGE - 0.5)))
+    img.style.setProperty('--zoom', String(zoom))
+    img.style.setProperty('--pan', `${(-progress * slide) / 2}px`)
+  }
+
+  const releasePointer = () => {
+    const img = imgRef.current
+    if (!img) return
+    img.style.setProperty('--zoom', '1')
+    img.style.setProperty('--pan', '0px')
+  }
+
   return html`
-    <li ref=${ref} class="theme-card ${selected ? 'is-selected' : ''}">
-      <div class="theme-stage">
+    <li ref=${ref} class="theme-card ${selected ? 'is-selected' : ''}"
+      onMouseEnter=${(event) => trackPointer(event.clientX)}
+      onMouseMove=${(event) => trackPointer(event.clientX)}
+      onMouseLeave=${releasePointer}
+    >
+      <div class="theme-stage" ref=${stageRef}>
         ${inView && status !== 'failed'
           ? html`
               <img
+                ref=${imgRef}
                 src=${previewUrl}
                 loading="lazy"
                 decoding="async"
