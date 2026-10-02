@@ -12,12 +12,16 @@ export function Hero({ site, themes, onSparkle, onTrack }) {
   const { t } = useLanguage()
   const themeCount = themes.length
   const [theme, setTheme] = useState(() => themes.find(({ name }) => name === 'moebooru')?.name || pickTheme(themes))
-  const shuffle = () => setTheme((current) => pickTheme(themes, current))
+  const [cycle, setCycle] = useState(0)
+  const shuffle = () => {
+    setTheme((current) => pickTheme(themes, current))
+    setCycle((count) => count + 1)
+  }
   useEffect(() => {
     if (themes.length < 2) return
-    const timer = setInterval(() => { if (!document.hidden) shuffle() }, 10000)
-    return () => clearInterval(timer)
-  }, [themes])
+    const timer = setTimeout(() => { if (!document.hidden) shuffle() }, 10000)
+    return () => clearTimeout(timer)
+  }, [themes, cycle])
   const showcase = `${site}/@demo?theme=${encodeURIComponent(theme)}&darkmode=0`
 
   return html`
