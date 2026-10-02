@@ -1,5 +1,7 @@
 'use strict'
 
+const { INTERFACE } = require('./interface')
+
 /**
  * Data access interface. A driver module has to export every method listed below;
  * loading fails right away when one of them is missing.
@@ -10,6 +12,7 @@
  *   RankRow   { name, total, calls24h, calls5m }
  *   Summary   { total, calls24h, calls5m }
  *   Traffic   { bucket, num, covered }          covered is 1 when the bucket holds a complete slice
+ *   Series    { bucket, num }                    per-minute counts of one counter
  *   Snapshot  { counters: Counter[], stats: StatRow[], updatedAt }
  *
  * Method contract
@@ -23,13 +26,10 @@
  *   getRank(dimension, sort, start, end, rpmStart)    top 100, sort is rpm, total or 24h
  *   getSummary(dimension, name, start, end, rpmStart)
  *   getTraffic(granularity, start, end)               granularity is minute or hour
+ *   getSeries(name, start, end)                       per-minute counts of one counter, ascending
  *   maintainStats(now)                                rolls minutes into hours and drops expired data
  *   close()                                           closes the connection
  */
-const INTERFACE = [
-  'getNum', 'getAll', 'setNum', 'setNumMulti', 'initStats', 'getStats',
-  'writeSnapshot', 'getRank', 'getSummary', 'getTraffic', 'maintainStats', 'close'
-]
 
 const DRIVERS = {
   mongodb: './mongodb',

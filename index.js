@@ -46,6 +46,32 @@ app.get(['/', '/rank'], (req, res) => {
   })
 });
 
+// Counter detail page; renders client side from /api/stats/series/:name
+app.get('/view/@:name', ZodValid({ params: nameParams }), (req, res) => {
+  const name = req.params.name
+  const site = process.env.APP_SITE || `${req.protocol}://${req.get('host')}`
+
+  res.render('view', {
+    site,
+    ga_id: process.env.GA_ID || null,
+    themeCount: Object.keys(themeList).length,
+    page: 'view',
+    name,
+    globalData: JSON.stringify({
+      site,
+      page: 'view',
+      name,
+      groups: themeGroups,
+      themes: Object.keys(themeList).map((theme) => ({ name: theme, groups: getThemeGroups(theme) }))
+    }).replace(/</g, '\\u003c'),
+  })
+});
+
+app.get('/api/stats/series/:name', ZodValid({ params: nameParams }), asyncRoute(async (req, res) => {
+  res.set('cache-control', 'no-store');
+  res.json(await statistics.series(req.params.name));
+}));
+
 // get the image
 app.get(["/@:name", "/get/@:name"],
   ZodValid({

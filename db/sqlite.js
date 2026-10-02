@@ -99,6 +99,12 @@ async function getTraffic(granularity, start, end) {
     GROUP BY bucket ORDER BY bucket`).all(start, end)
 }
 
+async function getSeries(name, start, end) {
+  return db.prepare(`SELECT bucket, num FROM tb_stats
+    WHERE dimension = 'counter' AND name = ? AND bucket >= ? AND bucket < ?
+    ORDER BY bucket`).all(name, start, end)
+}
+
 async function maintainStats(now) {
   const end = Math.floor(now / HOUR) * HOUR
   const minuteStart = end - retention.minute
@@ -124,7 +130,7 @@ module.exports = {
   getAll: async () => db.prepare('SELECT * FROM tb_count').all(),
   setNum: async (name, num) => saveCount.run({ name, num }),
   setNumMulti: async (counters) => db.transaction(() => counters.forEach(row => saveCount.run(row)))(),
-  initStats, getStats, getRank, getSummary, getTraffic, maintainStats,
+  initStats, getStats, getRank, getSummary, getTraffic, getSeries, maintainStats,
   writeSnapshot: async (snapshot) => writeSnapshot(snapshot),
   close: async () => db.close()
 }

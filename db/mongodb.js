@@ -95,6 +95,14 @@ async function getTraffic(granularity, start, end) {
   ])
 }
 
+async function getSeries(name, start, end) {
+  const rows = await Stat.find(
+    { dimension: 'counter', name, bucket: { $gte: start, $lt: end } },
+    '-_id -dimension -name'
+  ).sort({ bucket: 1 }).lean()
+  return rows.map(({ bucket, num }) => ({ bucket, num }))
+}
+
 async function maintainStats(now) {
   const end = Math.floor(now / HOUR) * HOUR
   const minuteStart = end - retention.minute
@@ -118,6 +126,6 @@ module.exports = {
   setNum: (name, num) => Count.updateOne({ name }, { $set: { num } }, { upsert: true }),
   setNumMulti: (counters) => bulk(Count, counters.map(({ name, num }) => ({ updateOne: { filter: { name }, update: { $set: { num } }, upsert: true } }))),
   getStats: (rows) => Stat.find({ _id: { $in: rows.map(statsId) } }).lean(),
-  initStats, writeSnapshot, getRank, getSummary, getTraffic, maintainStats,
+  initStats, writeSnapshot, getRank, getSummary, getTraffic, getSeries, maintainStats,
   close: () => mongoose.disconnect()
 }

@@ -2,6 +2,11 @@
 
 const { MINUTE, HOUR, DAY, statsId } = require('../db/stats')
 
+// Fixed number shown by the demo counter, never stored
+const DEMO_COUNT = '0123456789'
+
+const FIVE_MINUTES = 5 * MINUTE
+
 function hostname(value) {
   try {
     const url = new URL(value)
@@ -34,7 +39,7 @@ function createStatistics(db, logger) {
   }
 
   async function getCounter(name, num = 0) {
-    if (name === 'demo') return { name, num: '0123456789' }
+    if (name === 'demo') return { name, num: DEMO_COUNT }
     if (num > 0) return { name, num }
     let state = counters.get(name)
     if (!state) {
@@ -161,6 +166,34 @@ function createStatistics(db, logger) {
       partial24h: data.partial24h, rpmReady: data.rpmReady, site: data.site, unknown: data.unknown, ...data.rankings[sort] }
   }
 
+  async function series(name) {
+    const data = await snapshot()
+    // Snap both ends to five minute boundaries so the window is a whole number of buckets
+    const end = Math.floor(data.end / FIVE_MINUTES) * FIVE_MINUTES
+    const start = end - DAY
+    const minutes = await db.getSeries(name, start, end)
+
+    // Minutes are summed into five minute buckets
+    const points = []
+    for (let bucket = start; bucket < end; bucket += FIVE_MINUTES) points.push({ time: bucket, count: 0 })
+    for (const row of minutes) {
+      const index = Math.floor((row.bucket - start) / FIVE_MINUTES)
+      if (points[index]) points[index].count += row.num
+    }
+
+    return { name, total: await getTotal(name), calls24h: points.reduce((sum, point) => sum + point.count, 0), updatedAt: data.updatedAt, start, end, partial: data.partial24h, points }
+  }
+
+  // Reads the current count from the loaded state instead of incrementing it
+  async function getTotal(name) {
+    if (name === 'demo') return DEMO_COUNT
+    const state = counters.get(name)
+    if (state) {
+      try { await state.ready; return state.num } catch { return 0 }
+    }
+    return (await db.getNum(name)).num
+  }
+
   async function summary() {
     const data = await snapshot()
     return { updatedAt: data.updatedAt, rpmReady: data.rpmReady, site: data.site }
@@ -188,7 +221,7 @@ function createStatistics(db, logger) {
     await db.close()
   }
 
-  return { init, getCounter, record, flush, rank, summary, traffic, close }
+  return { init, getCounter, record, flush, rank, series, summary, traffic, close }
 }
 
 module.exports = { createStatistics, hostname }
