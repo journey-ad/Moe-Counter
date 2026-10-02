@@ -3,22 +3,22 @@ import { html } from '../lib/html.js'
 import { useLanguage } from '../lib/i18n.js'
 import { Icon, PillButton } from './ui.js'
 
+const pickTheme = (themes, exclude) => {
+  const choices = themes.filter(({ name }) => name !== exclude)
+  return choices.length ? choices[Math.floor(Math.random() * choices.length)].name : themes[0]?.name || 'moebooru'
+}
+
 export function Hero({ site, themes, onSparkle, onTrack }) {
   const { t } = useLanguage()
   const themeCount = themes.length
-  const [theme, setTheme] = useState(themes.find(({ name }) => name === 'capoo-2')?.name || themes[0]?.name || 'moebooru')
-  const shuffle = () => {
-    setTheme((current) => {
-      const choices = themes.filter(({ name }) => name !== current)
-      return choices.length ? choices[Math.floor(Math.random() * choices.length)].name : current
-    })
-  }
+  const [theme, setTheme] = useState(() => themes.find(({ name }) => name === 'moebooru')?.name || pickTheme(themes))
+  const shuffle = () => setTheme((current) => pickTheme(themes, current))
   useEffect(() => {
     if (themes.length < 2) return
-    const timer = setInterval(() => { if (!document.hidden) shuffle() }, 5000)
+    const timer = setInterval(() => { if (!document.hidden) shuffle() }, 10000)
     return () => clearInterval(timer)
   }, [themes])
-  const showcase = `${site}/@demo?theme=${encodeURIComponent(theme)}&darkmode=0`
+  const showcase = `${site}/@Moe-counter.github?theme=${encodeURIComponent(theme)}&darkmode=0`
 
   return html`
     <section class="hero">
