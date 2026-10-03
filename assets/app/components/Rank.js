@@ -9,7 +9,7 @@ import { Icon } from './ui.js'
 import { TrafficChart } from './TrafficChart.js'
 import { Audience } from './Audience.js'
 
-function Leaderboard({ rows, kind, format }) {
+function Leaderboard({ rows, kind, site, format }) {
   const { t } = useLanguage()
   return html`
     <article class="panel rank-board">
@@ -24,7 +24,7 @@ function Leaderboard({ rows, kind, format }) {
           <tbody>${rows.length ? rows.map((row, index) => html`
             <tr key=${row.name}><td class=${index < 3 ? 'rank-position is-leading' : 'rank-position'}>${String(index + 1).padStart(2, '0')}</td>
               <th scope="row" class="rank-name" title=${row.name}>
-                ${kind === 'sources' ? html`<a href=${`https://${row.name}/`} target="_blank" rel="noopener noreferrer">${row.name}</a>` : html`<span>${row.name}</span>`}
+                ${kind === 'sources' ? html`<a href=${`https://${row.name}/`} target="_blank" rel="noopener noreferrer">${row.name}</a>` : html`<a href=${`${site}/view/@${encodeURIComponent(row.name)}`}>${row.name}</a>`}
               </th><td>${format(row.total)}</td><td>${format(row.calls24h)}</td><td class="rank-rate">${format(row.rpm, 'rate')}</td></tr>
           `) : html`<tr><td colSpan="5" class="rank-empty">${t('rank.empty')}</td></tr>`}</tbody>
         </table>
@@ -114,7 +114,7 @@ export function Rank({ site, themes }) {
           <div class="rank-filters" role="group" aria-label=${t('rank.sort')}>
             ${['rpm', '24h', 'total'].map(value => html`<button key=${value} type="button" class=${sort === value ? 'is-active' : ''} aria-pressed=${sort === value} onClick=${() => setSort(value)}>${t(`rank.sort_${value}`)}</button>`)}
           </div></div>
-        <div class="rank-boards"><${Leaderboard} kind="counters" rows=${data?.counters || []} format=${format} /><${Leaderboard} kind="sources" rows=${data?.sources || []} format=${format} /></div>
+        <div class="rank-boards"><${Leaderboard} kind="counters" rows=${data?.counters || []} site=${site} format=${format} /><${Leaderboard} kind="sources" rows=${data?.sources || []} format=${format} /></div>
       </section>
     </main>
     <${SiteFooter} site=${site} themeCount=${themes.length} page="rank" rpm=${data?.site.rpm} />
