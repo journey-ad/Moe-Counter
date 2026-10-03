@@ -78,8 +78,9 @@
 .rank-name a:hover { color: var(--pink-dark); text-decoration: underline; }
 .rank-rate { color: var(--blue-deep); font-weight: 650; }
 .rank-table td.rank-empty { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 12px; }
+.rank-table--plain { table-layout: auto; }
 .rank-table--plain th:first-child, .rank-table--plain td:first-child { width: auto; }
-.rank-table--plain th:nth-child(2), .rank-table--plain td:nth-child(2) { width: 74px; text-align: right; }
+.rank-table--plain th:nth-child(2), .rank-table--plain td:nth-child(2) { width: 1%; text-align: right; white-space: nowrap; }
 .rank-table--plain th:nth-child(3), .rank-table--plain td:nth-child(3) { width: 132px; }
 @media (max-width: 860px) {
   .rank-main { padding-top: calc(var(--header-h) + 42px); }
@@ -109,7 +110,6 @@
   .rank-table { min-width: 390px; }
   .rank-table--plain { min-width: 0; }
   .rank-table--plain th, .rank-table--plain td { padding: 12px 8px; }
-  .rank-table--plain th:nth-child(2), .rank-table--plain td:nth-child(2) { width: 60px; }
   .rank-table--plain th:nth-child(3), .rank-table--plain td:nth-child(3) { width: 104px; }
   .rank-table--plain thead th { font-size: 9px; }
   .traffic-tooltip { gap: 8px; font-size: 9px; }

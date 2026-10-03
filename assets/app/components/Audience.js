@@ -50,11 +50,6 @@ function LanguageBreakdown({ rows, format }) {
           <span class="pagination-summary">${t('rank.geo.pagination.summary', { page: current, pages })}</span>
           <div class="pagination-buttons">
             <button type="button" disabled=${current === 1} aria-label=${t('rank.geo.pagination.previous')} onClick=${() => setPage(current - 1)}><${Icon} name="chevron-left" /></button>
-            ${Array.from({ length: pages }, (_, index) => index + 1).map(number => html`
-              <button key=${number} type="button" class=${number === current ? 'is-active' : ''}
-                aria-label=${t('rank.geo.pagination.goToPage', { page: number })} aria-current=${number === current ? 'page' : undefined}
-                onClick=${() => setPage(number)}>${number}</button>
-            `)}
             <button type="button" disabled=${current === pages} aria-label=${t('rank.geo.pagination.next')} onClick=${() => setPage(current + 1)}><${Icon} name="chevron-right" /></button>
           </div>
         </nav>

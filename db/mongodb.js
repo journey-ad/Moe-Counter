@@ -79,21 +79,28 @@ async function getCounterRank(name, start, end) {
     Count.countDocuments({ name: { $ne: 'demo' } })
   ])
   if (!counter || name === 'demo') return { position: null, total }
-  const [ahead] = await Count.aggregate([
-    { $match: { name: { $ne: 'demo' } } },
-    { $lookup: { from: 'tb_stats', let: { name: '$name' }, as: 'activity', pipeline: [
-      { $match: { dimension: 'counter', bucket: { $gte: start, $lt: end }, $expr: { $eq: ['$name', '$$name'] } } },
-      { $group: { _id: null, calls24h: { $sum: '$num' } } }
-    ] } },
-    { $project: { name: 1, num: 1, calls24h: { $ifNull: [{ $arrayElemAt: ['$activity.calls24h', 0] }, 0] } } },
-    { $match: { $or: [
-      { calls24h: { $gt: activity.calls24h } },
-      { calls24h: activity.calls24h, num: { $gt: counter.num } },
-      { calls24h: activity.calls24h, num: counter.num, name: { $lt: name } }
-    ] } },
-    { $count: 'count' }
+  const active = activity.calls24h > 0
+  const lifetimeOrder = [
+    { num: { $gt: counter.num } },
+    { num: counter.num, name: { $lt: name } }
+  ]
+  const [ahead, lifetimeAhead] = await Promise.all([
+    Stat.aggregate([
+      { $match: { dimension: 'counter', name: { $ne: 'demo' }, bucket: { $gte: start, $lt: end } } },
+      { $group: { _id: '$name', calls24h: { $sum: '$num' } } },
+      { $match: { calls24h: active ? { $gte: activity.calls24h } : { $gt: 0 } } },
+      { $lookup: { from: 'tb_count', localField: '_id', foreignField: 'name', as: 'counter' } },
+      { $unwind: '$counter' },
+      { $project: { name: '$_id', num: '$counter.num', calls24h: 1 } },
+      { $match: active ? { $or: [
+        { calls24h: { $gt: activity.calls24h } },
+        { calls24h: activity.calls24h, $or: lifetimeOrder }
+      ] } : { $nor: lifetimeOrder } },
+      { $count: 'count' }
+    ]),
+    active ? 0 : Count.countDocuments({ name: { $ne: 'demo' }, $or: lifetimeOrder })
   ])
-  return { position: (ahead?.count || 0) + 1, total }
+  return { position: (ahead[0]?.count || 0) + lifetimeAhead + 1, total }
 }
 
 async function getSummary(dimension, name, start, end, rpmStart) {

@@ -235,3 +235,200 @@ test('单计数器序列读累计时不增加计数', async (t) => {
   assert.equal((await stats.getCounter('a')).num, 8)
   assert.equal((await stats.series('a')).total, 8)
 })
+
+test('详情缓存命中时不重复查询趋势、排名和来源统计', async (context) => {
+  const db = fakeDb()
+  const stats = createStatistics(db, logger)
+  context.after(() => stats.close())
+  await stats.init()
+  await stats.summary()
+
+  const seriesRead = context.mock.method(db, 'getSeries')
+  const rankRead = context.mock.method(db, 'getCounterRank')
+  const breakdownRead = context.mock.method(db, 'getBreakdown')
+  const totalRead = context.mock.method(db, 'getNum')
+  const first = await stats.series(':siatube')
+  assert.deepEqual(await stats.series(':siatube'), first)
+
+  assert.equal(seriesRead.mock.callCount(), 1)
+  assert.equal(rankRead.mock.callCount(), 1)
+  assert.deepEqual(breakdownRead.mock.calls.map(call => call.arguments[0]), ['country::siatube', 'language::siatube'])
+  assert.equal(totalRead.mock.callCount(), 2)
+})
+
+test('详情缓存满五分钟过期，命中不延长有效期且并发刷新只查询一次', async (context) => {
+  let now = Date.now()
+  context.mock.method(Date, 'now', () => now)
+  const db = fakeDb()
+  const seriesRead = context.mock.method(db, 'getSeries')
+  const rankRead = context.mock.method(db, 'getCounterRank')
+  const stats = createStatistics(db, logger)
+  context.after(() => stats.close())
+  await stats.init()
+
+  const first = await stats.series('a')
+  now += 4 * 60000
+  assert.deepEqual(await stats.series('a'), first)
+  now += 60000 - 1
+  assert.deepEqual(await stats.series('a'), first)
+  assert.equal(seriesRead.mock.callCount(), 1)
+  assert.equal(rankRead.mock.callCount(), 1)
+
+  now++
+  const refreshed = await Promise.all(Array.from({ length: 10 }, () => stats.series('a')))
+  assert.ok(refreshed.every(data => data.updatedAt === now))
+  assert.equal(seriesRead.mock.callCount(), 2)
+  assert.equal(rankRead.mock.callCount(), 2)
+})
+
+test('详情缓存最多保存五十个 ID，访问命中后按 LRU 淘汰', async (context) => {
+  const reads = new Map()
+  const db = fakeDb({
+    getSeries: async (name) => {
+      reads.set(name, (reads.get(name) || 0) + 1)
+      return []
+    }
+  })
+  const stats = createStatistics(db, logger)
+  context.after(() => stats.close())
+  await stats.init()
+
+  for (let index = 0; index < 50; index++) await stats.series(`id-${index}`)
+  await stats.series('id-0')
+  assert.equal(reads.get('id-0'), 1)
+
+  await stats.series('id-50')
+  await stats.series('id-0')
+  assert.equal(reads.get('id-0'), 1)
+  await stats.series('id-1')
+  assert.equal(reads.get('id-1'), 2)
+  assert.equal([...reads.values()].reduce((sum, count) => sum + count, 0), 52)
+})
+
+test('同一个详情 ID 的百个并发请求合并统计查询', async (context) => {
+  const db = fakeDb({
+    getSeries: async (name, start, end) => {
+      await new Promise(resolve => setImmediate(resolve))
+      return [{ bucket: end - 60000, num: 2 }]
+    }
+  })
+  const stats = createStatistics(db, logger)
+  context.after(() => stats.close())
+  await stats.init()
+  await stats.summary()
+
+  const seriesRead = context.mock.method(db, 'getSeries')
+  const rankRead = context.mock.method(db, 'getCounterRank')
+  const breakdownRead = context.mock.method(db, 'getBreakdown')
+  const results = await Promise.all(Array.from({ length: 100 }, () => stats.series('a')))
+
+  assert.ok(results.every(data => data.name === 'a' && data.calls24h === 2 && data.points.length === 288))
+  assert.equal(seriesRead.mock.callCount(), 1)
+  assert.equal(rankRead.mock.callCount(), 1)
+  assert.equal(breakdownRead.mock.callCount(), 2)
+})
+
+test('并发详情查询失败不缓存错误，下次请求可以重试', async (context) => {
+  let failing = true
+  const db = fakeDb({
+    getCounterRank: async () => {
+      await new Promise(resolve => setImmediate(resolve))
+      if (failing) throw new Error('rank unavailable')
+      return { position: 1, total: 100 }
+    }
+  })
+  const rankRead = context.mock.method(db, 'getCounterRank')
+  const stats = createStatistics(db, logger)
+  context.after(() => stats.close())
+  await stats.init()
+
+  const failures = await Promise.allSettled(Array.from({ length: 10 }, () => stats.series('a')))
+  assert.ok(failures.every(result => result.status === 'rejected' && result.reason.message === 'rank unavailable'))
+  assert.equal(rankRead.mock.callCount(), 1)
+
+  failing = false
+  const recovered = await stats.series('a')
+  assert.deepEqual(recovered.rank24h, { position: 1, total: 100 })
+  assert.deepEqual(await stats.series('a'), recovered)
+  assert.equal(rankRead.mock.callCount(), 2)
+})
+
+test('不同详情 ID 的趋势、排名和来源缓存互不影响', async (context) => {
+  const db = fakeDb({
+    getSeries: async (name, start, end) => [{ bucket: end - 60000, num: name === 'a' ? 2 : 3 }],
+    getCounterRank: async (name) => ({ position: name === 'a' ? 1 : 2, total: 2 }),
+    getBreakdown: async (dimension) => dimension.includes(':') ? [{ name: dimension, total: 1 }] : []
+  })
+  const seriesRead = context.mock.method(db, 'getSeries')
+  const stats = createStatistics(db, logger)
+  context.after(() => stats.close())
+  await stats.init()
+
+  const first = await stats.series('a')
+  const second = await stats.series('b')
+  assert.equal(first.name, 'a')
+  assert.equal(first.calls24h, 2)
+  assert.deepEqual(first.rank24h, { position: 1, total: 2 })
+  assert.deepEqual(first.countries, [{ name: 'country:a', total: 1 }])
+  assert.deepEqual(first.languages, [{ name: 'language:a', total: 1 }])
+  assert.equal(second.name, 'b')
+  assert.equal(second.calls24h, 3)
+  assert.deepEqual(second.rank24h, { position: 2, total: 2 })
+  assert.deepEqual(second.countries, [{ name: 'country:b', total: 1 }])
+  assert.deepEqual(second.languages, [{ name: 'language:b', total: 1 }])
+  assert.deepEqual(await stats.series('a'), first)
+  assert.equal(seriesRead.mock.callCount(), 2)
+})
+
+test('详情统计命中缓存时累计计数仍读取内存和落库后的最新值', async (context) => {
+  const persisted = new Map([['a', 7]])
+  const db = fakeDb({
+    getNum: async (name) => ({ name, num: persisted.get(name) || 0 }),
+    writeSnapshot: async (snapshot) => {
+      for (const counter of snapshot.counters) persisted.set(counter.name, counter.num)
+    }
+  })
+  const seriesRead = context.mock.method(db, 'getSeries')
+  const rankRead = context.mock.method(db, 'getCounterRank')
+  const stats = createStatistics(db, logger)
+  context.after(() => stats.close())
+  await stats.init()
+
+  assert.equal((await stats.series('a')).total, 7)
+  persisted.set('a', 8)
+  assert.equal((await stats.series('a')).total, 8)
+  assert.equal((await stats.getCounter('a')).num, 9)
+  assert.equal((await stats.series('a')).total, 9)
+  await stats.flush()
+  assert.equal(persisted.get('a'), 9)
+  persisted.set('a', 10)
+  assert.equal((await stats.series('a')).total, 10)
+  assert.equal(seriesRead.mock.callCount(), 1)
+  assert.equal(rankRead.mock.callCount(), 1)
+})
+
+test('关闭统计模块时等待正在进行的详情查询再关闭数据库', async (context) => {
+  let releaseRead
+  let markStarted
+  const waiting = new Promise(resolve => { releaseRead = resolve })
+  const started = new Promise(resolve => { markStarted = resolve })
+  const db = fakeDb({
+    getSeries: async () => { markStarted(); await waiting; return [] }
+  })
+  const closeDb = context.mock.method(db, 'close')
+  const stats = createStatistics(db, logger)
+  context.after(async () => { releaseRead(); await stats.close() })
+  await stats.init()
+  await stats.summary()
+
+  const loading = stats.series('a')
+  await started
+  const closing = stats.close()
+  await new Promise(resolve => setImmediate(resolve))
+  assert.equal(closeDb.mock.callCount(), 0)
+
+  releaseRead()
+  const [data] = await Promise.all([loading, closing])
+  assert.equal(data.name, 'a')
+  assert.equal(closeDb.mock.callCount(), 1)
+})

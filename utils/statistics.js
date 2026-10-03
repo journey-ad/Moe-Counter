@@ -6,6 +6,7 @@ const { MINUTE, HOUR, DAY, statsId } = require('../db/stats')
 const DEMO_COUNT = '0123456789'
 
 const FIVE_MINUTES = 5 * MINUTE
+const SERIES_CACHE_LIMIT = 50
 
 function hostname(value) {
   try {
@@ -31,6 +32,8 @@ function language(value) {
 
 function createStatistics(db, logger) {
   const counters = new Map()
+  const seriesCache = new Map()
+  const seriesReading = new Map()
   let dirty = new Map()
   let pending = new Map()
   let retry = null
@@ -204,12 +207,34 @@ function createStatistics(db, logger) {
   }
 
   async function series(name) {
+    const cached = seriesCache.get(name)
+    seriesCache.delete(name)
+    let detail
+    if (cached && cached.expiresAt > Date.now()) {
+      seriesCache.set(name, cached)
+      detail = cached.data
+    } else {
+      detail = seriesReading.get(name)
+      if (!detail) {
+        detail = loadSeries(name).then(data => {
+          seriesCache.set(name, { data, expiresAt: Date.now() + FIVE_MINUTES })
+          if (seriesCache.size > SERIES_CACHE_LIMIT) seriesCache.delete(seriesCache.keys().next().value)
+          return data
+        }).finally(() => { seriesReading.delete(name) })
+        seriesReading.set(name, detail)
+      }
+    }
+    const [data, total] = await Promise.all([detail, getTotal(name)])
+    return { ...data, total }
+  }
+
+  async function loadSeries(name) {
     const data = await snapshot()
     // Snap both ends to five minute boundaries so the window is a whole number of buckets
     const end = Math.floor(data.end / FIVE_MINUTES) * FIVE_MINUTES
     const start = end - DAY
-    const [minutes, total, countries, languages, rank24h] = await Promise.all([
-      db.getSeries(name, start, end), getTotal(name),
+    const [minutes, countries, languages, rank24h] = await Promise.all([
+      db.getSeries(name, start, end),
       db.getBreakdown(`country:${name}`), db.getBreakdown(`language:${name}`),
       db.getCounterRank(name, data.start, data.end)
     ])
@@ -222,7 +247,7 @@ function createStatistics(db, logger) {
       if (points[index]) points[index].count += row.num
     }
 
-    return { name, total, calls24h: points.reduce((sum, point) => sum + point.count, 0), rank24h, updatedAt: data.updatedAt, start, end, partial: data.partial24h, countries, languages, points }
+    return { name, calls24h: points.reduce((sum, point) => sum + point.count, 0), rank24h, updatedAt: data.updatedAt, start, end, partial: data.partial24h, countries, languages, points }
   }
 
   // Reads the current count from the loaded state instead of incrementing it
@@ -257,6 +282,8 @@ function createStatistics(db, logger) {
   async function close() {
     clearInterval(timer)
     if (reading) await reading.catch(() => {})
+    await Promise.allSettled(seriesReading.values())
+    seriesCache.clear()
     if (writing) await writing.catch(() => {})
     await flush()
     await db.close()
