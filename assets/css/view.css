@@ -9,12 +9,14 @@
 .view-status button:disabled { cursor: wait; opacity: 0.5; }
 .view-error { margin-top: 16px; padding: 12px 16px; border: 1px solid var(--line-pink); border-radius: 9px; background: var(--paper-blush); color: var(--pink-dark); font-size: 12px; }
 .view-summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 20px; }
-.view-stat { position: relative; overflow: hidden; padding: 25px 26px 22px; }
+.view-stat { position: relative; overflow: hidden; padding: 25px 26px 22px; display: flex; flex-direction: column; }
 .view-stat--total { background: var(--selected-bg); border-color: var(--line-strong); }
 .view-stat .eyebrow { color: var(--muted); font-size: 10px; letter-spacing: 1px; }
 .view-stat-value { display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px; margin: 10px 0 8px; font-size: clamp(26px, 3.3vw, 43px); font-weight: 650; line-height: 1.2; letter-spacing: -1.8px; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
 .view-stat--total .view-stat-value { color: var(--blue-deep); }
+.view-rank-total { color: var(--muted); font-size: clamp(13px, 1.4vw, 18px); font-weight: 500; letter-spacing: 0; white-space: nowrap; }
 .view-stat p, .view-coverage { color: var(--muted); font-size: 11px; }
+.view-stat > p { margin-top: auto; }
 .view-coverage { margin-top: 14px; }
 .view-traffic { margin-top: 40px; padding: 28px 30px 20px; }
 .view-panel-heading h2 { margin-top: 7px; font-size: 22px; line-height: 1.4; letter-spacing: -0.6px; }

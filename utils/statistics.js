@@ -14,6 +14,21 @@ function hostname(value) {
   } catch { return '' }
 }
 
+// XX means Cloudflare could not tell
+function country(value) {
+  const code = typeof value === 'string' ? value.trim().toLowerCase() : ''
+  if (!/^[a-z]{2}$/.test(code) || code === 'xx') return ''
+  // Taiwan is stored under CN
+  return code === 'tw' ? 'cn' : code
+}
+
+// Primary subtag of the first tag
+function language(value) {
+  const first = String(value || '').split(',', 1)[0].trim()
+  const code = first.split(';', 1)[0].split('-', 1)[0].toLowerCase()
+  return /^[a-z]{2,3}$/.test(code) ? code : ''
+}
+
 function createStatistics(db, logger) {
   const counters = new Map()
   let dirty = new Map()
@@ -59,7 +74,7 @@ function createStatistics(db, logger) {
     } finally { state.readers-- }
   }
 
-  function record(name, referrer, site, now = Date.now()) {
+  function record(name, referrer, site, now = Date.now(), traits = {}) {
     if (name === 'demo') return
     const bucket = Math.floor(now / MINUTE) * MINUTE
     add('counter', name, bucket)
@@ -69,6 +84,16 @@ function createStatistics(db, logger) {
     if (!source || source !== hostname(site)) {
       add('source', source, bucket)
       add('source', source, -1)
+    }
+    const countryCode = country(traits.country)
+    if (countryCode) {
+      add('country', countryCode, -1)
+      add(`country:${name}`, countryCode, -1)
+    }
+    const languageCode = language(traits.language)
+    if (languageCode) {
+      add('language', languageCode, -1)
+      add(`language:${name}`, languageCode, -1)
     }
     if (interval === 0) flush().catch(error => logger.error('Statistics write failed:', error))
   }
@@ -142,19 +167,30 @@ function createStatistics(db, logger) {
       const end = Math.floor(updatedAt / MINUTE) * MINUTE
       const start = end - DAY
       const rpmStart = end - 5 * MINUTE
-      const [traffic, site, unknown, ...rankRows] = await Promise.all([
-        db.getTraffic('minute', start, end), db.getSummary('site', '', start, end, rpmStart),
+      const hourEnd = Math.floor(end / HOUR) * HOUR
+      const [traffic, hourlyTraffic, site, unknown, countries, languages, rankRows] = await Promise.all([
+        db.getTraffic('minute', start, end),
+        db.getTraffic('hour', hourEnd - 7 * DAY, hourEnd),
+        db.getSummary('site', '', start, end, rpmStart),
         db.getSummary('source', '', start, end, rpmStart),
-        ...['rpm', 'total', '24h'].flatMap(sort => ['counter', 'source'].map(dimension => db.getRank(dimension, sort, start, end, rpmStart)))
+        db.getBreakdown('country'), db.getBreakdown('language'),
+        Promise.all(['rpm', 'total', '24h'].map(async sort => {
+          const [counters, sources] = await Promise.all([
+            db.getRank('counter', sort, start, end, rpmStart),
+            db.getRank('source', sort, start, end, rpmStart)
+          ])
+          return [sort, { counters, sources }]
+        }))
       ])
       const covered = new Set(traffic.filter(row => row.covered === 1).map(row => row.bucket))
       const rpmReady = Array.from({ length: 5 }, (_, i) => rpmStart + i * MINUTE).every(bucket => covered.has(bucket))
       const metrics = ({ calls5m, ...row }) => ({ ...row, rpm: rpmReady ? calls5m / 5 : null })
-      const rankings = {}
-      for (const [i, sort] of ['rpm', 'total', '24h'].entries()) rankings[sort] = { counters: rankRows[i * 2].map(metrics), sources: rankRows[i * 2 + 1].map(metrics) }
+      const rankings = Object.fromEntries(rankRows.map(([sort, { counters, sources }]) => [
+        sort, { counters: counters.map(metrics), sources: sources.map(metrics) }
+      ]))
       const minute = new Map(traffic.map(row => [row.bucket, row]))
-      const hours = new Map((await db.getTraffic('hour', Math.floor(end / HOUR) * HOUR - 7 * DAY, Math.floor(end / HOUR) * HOUR)).map(row => [row.bucket, row]))
-      cache = { startedAt, updatedAt, end, start, rpmStart, partial24h: covered.size < 1440, rpmReady, site: metrics(site), unknown: metrics(unknown), rankings, minute, hours }
+      const hours = new Map(hourlyTraffic.map(row => [row.bucket, row]))
+      cache = { startedAt, updatedAt, end, start, rpmStart, partial24h: covered.size < 1440, rpmReady, site: metrics(site), unknown: metrics(unknown), countries, languages, rankings, minute, hours }
       return cache
     })().finally(() => { reading = null })
     return reading
@@ -163,7 +199,8 @@ function createStatistics(db, logger) {
   async function rank(sort) {
     const data = await snapshot()
     return { startedAt: data.startedAt, updatedAt: data.updatedAt, window: { start: data.start, end: data.end, rpmStart: data.rpmStart },
-      partial24h: data.partial24h, rpmReady: data.rpmReady, site: data.site, unknown: data.unknown, ...data.rankings[sort] }
+      partial24h: data.partial24h, rpmReady: data.rpmReady, site: data.site, unknown: data.unknown,
+      countries: data.countries, languages: data.languages, ...data.rankings[sort] }
   }
 
   async function series(name) {
@@ -171,7 +208,11 @@ function createStatistics(db, logger) {
     // Snap both ends to five minute boundaries so the window is a whole number of buckets
     const end = Math.floor(data.end / FIVE_MINUTES) * FIVE_MINUTES
     const start = end - DAY
-    const minutes = await db.getSeries(name, start, end)
+    const [minutes, total, countries, languages, rank24h] = await Promise.all([
+      db.getSeries(name, start, end), getTotal(name),
+      db.getBreakdown(`country:${name}`), db.getBreakdown(`language:${name}`),
+      db.getCounterRank(name, data.start, data.end)
+    ])
 
     // Minutes are summed into five minute buckets
     const points = []
@@ -181,7 +222,7 @@ function createStatistics(db, logger) {
       if (points[index]) points[index].count += row.num
     }
 
-    return { name, total: await getTotal(name), calls24h: points.reduce((sum, point) => sum + point.count, 0), updatedAt: data.updatedAt, start, end, partial: data.partial24h, points }
+    return { name, total, calls24h: points.reduce((sum, point) => sum + point.count, 0), rank24h, updatedAt: data.updatedAt, start, end, partial: data.partial24h, countries, languages, points }
   }
 
   // Reads the current count from the loaded state instead of incrementing it
@@ -224,4 +265,4 @@ function createStatistics(db, logger) {
   return { init, getCounter, record, flush, rank, series, summary, traffic, close }
 }
 
-module.exports = { createStatistics, hostname }
+module.exports = { createStatistics, hostname, country, language }

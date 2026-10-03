@@ -73,6 +73,29 @@ async function getRank(dimension, sort, start, end, rpmStart) {
   return candidates.sort((a, b) => b[metric] - a[metric] || b.total - a.total || (a.name < b.name ? -1 : a.name > b.name ? 1 : 0)).slice(0, 100)
 }
 
+async function getCounterRank(name, start, end) {
+  const [counter, activity, total] = await Promise.all([
+    Count.findOne({ name }).lean(), getSummary('counter', name, start, end, end),
+    Count.countDocuments({ name: { $ne: 'demo' } })
+  ])
+  if (!counter || name === 'demo') return { position: null, total }
+  const [ahead] = await Count.aggregate([
+    { $match: { name: { $ne: 'demo' } } },
+    { $lookup: { from: 'tb_stats', let: { name: '$name' }, as: 'activity', pipeline: [
+      { $match: { dimension: 'counter', bucket: { $gte: start, $lt: end }, $expr: { $eq: ['$name', '$$name'] } } },
+      { $group: { _id: null, calls24h: { $sum: '$num' } } }
+    ] } },
+    { $project: { name: 1, num: 1, calls24h: { $ifNull: [{ $arrayElemAt: ['$activity.calls24h', 0] }, 0] } } },
+    { $match: { $or: [
+      { calls24h: { $gt: activity.calls24h } },
+      { calls24h: activity.calls24h, num: { $gt: counter.num } },
+      { calls24h: activity.calls24h, num: counter.num, name: { $lt: name } }
+    ] } },
+    { $count: 'count' }
+  ])
+  return { position: (ahead?.count || 0) + 1, total }
+}
+
 async function getSummary(dimension, name, start, end, rpmStart) {
   const rows = await Stat.aggregate([
     { $match: { dimension, name, $or: [{ bucket: -1 }, { bucket: { $gte: start, $lt: end } }] } },
@@ -103,6 +126,14 @@ async function getSeries(name, start, end) {
   return rows.map(({ bucket, num }) => ({ bucket, num }))
 }
 
+async function getBreakdown(dimension) {
+  return Stat.aggregate([
+    { $match: { dimension, bucket: -1, name: { $ne: '' } } },
+    { $sort: { num: -1, name: 1 } },
+    { $project: { _id: 0, name: 1, total: '$num' } }
+  ])
+}
+
 async function maintainStats(now) {
   const end = Math.floor(now / HOUR) * HOUR
   const minuteStart = end - retention.minute
@@ -126,6 +157,6 @@ module.exports = {
   setNum: (name, num) => Count.updateOne({ name }, { $set: { num } }, { upsert: true }),
   setNumMulti: (counters) => bulk(Count, counters.map(({ name, num }) => ({ updateOne: { filter: { name }, update: { $set: { num } }, upsert: true } }))),
   getStats: (rows) => Stat.find({ _id: { $in: rows.map(statsId) } }).lean(),
-  initStats, writeSnapshot, getRank, getSummary, getTraffic, getSeries, maintainStats,
+  initStats, writeSnapshot, getRank, getCounterRank, getSummary, getTraffic, getSeries, getBreakdown, maintainStats,
   close: () => mongoose.disconnect()
 }

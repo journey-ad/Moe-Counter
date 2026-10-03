@@ -43,6 +43,9 @@ const saveStat = db.prepare(`INSERT INTO tb_stats(id, dimension, name, bucket, n
   ON CONFLICT(id) DO UPDATE SET num = MAX(tb_stats.num, excluded.num)`)
 const saveMeta = db.prepare(`INSERT INTO tb_stats_meta(name, value) VALUES(?, ?)
   ON CONFLICT(name) DO UPDATE SET value = excluded.value`)
+const readBreakdown = db.prepare(`SELECT name, num AS total FROM tb_stats
+  WHERE dimension = @dimension AND bucket = -1 AND name != ''
+  ORDER BY total DESC, name ASC`)
 
 const writeSnapshot = db.transaction(({ counters, stats, updatedAt }) => {
   for (const counter of counters) saveCounter.run(counter)
@@ -79,6 +82,24 @@ async function getRank(dimension, sort, start, end, rpmStart) {
   `).all({ dimension, start, end, rpmStart })
 }
 
+async function getCounterRank(name, start, end) {
+  return db.prepare(`WITH activity AS (
+    SELECT name, SUM(num) AS calls24h FROM tb_stats
+    WHERE dimension = 'counter' AND bucket >= @start AND bucket < @end GROUP BY name
+  ), scores AS (
+    SELECT counter.name, counter.num, COALESCE(activity.calls24h, 0) AS calls24h
+    FROM tb_count AS counter LEFT JOIN activity ON counter.name = activity.name
+    WHERE counter.name != 'demo'
+  ) SELECT (
+    SELECT 1 + (
+      SELECT COUNT(*) FROM scores AS candidate
+      WHERE candidate.calls24h > target.calls24h
+        OR (candidate.calls24h = target.calls24h AND candidate.num > target.num)
+        OR (candidate.calls24h = target.calls24h AND candidate.num = target.num AND candidate.name < target.name)
+    ) FROM scores AS target WHERE target.name = @name
+  ) AS position, (SELECT COUNT(*) FROM scores) AS total`).get({ name, start, end })
+}
+
 async function getSummary(dimension, name, start, end, rpmStart) {
   return db.prepare(`SELECT
     COALESCE(SUM(CASE WHEN bucket = -1 THEN num ELSE 0 END), 0) AS total,
@@ -103,6 +124,10 @@ async function getSeries(name, start, end) {
   return db.prepare(`SELECT bucket, num FROM tb_stats
     WHERE dimension = 'counter' AND name = ? AND bucket >= ? AND bucket < ?
     ORDER BY bucket`).all(name, start, end)
+}
+
+async function getBreakdown(dimension) {
+  return readBreakdown.all({ dimension })
 }
 
 async function maintainStats(now) {
@@ -130,7 +155,7 @@ module.exports = {
   getAll: async () => db.prepare('SELECT * FROM tb_count').all(),
   setNum: async (name, num) => saveCount.run({ name, num }),
   setNumMulti: async (counters) => db.transaction(() => counters.forEach(row => saveCount.run(row)))(),
-  initStats, getStats, getRank, getSummary, getTraffic, getSeries, maintainStats,
+  initStats, getStats, getRank, getCounterRank, getSummary, getTraffic, getSeries, getBreakdown, maintainStats,
   writeSnapshot: async (snapshot) => writeSnapshot(snapshot),
   close: async () => db.close()
 }

@@ -20,6 +20,20 @@ export default {
       perMinute: 'リクエスト数 / 分', perHour: 'リクエスト数 / 時間',
       description: 'カウンターのリクエスト推移',
       empty: 'データなし', missing: 'データなし', requests: '{count} リクエスト'
+    },
+    geo: {
+      kicker: 'リクエスト元 / AUDIENCE', title: 'リクエスト元の国と地域',
+      language: 'ブラウザの言語',
+      emptyGeo: 'データなし', emptyLanguage: 'データなし', share: '割合',
+      mapLoading: '地図を読み込み中…', mapError: '地図を読み込めません', mapDescription: '国と地域別の累計リクエスト数',
+      noRegionData: 'この地域のデータはありません',
+      pagination: {
+        label: 'ブラウザ言語のページ',
+        summary: '{pages} ページ中 {page}',
+        previous: '前のページ',
+        next: '次のページ',
+        goToPage: '{page} ページ目へ'
+      }
     }
   },
   view: {
@@ -30,7 +44,7 @@ export default {
     error: '読み込みに失敗しました', stale: '更新に失敗 · 前回のデータを表示しています',
     total: '累計アクセス', totalNote: 'カウンター作成からの累計回数',
     calls24h: '24 時間の呼び出し数', callsNote: '直近 24 時間の合計',
-    embed: '埋め込み URL', embedNote: 'README やページーに貼ると计数が始まります',
+    rank24h: '24時間の呼び出し数順位', rank24hNote: '全カウンターの中での順位', unranked: '順位なし',
     warming: 'データ収集中です。24 時間の範囲はまだ完全ではありません',
     chart: {
       kicker: 'リクエスト推移', title: '5 分あたりの呼び出し数',

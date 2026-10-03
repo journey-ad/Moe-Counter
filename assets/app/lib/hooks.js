@@ -1,4 +1,15 @@
-import { useEffect, useRef, useState } from 'preact/hooks'
+import { useEffect, useMemo, useRef, useState } from 'preact/hooks'
+
+export function useNumberFormat(language) {
+  return useMemo(() => {
+    const formatters = {
+      integer: new Intl.NumberFormat(language, { maximumFractionDigits: 0 }),
+      rate: new Intl.NumberFormat(language, { maximumFractionDigits: 1 }),
+      percent: new Intl.NumberFormat(language, { maximumFractionDigits: 1, style: 'percent' })
+    }
+    return (value, type = 'integer') => value === undefined || value === null ? '—' : formatters[type].format(value)
+  }, [language])
+}
 
 /* One shared observer for every theme preview; no image is requested before the element enters the viewport */
 const inViewCallbacks = new WeakMap()

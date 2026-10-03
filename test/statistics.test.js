@@ -3,7 +3,7 @@
 const test = require('node:test')
 const assert = require('node:assert/strict')
 
-const { createStatistics, hostname } = require('../utils/statistics')
+const { createStatistics, hostname, country, language } = require('../utils/statistics')
 
 const logger = { info() {}, debug() {}, error() {} }
 
@@ -22,9 +22,11 @@ function fakeDb(overrides = {}) {
     getStats: async () => [],
     writeSnapshot: async (snapshot) => { written.push(snapshot) },
     getRank: async () => [],
+    getCounterRank: async () => ({ position: null, total: 0 }),
     getSummary: async () => ({ total: 0, calls24h: 0, calls5m: 0 }),
     getTraffic: async () => [],
     getSeries: async () => [],
+    getBreakdown: async () => [],
     maintainStats: async () => {},
     close: async () => {}
   }, overrides)
@@ -96,6 +98,50 @@ test('本站来源不计入来源维度，缺失来源记为未知', async (t) =
   assert.deepEqual([...new Set(rowsOf(db.written.at(-1), 'source').map(row => row.name))], [''])
 })
 
+test('国家代码取两位小写字母，XX 与异常值不写入', () => {
+  assert.equal(country('US'), 'us')
+  assert.equal(country(' cn '), 'cn')
+  assert.equal(country('TW'), 'cn')
+  assert.equal(country(' tw '), 'cn')
+  assert.equal(country('XX'), '')
+  assert.equal(country('T1'), '')
+  assert.equal(country('USA'), '')
+  assert.equal(country(''), '')
+  assert.equal(country(undefined), '')
+})
+
+test('语言取第一项的主语言子标签', () => {
+  assert.equal(language('zh-CN,zh;q=0.9,en;q=0.8'), 'zh')
+  assert.equal(language('en-US,en;q=0.9'), 'en')
+  assert.equal(language('ja'), 'ja')
+  assert.equal(language('zh-Hans-CN'), 'zh')
+  assert.equal(language('*'), '')
+  assert.equal(language(''), '')
+  assert.equal(language(undefined), '')
+})
+
+test('国家与语言分别累计整站和单个计数器，请求头缺失时不建桶', async (t) => {
+  const db = fakeDb()
+  const site = 'https://moe.test'
+  const stats = createStatistics(db, logger)
+  t.after(() => stats.close())
+
+  stats.record('a', site, site, 1_700_000_000_000, { country: 'US', language: 'zh-CN,zh;q=0.9' })
+  stats.record('a', site, site, 1_700_000_100_000, { country: 'us', language: 'en-US' })
+  stats.record('a', site, site, 1_700_000_200_000, { country: 'XX', language: '' })
+  stats.record('a', site, site, 1_700_000_300_000, { country: 'TW', language: '' })
+  stats.record('b', site, site, 1_700_000_400_000, { country: 'JP', language: 'ja' })
+  await stats.flush()
+
+  const snapshot = db.written.at(-1)
+  assert.deepEqual(rowsOf(snapshot, 'country').map(row => [row.name, row.num, row.bucket]), [['us', 2, -1], ['cn', 1, -1], ['jp', 1, -1]])
+  assert.deepEqual(rowsOf(snapshot, 'language').map(row => [row.name, row.num, row.bucket]).sort(), [['en', 1, -1], ['ja', 1, -1], ['zh', 1, -1]])
+  assert.deepEqual(rowsOf(snapshot, 'country:a').map(row => [row.name, row.num, row.bucket]), [['us', 2, -1], ['cn', 1, -1]])
+  assert.deepEqual(rowsOf(snapshot, 'language:a').map(row => [row.name, row.num, row.bucket]).sort(), [['en', 1, -1], ['zh', 1, -1]])
+  assert.deepEqual(rowsOf(snapshot, 'country:b').map(row => [row.name, row.num, row.bucket]), [['jp', 1, -1]])
+  assert.deepEqual(rowsOf(snapshot, 'language:b').map(row => [row.name, row.num, row.bucket]), [['ja', 1, -1]])
+})
+
 test('写入失败后重试仍带着原本的计数', async (t) => {
   const written = []
   let failing = true
@@ -134,8 +180,17 @@ test('统计窗口不足时每分钟调用数标记为未就绪', async (t) => {
 })
 
 test('单计数器序列按 5 分钟汇总且不返回终身累计行', async (t) => {
+  const breakdowns = {
+    'country:a': [{ name: 'us', total: 7 }],
+    'language:a': [{ name: 'en', total: 7 }]
+  }
   const db = fakeDb({
     getNum: async (name) => ({ name, num: 42 }),
+    getCounterRank: async (name) => {
+      assert.equal(name, 'a')
+      return { position: 105, total: 120 }
+    },
+    getBreakdown: async (dimension) => breakdowns[dimension] || [],
     getSeries: async (name, start, end) => {
       const lastMinute = Math.floor(end / 60000) * 60000
       return [
@@ -152,8 +207,11 @@ test('单计数器序列按 5 分钟汇总且不返回终身累计行', async (t
   const data = await stats.series('a')
   assert.equal(data.name, 'a')
   assert.equal(data.total, 42)
+  assert.deepEqual(data.countries, breakdowns['country:a'])
+  assert.deepEqual(data.languages, breakdowns['language:a'])
   assert.equal(data.points.length, 288)
   assert.equal(data.calls24h, 7)
+  assert.deepEqual(data.rank24h, { position: 105, total: 120 })
 
   const busy = data.points.filter(point => point.count > 0)
   assert.deepEqual(busy.map(point => point.count), [3, 4])
@@ -168,7 +226,9 @@ test('单计数器序列读累计时不增加计数', async (t) => {
   t.after(() => stats.close())
   await stats.init()
 
-  assert.equal((await stats.series('a')).total, 7)
+  const data = await stats.series('a')
+  assert.equal(data.total, 7)
+  assert.deepEqual(data.rank24h, { position: null, total: 0 })
   assert.equal((await stats.series('a')).total, 7)
   assert.deepEqual(db.written.flatMap(batch => batch.counters), [])
 

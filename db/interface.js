@@ -6,7 +6,7 @@
  */
 const INTERFACE = [
   'getNum', 'getAll', 'setNum', 'setNumMulti', 'initStats', 'getStats',
-  'writeSnapshot', 'getRank', 'getSummary', 'getTraffic', 'getSeries', 'maintainStats', 'close'
+  'writeSnapshot', 'getRank', 'getCounterRank', 'getSummary', 'getTraffic', 'getSeries', 'getBreakdown', 'maintainStats', 'close'
 ]
 
 module.exports = { INTERFACE }

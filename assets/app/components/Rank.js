@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'preact/hooks'
 import { html } from '../lib/html.js'
+import { useNumberFormat } from '../lib/hooks.js'
 import { useLanguage } from '../lib/i18n.js'
 import { SiteHeader } from './SiteHeader.js'
 import { SiteFooter } from './SiteFooter.js'
 import { BackToTop } from './BackToTop.js'
 import { Icon } from './ui.js'
 import { TrafficChart } from './TrafficChart.js'
+import { Audience } from './Audience.js'
 
 function Leaderboard({ rows, kind, format }) {
   const { t } = useLanguage()
@@ -23,7 +25,7 @@ function Leaderboard({ rows, kind, format }) {
             <tr key=${row.name}><td class=${index < 3 ? 'rank-position is-leading' : 'rank-position'}>${String(index + 1).padStart(2, '0')}</td>
               <th scope="row" class="rank-name" title=${row.name}>
                 ${kind === 'sources' ? html`<a href=${`https://${row.name}/`} target="_blank" rel="noopener noreferrer">${row.name}</a>` : html`<span>${row.name}</span>`}
-              </th><td>${format(row.total)}</td><td>${format(row.calls24h)}</td><td class="rank-rate">${format(row.rpm, true)}</td></tr>
+              </th><td>${format(row.total)}</td><td>${format(row.calls24h)}</td><td class="rank-rate">${format(row.rpm, 'rate')}</td></tr>
           `) : html`<tr><td colSpan="5" class="rank-empty">${t('rank.empty')}</td></tr>`}</tbody>
         </table>
       </div>
@@ -76,7 +78,7 @@ export function Rank({ site, themes }) {
     return () => { controller.abort(); clearInterval(timer); document.removeEventListener('visibilitychange', visible) }
   }, [site, sort, mode, refresh])
 
-  const format = (value, rate = false) => value === undefined || value === null ? '—' : new Intl.NumberFormat(language, { maximumFractionDigits: rate ? 1 : 0 }).format(value)
+  const format = useNumberFormat(language)
   const time = value => new Intl.DateTimeFormat(language, { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' }).format(value)
   const chartMatches = chart && `${chart.granularity}:${chart.end - chart.start > 86400000 ? '7d' : '24h'}` === mode
 
@@ -92,12 +94,13 @@ export function Rank({ site, themes }) {
           <button class="text-button" type="button" disabled=${loading} onClick=${() => setRefresh(value => value + 1)}><${Icon} name="refresh" />${t('rank.refresh')}</button></div>
         ${failed ? html`<p class="rank-error" role="alert">${t(data ? 'rank.stale' : 'rank.error')}</p>` : null}
         <div class="rank-summary" aria-busy=${loading}>
-          <article class="panel rank-stat rank-stat--rpm"><span class="eyebrow">${t('rank.siteRpm')}</span><div class="rank-stat-value">${format(data?.site.rpm, true)}<small>RPM</small></div><p>${t('rank.rpmNote')}</p></article>
+          <article class="panel rank-stat rank-stat--rpm"><span class="eyebrow">${t('rank.siteRpm')}</span><div class="rank-stat-value">${format(data?.site.rpm, 'rate')}<small>RPM</small></div><p>${t('rank.rpmNote')}</p></article>
           <article class="panel rank-stat"><span class="eyebrow">${t('rank.site24h')}</span><div class="rank-stat-value">${format(data?.site.calls24h)}</div><p>${t('rank.siteNote')}</p></article>
-          <article class="panel rank-stat"><span class="eyebrow">${t('rank.unknown')}</span><div class="rank-stat-value">${format(data?.unknown.calls24h)}<small>24h</small></div><p>${t('rank.unknownNote', { total: format(data?.unknown.total), rpm: format(data?.unknown.rpm, true) })}</p></article>
+          <article class="panel rank-stat"><span class="eyebrow">${t('rank.unknown')}</span><div class="rank-stat-value">${format(data?.unknown.calls24h)}<small>24h</small></div><p>${t('rank.unknownNote', { total: format(data?.unknown.total), rpm: format(data?.unknown.rpm, 'rate') })}</p></article>
         </div>
         ${data && !data.rpmReady ? html`<p class="rank-coverage">${t('rank.warming')}</p>` : null}
       </section>
+      <${Audience} countries=${data?.countries} languages=${data?.languages} format=${format} />
       <section id="traffic" class="panel rank-traffic">
         <div class="rank-panel-heading"><div><span class="eyebrow">${t('rank.chart.kicker')}</span><h2>${t('rank.chart.title')}</h2></div>
           <div class="rank-filters" role="group" aria-label=${t('rank.chart.range')}>

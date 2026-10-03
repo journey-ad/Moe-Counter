@@ -24,9 +24,11 @@ const { INTERFACE } = require('./interface')
  *   getStats(rows)     reads stat rows in bulk by dimension, name and bucket
  *   writeSnapshot(s)   persists a batch, counters and stats are written with the greater value per key
  *   getRank(dimension, sort, start, end, rpmStart)    top 100, sort is rpm, total or 24h
+ *   getCounterRank(name, start, end)                 overall position by calls in the window and total counter count
  *   getSummary(dimension, name, start, end, rpmStart)
  *   getTraffic(granularity, start, end)               granularity is minute or hour
  *   getSeries(name, start, end)                       per-minute counts of one counter, ascending
+ *   getBreakdown(dimension)                           lifetime totals per value, descending
  *   maintainStats(now)                                rolls minutes into hours and drops expired data
  *   close()                                           closes the connection
  */

@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'preact/hooks'
 import { html } from '../lib/html.js'
-import { useCopy } from '../lib/hooks.js'
+import { useNumberFormat } from '../lib/hooks.js'
 import { useLanguage } from '../lib/i18n.js'
 import { SiteHeader } from './SiteHeader.js'
 import { SiteFooter } from './SiteFooter.js'
 import { BackToTop } from './BackToTop.js'
-import { CodeBlock, Icon } from './ui.js'
+import { Icon } from './ui.js'
 import { TrafficChart } from './TrafficChart.js'
+import { Audience } from './Audience.js'
 
 export function View({ site, themes, name }) {
   const { t, language } = useLanguage()
-  const [copied, copy] = useCopy()
   const [refresh, setRefresh] = useState(0)
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -46,9 +46,8 @@ export function View({ site, themes, name }) {
     return () => { controller.abort(); clearInterval(timer); document.removeEventListener('visibilitychange', visible) }
   }, [site, name, refresh])
 
-  const format = (value) => value === undefined || value === null ? '—' : new Intl.NumberFormat(language).format(value)
+  const format = useNumberFormat(language)
   const time = value => new Intl.DateTimeFormat(language, { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' }).format(value)
-  const embedUrl = `${site}/@${name}`
 
   return html`
     <div id="top"></div>
@@ -78,11 +77,13 @@ export function View({ site, themes, name }) {
           <p>${t('view.callsNote')}</p>
         </article>
         <article class="panel view-stat">
-          <span class="eyebrow">${t('view.embed')}</span>
-          <${CodeBlock} code=${embedUrl} codeId="view-embed" copied=${copied} copyKey="embed" onCopy=${copy} />
-          <p>${t('view.embedNote')}</p>
+          <span class="eyebrow">${t('view.rank24h')}</span>
+          <div class="view-stat-value"><span>${format(data?.rank24h?.position)}</span><span class="view-rank-total">/ ${format(data?.rank24h?.total)}</span></div>
+          <p>${t(data?.rank24h?.position === null ? 'view.unranked' : 'view.rank24hNote')}</p>
         </article>
       </section>
+
+      <${Audience} countries=${data?.countries} languages=${data?.languages} format=${format} />
 
       <section class="panel view-traffic">
         <div class="view-panel-heading">

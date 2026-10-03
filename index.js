@@ -19,7 +19,10 @@ const nameParams = z.object({ name: z.string().min(1).max(32) });
 function collectStatistics(req, res, next) {
   res.once('finish', () => {
     if (res.statusCode >= 200 && res.statusCode < 300 && res.locals.counted) {
-      statistics.record(req.params.name, req.get('Referer'), process.env.APP_SITE || `${req.protocol}://${req.get('host')}`);
+      statistics.record(req.params.name, req.get('Referer'), process.env.APP_SITE || `${req.protocol}://${req.get('host')}`, Date.now(), {
+        country: req.get('CF-IPCountry'),
+        language: req.get('Accept-Language')
+      });
     }
   });
   next();

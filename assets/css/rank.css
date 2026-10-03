@@ -36,6 +36,27 @@
 .traffic-no-data { position: absolute; top: 40%; left: 50px; right: 12px; text-align: center; color: var(--muted); font-size: 12px; pointer-events: none; }
 .traffic-tooltip { position: absolute; top: 8px; right: 8px; display: flex; align-items: center; gap: 12px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); box-shadow: 0 3px 10px var(--shadow); font: 10px / 1.6 var(--font-mono); pointer-events: none; }
 .traffic-tooltip span { color: var(--muted); }
+.rank-audience { margin-top: 40px; }
+.rank-audience .rank-boards { align-items: stretch; }
+.rank-audience .rank-board { display: flex; flex-direction: column; }
+.rank-audience .rank-table-scroll { flex: 1; }
+.rank-map { position: relative; flex: 1; min-height: 270px; margin: 0 18px 20px; }
+.rank-map-canvas { width: 100%; height: 100%; }
+.rank-map-canvas svg { display: block; }
+.rank-map-canvas .jvm-region { vector-effect: non-scaling-stroke; }
+/* Hovering either path dims both */
+.rank-map-canvas:has([data-code="CN"]:hover) [data-code="CN"],
+.rank-map-canvas:has([data-code="CN"]:hover) [data-code="TW"],
+.rank-map-canvas:has([data-code="TW"]:hover) [data-code="CN"],
+.rank-map-canvas:has([data-code="TW"]:hover) [data-code="TW"] { fill-opacity: .8; }
+.rank-map-message { position: absolute; inset: 40% 0 auto; text-align: center; color: var(--muted); font-size: 11px; pointer-events: none; }
+.rank-map-tooltip { position: absolute; z-index: 60; display: none; padding: 8px 12px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); color: var(--ink); box-shadow: 0 3px 10px var(--shadow); font: 11px / 1.6 var(--font-body); white-space: nowrap; pointer-events: none; }
+.rank-map-tooltip.active { display: block; }
+.rank-share { display: flex; align-items: center; gap: 8px; }
+.rank-share-track { flex: 1; height: 3px; border-radius: 2px; background: var(--line); overflow: hidden; }
+.rank-share-bar { display: block; height: 100%; border-radius: 2px; background: var(--pink); width: calc(var(--share, 0) * 100%); }
+.rank-share-value { width: 40px; text-align: right; }
+.rank-board-pagination { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 18px; border-top: 1px solid var(--line); }
 .rank-leaderboards { margin-top: 48px; }
 .rank-boards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: 24px; align-items: start; }
 .rank-board { min-width: 0; padding: 0; overflow: hidden; }
@@ -57,12 +78,17 @@
 .rank-name a:hover { color: var(--pink-dark); text-decoration: underline; }
 .rank-rate { color: var(--blue-deep); font-weight: 650; }
 .rank-table td.rank-empty { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 12px; }
+.rank-table--plain th:first-child, .rank-table--plain td:first-child { width: auto; }
+.rank-table--plain th:nth-child(2), .rank-table--plain td:nth-child(2) { width: 74px; text-align: right; }
+.rank-table--plain th:nth-child(3), .rank-table--plain td:nth-child(3) { width: 132px; }
 @media (max-width: 860px) {
   .rank-main { padding-top: calc(var(--header-h) + 42px); }
   .rank-summary { gap: 12px; }
   .rank-stat { padding: 20px; }
   .rank-stat-value { font-size: 30px; }
   .rank-boards { grid-template-columns: minmax(0, 1fr); }
+  .rank-audience { margin-top: 36px; }
+  .rank-map { min-height: 310px; }
 }
 @media (max-width: 600px) {
   .rank-main { padding-bottom: 40px; }
@@ -79,6 +105,12 @@
   .rank-panel-heading h2 { font-size: 20px; }
   .rank-filters button { padding: 6px 8px; font-size: 10px; }
   .rank-board-heading { padding: 22px 18px 18px; }
+  .rank-map { min-height: 210px; margin: 0 12px 16px; }
   .rank-table { min-width: 390px; }
+  .rank-table--plain { min-width: 0; }
+  .rank-table--plain th, .rank-table--plain td { padding: 12px 8px; }
+  .rank-table--plain th:nth-child(2), .rank-table--plain td:nth-child(2) { width: 60px; }
+  .rank-table--plain th:nth-child(3), .rank-table--plain td:nth-child(3) { width: 104px; }
+  .rank-table--plain thead th { font-size: 9px; }
   .traffic-tooltip { gap: 8px; font-size: 9px; }
 }

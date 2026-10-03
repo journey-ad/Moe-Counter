@@ -20,6 +20,20 @@ export default {
       perMinute: 'Requests / minute', perHour: 'Requests / hour',
       description: 'Counter request traffic',
       empty: 'No data yet', missing: 'No data', requests: '{count} requests'
+    },
+    geo: {
+      kicker: 'REQUEST SOURCES / AUDIENCE', title: 'Countries and regions',
+      language: 'Browser language',
+      emptyGeo: 'No data yet', emptyLanguage: 'No data yet', share: 'Share',
+      mapLoading: 'Loading map…', mapError: 'Map is temporarily unavailable', mapDescription: 'Lifetime requests by country and region',
+      noRegionData: 'No data for this region',
+      pagination: {
+        label: 'Browser language pages',
+        summary: 'Page {page} of {pages}',
+        previous: 'Previous page',
+        next: 'Next page',
+        goToPage: 'Go to page {page}'
+      }
     }
   },
   view: {
@@ -30,7 +44,7 @@ export default {
     error: 'Could not load', stale: 'Refresh failed · showing the last data',
     total: 'Total visits', totalNote: 'Counted since the counter was created',
     calls24h: 'Calls in 24h', callsNote: 'Total over the last 24 hours',
-    embed: 'Embed URL', embedNote: 'Put this in your README or page to start counting',
+    rank24h: '24h call rank', rank24hNote: 'Position among all counters', unranked: 'Not ranked',
     warming: 'Still collecting, the 24 hour range is not complete yet',
     chart: {
       kicker: 'Request trend', title: 'Calls per 5 minutes',

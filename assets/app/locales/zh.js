@@ -20,6 +20,20 @@ export default {
       perMinute: '请求数 / 分钟', perHour: '请求数 / 小时',
       description: '整站请求趋势',
       empty: '暂无数据', missing: '无数据', requests: '{count} 次请求'
+    },
+    geo: {
+      kicker: '请求来源 / AUDIENCE', title: '来源国家和地区',
+      language: '浏览器语言',
+      emptyGeo: '暂无数据', emptyLanguage: '暂无数据', share: '占比',
+      mapLoading: '地图加载中…', mapError: '地图暂时无法加载', mapDescription: '各国家和地区的累计请求量分布',
+      noRegionData: '该地区暂无数据',
+      pagination: {
+        label: '浏览器语言分页',
+        summary: '第 {page} / {pages} 页',
+        previous: '上一页',
+        next: '下一页',
+        goToPage: '前往第 {page} 页'
+      }
     }
   },
   view: {
@@ -30,7 +44,7 @@ export default {
     error: '加载失败', stale: '刷新失败 · 显示上次数据',
     total: '累计访问', totalNote: '自创建以来的累计次数',
     calls24h: '24 小时调用量', callsNote: '近 24 小时累计',
-    embed: '嵌入地址', embedNote: '放到 README 或网页中即可开始计数',
+    rank24h: '24 小时调用量排行', rank24hNote: '在全站计数器中的位置', unranked: '暂无排名',
     warming: '数据积累中，24 小时范围尚不完整',
     chart: {
       kicker: '调用趋势', title: '每 5 分钟调用次数',
