@@ -264,7 +264,7 @@ export default {
   sponsor: {
     eyebrow: 'SUPPORT THE PROJECT',
     title: 'Help keep the service running.',
-    description: 'Moe Counter handles over 10 million requests each month. Your support helps cover server costs and keep the service available.',
+    description: 'Moe Counter! handles over 10 million requests each month. Your support helps cover server costs and keep the service available.',
     afdian: 'Afdian',
     close: 'Close the support banner'
   },

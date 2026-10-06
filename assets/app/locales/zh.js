@@ -264,7 +264,7 @@ export default {
   sponsor: {
     eyebrow: '支持这个项目',
     title: '支持项目持续运行。',
-    description: 'Moe Counter 每月处理超过 1000 万次请求。你的赞助将帮助支付服务器费用，让服务持续运行。',
+    description: 'Moe Counter! 每月处理超过 1000 万次请求。你的赞助将帮助支付服务器费用，让服务持续运行。',
     afdian: '爱发电',
     close: '关闭赞助横幅'
   },

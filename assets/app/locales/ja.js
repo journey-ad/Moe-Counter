@@ -264,7 +264,7 @@ export default {
   sponsor: {
     eyebrow: 'プロジェクトへの支援',
     title: '運営へのご支援をお願いします。',
-    description: 'Moe Counter は毎月 1,000 万件以上のリクエストを処理しています。ご支援はサーバー費用に充て、サービスの継続に役立てます。',
+    description: 'Moe Counter! は毎月 1,000 万件以上のリクエストを処理しています。ご支援はサーバー費用に充て、サービスの継続に役立てます。',
     afdian: 'Afdian',
     close: '支援の案内を閉じる'
   },

@@ -53,7 +53,7 @@ export function Credits({ showSponsor, onTrack }) {
             ${t('sponsor.description')}
           </p>
         </div>
-        <div class="sponsor-links">
+        <div class="credit-actions">
           <${PillButton}
             href="https://ko-fi.com/journey_ad"
             onClick=${() => onTrack('click', 'normal', 'go_kofi')}

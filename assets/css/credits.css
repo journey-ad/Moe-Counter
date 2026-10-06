@@ -17,7 +17,7 @@
 .sponsor-copy .eyebrow { color: var(--blue-deep); }
 .sponsor-copy h3 { margin: 12px 0; font-family: var(--font-display); font-size: 26px; font-weight: 600; line-height: 1.35; letter-spacing: -0.6px; }
 .sponsor-copy p { max-width: 660px; font-size: 12px; color: var(--support-text); line-height: 1.85; }
-.sponsor-links { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+.credit-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
 
 @media (max-width: 860px) {
   .credit-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }

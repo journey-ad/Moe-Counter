@@ -20,9 +20,17 @@ export function Hero({ site, themes, onSparkle, onTrack }) {
   const themeCount = themes.length
   const [theme, setTheme] = useState(() => themes.find(({ name }) => name === 'moebooru')?.name || pickTheme(themes))
   const [cycle, setCycle] = useState(0)
-  const shuffle = () => {
+  const shuffle = (event) => {
     setTheme((current) => pickTheme(themes, current))
     setCycle((count) => count + 1)
+
+    const party = window.party
+    if (event && party && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      party.confetti(event.currentTarget, {
+        count: party.variation.range(30, 50),
+        shapes: ['square', 'rectangle']
+      })
+    }
   }
   useEffect(() => {
     if (themes.length < 2) return

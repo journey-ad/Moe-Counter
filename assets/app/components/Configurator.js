@@ -135,8 +135,12 @@ export function Configurator({ site, config, onChange, onReset, themeNames, copi
   const { t } = useLanguage()
   const [revealed, setRevealed] = useState(false)
   const [error, setError] = useState(false)
+  const [previewRevision, setPreviewRevision] = useState(0)
 
-  const previewUrl = useDebounced(buildPreviewUrl(site, config))
+  const debouncedPreviewUrl = useDebounced(buildPreviewUrl(site, config))
+  const previewUrl = config.theme === 'random' && previewRevision > 0
+    ? `${debouncedPreviewUrl}&refresh=${previewRevision}`
+    : debouncedPreviewUrl
   const embedUrl = buildEmbedUrl(site, config)
   const hasName = config.name.trim().length > 0
 
@@ -164,6 +168,7 @@ export function Configurator({ site, config, onChange, onReset, themeNames, copi
 
     setError(false)
     setRevealed(true)
+    if (config.theme === 'random') setPreviewRevision((revision) => revision + 1)
     onCelebrate(event.currentTarget)
   }
 
