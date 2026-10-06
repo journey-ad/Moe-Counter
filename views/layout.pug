@@ -11,16 +11,10 @@ html(lang='en')
         const appearance = localStorage.getItem('moe-counter-appearance');
         if (appearance === 'dark' || appearance === 'light') document.documentElement.dataset.appearance = appearance;
       } catch {}
-    link(rel='stylesheet', href=`${site}/style.css`)
-    //- No build step: the browser loads ESM directly and the import map resolves bare specifiers
-    script(type='importmap').
-      {
-        "imports": {
-          "preact": "https://unpkg.com/preact@10.29.8/dist/preact.module.js",
-          "preact/hooks": "https://unpkg.com/preact@10.29.8/hooks/dist/hooks.module.js",
-          "htm": "https://unpkg.com/htm@3.1.1/dist/htm.module.js"
-        }
-      }
+    each stylesheet in frontend.styles
+      link(rel='stylesheet', href=stylesheet)
+    each preload in frontend.preloads
+      link(rel='modulepreload', href=preload)
     if ga_id
       <!-- Global site tag (gtag.js) - Google Analytics -->
       script(async, src=`https://www.googletagmanager.com/gtag/js?id=${ga_id}`)
@@ -49,5 +43,6 @@ html(lang='en')
       block noscript
 
     block scripts
-    script(defer, src=`${site}/vendor/party.min.js`)
-    script(type='module', src=`${site}/app/main.js`)
+    if frontend.dev
+      script(type='module', src='/@vite/client')
+    script(type='module', src=frontend.script)

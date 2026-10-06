@@ -10,7 +10,9 @@ RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store pnpm install
 
 COPY . .
 
-RUN mkdir -p /app/data
+RUN pnpm build && mkdir -p /app/data
+
+ENV NODE_ENV=production
 
 EXPOSE 3000
 

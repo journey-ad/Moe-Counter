@@ -3,6 +3,8 @@
 require('dotenv').config();
 const express = require("express");
 const compression = require("compression");
+const { createServer } = require('http');
+const path = require('path');
 const { z } = require("zod");
 
 const db = require("./db");
@@ -10,8 +12,11 @@ const { themeList, themeGroups, getThemeGroups, getCountImage } = require("./uti
 const { cors, ZodValid } = require("./utils/middleware");
 const { randomArray, logger } = require("./utils");
 const { createStatistics } = require('./utils/statistics');
+const { setupFrontend } = require('./utils/frontend');
 
 const app = express();
+const listener = createServer(app);
+const frontend = express.Router();
 const statistics = createStatistics(db, logger);
 const asyncRoute = (handler) => (req, res, next) => Promise.resolve(handler(req, res)).catch(next);
 const nameParams = z.object({ name: z.string().min(1).max(32) });
@@ -28,9 +33,10 @@ function collectStatistics(req, res, next) {
   next();
 }
 
-app.use(express.static("assets"));
 app.use(compression());
 app.use(cors());
+app.use(frontend);
+app.use(express.static(path.join(__dirname, 'assets')));
 app.set("view engine", "pug");
 
 app.get(['/', '/rank'], (req, res) => {
@@ -174,13 +180,18 @@ app.use((error, req, res, next) => {
   res.status(503).json({ message: 'The service is temporarily unavailable. Please try again.' });
 });
 
-statistics.init().then(() => {
-  const listener = app.listen(process.env.APP_PORT || 3000, () => {
+let vite;
+setupFrontend(app, frontend, listener).then(viteServer => {
+  vite = viteServer;
+  return statistics.init();
+}).then(() => {
+  listener.listen(process.env.APP_PORT || 3000, () => {
     logger.info('Your app is listening on port ' + listener.address().port);
   });
   listener.once('error', async error => {
     logger.error('Server startup failed:', error);
     process.exitCode = 1;
+    await vite?.close();
     await statistics.close();
   });
   let closing = false;
@@ -188,6 +199,7 @@ statistics.init().then(() => {
     if (closing) return;
     closing = true;
     try {
+      await vite?.close();
       await new Promise(resolve => listener.close(resolve));
       await statistics.close();
     } catch (error) {
@@ -199,7 +211,8 @@ statistics.init().then(() => {
   process.once('SIGTERM', shutdown);
   process.once('SIGINT', shutdown);
 }).catch(async error => {
-  logger.error('Database initialization failed:', error);
+  logger.error('Service initialization failed:', error);
   process.exitCode = 1;
+  await vite?.close();
   await db.close();
 });
