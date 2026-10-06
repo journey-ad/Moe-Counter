@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - dev
     tags:
       - 'v*'
     # Optional: trigger only on specific file changes
