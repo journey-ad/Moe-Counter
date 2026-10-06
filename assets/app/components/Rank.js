@@ -8,9 +8,16 @@ import { BackToTop } from './BackToTop.js'
 import { Icon } from './ui.js'
 import { TrafficChart } from './TrafficChart.js'
 import { Audience } from './Audience.js'
+import { SourceVisitDialog } from './SourceVisitDialog.js'
 
-function Leaderboard({ rows, kind, site, format }) {
+function Leaderboard({ rows, kind, site, format, onVisitSource }) {
   const { t } = useLanguage()
+  const visitSource = (event, hostname) => {
+    event.preventDefault()
+    event.currentTarget.focus({ preventScroll: true })
+    onVisitSource(hostname)
+  }
+
   return html`
     <article class="panel rank-board">
       <div class="rank-board-heading"><span class="eyebrow">TOP 100 / ${kind === 'counters' ? 'COUNTERS' : 'HOSTNAMES'}</span>
@@ -24,7 +31,10 @@ function Leaderboard({ rows, kind, site, format }) {
           <tbody>${rows.length ? rows.map((row, index) => html`
             <tr key=${row.name}><td class=${index < 3 ? 'rank-position is-leading' : 'rank-position'}>${String(index + 1).padStart(2, '0')}</td>
               <th scope="row" class="rank-name" title=${row.name}>
-                ${kind === 'sources' ? html`<a href=${`https://${row.name}/`} target="_blank" rel="noopener noreferrer">${row.name}</a>` : html`<a href=${`${site}/view/@${encodeURIComponent(row.name).replace(/%3A/g, ':')}`}>${row.name}</a>`}
+                ${kind === 'sources' ? html`<button class="rank-source" type="button" aria-haspopup="dialog"
+                  onClick=${event => visitSource(event, row.name)}
+                  onAuxClick=${event => { if (event.button === 1) visitSource(event, row.name) }}
+                  onContextMenu=${event => visitSource(event, row.name)}>${row.name}</button>` : html`<a href=${`${site}/view/@${encodeURIComponent(row.name).replace(/%3A/g, ':')}`}>${row.name}</a>`}
               </th><td>${format(row.total)}</td><td>${format(row.calls24h)}</td><td class="rank-rate">${format(row.rpm, 'rate')}</td></tr>
           `) : html`<tr><td colSpan="5" class="rank-empty">${t('rank.empty')}</td></tr>`}</tbody>
         </table>
@@ -42,6 +52,7 @@ export function Rank({ site, themes }) {
   const [chart, setChart] = useState(null)
   const [loading, setLoading] = useState(true)
   const [failed, setFailed] = useState(false)
+  const [source, setSource] = useState(null)
 
   useEffect(() => {
     const controller = new AbortController()
@@ -114,10 +125,11 @@ export function Rank({ site, themes }) {
           <div class="rank-filters" role="group" aria-label=${t('rank.sort')}>
             ${['rpm', '24h', 'total'].map(value => html`<button key=${value} type="button" class=${sort === value ? 'is-active' : ''} aria-pressed=${sort === value} onClick=${() => setSort(value)}>${t(`rank.sort_${value}`)}</button>`)}
           </div></div>
-        <div class="rank-boards"><${Leaderboard} kind="counters" rows=${data?.counters || []} site=${site} format=${format} /><${Leaderboard} kind="sources" rows=${data?.sources || []} format=${format} /></div>
+        <div class="rank-boards"><${Leaderboard} kind="counters" rows=${data?.counters || []} site=${site} format=${format} /><${Leaderboard} kind="sources" rows=${data?.sources || []} format=${format} onVisitSource=${setSource} /></div>
       </section>
     </main>
     <${SiteFooter} site=${site} themeCount=${themes.length} page="rank" rpm=${data?.site.rpm} />
     <${BackToTop} />
+    ${source ? html`<${SourceVisitDialog} hostname=${source} onClose=${() => setSource(null)} />` : null}
   `
 }

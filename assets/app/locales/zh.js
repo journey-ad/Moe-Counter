@@ -14,6 +14,16 @@ export default {
     position: '排名', id: '计数器 ID', hostname: '来源域名', total: '累计', empty: '暂无数据',
     topNote: 'TOP 100', boards: '调用排行', sort: '排行榜排序',
     sort_rpm: '按 RPM', sort_24h: '按 24h 次数', sort_total: '按累计次数',
+    external: {
+      kicker: '外部网站 / 安全提示', title: '即将访问外部网站',
+      intro: '你即将离开 Moe Counter!，在新标签页中访问第三方网站。', destination: '目标网址',
+      listingTitle: '来源统计不代表安全认证',
+      listing: '排行榜根据请求来源信息生成，该信息可能被伪造。收录不代表 Moe Counter 对该网站的认可、推荐或安全保证。',
+      riskTitle: '请保护个人信息与财产安全',
+      risk: '第三方网站可能存在钓鱼、诈骗、恶意下载或不适宜内容。请核实网址，谨慎对待登录、付款及下载要求，勿泄露密码、验证码等敏感信息。',
+      disclaimer: '第三方网站由其运营者独立负责，并适用其自身的用户协议与隐私政策。Moe Counter 不保证其内容、服务的准确性、安全性或可用性；在适用法律允许的范围内，不承担因访问或使用该网站产生的损失。请自行评估风险后决定是否继续。',
+      cancel: '留在本站', continue: '了解风险，继续访问'
+    },
     chart: {
       kicker: '整站请求 / TRAFFIC', title: '请求趋势',
       minute_24h: '24h · 分钟', hour_24h: '24h · 小时', hour_7d: '7 天 · 小时',

@@ -14,6 +14,16 @@ export default {
     position: 'Position', id: 'Counter ID', hostname: 'Hostname', total: 'All time', empty: 'No data yet',
     topNote: 'TOP 100', boards: 'Most active', sort: 'Ranking order',
     sort_rpm: 'By RPM', sort_24h: 'By 24h calls', sort_total: 'By all time',
+    external: {
+      kicker: 'EXTERNAL WEBSITE / SAFETY NOTICE', title: 'You are leaving Moe Counter!',
+      intro: 'You are about to visit a third-party website in a new tab.', destination: 'Destination',
+      listingTitle: 'A ranking is not a safety certification',
+      listing: 'Rankings are based on request referrer information, which can be forged. A listing does not imply endorsement, recommendation or a safety guarantee by Moe Counter.',
+      riskTitle: 'Protect your personal information and money',
+      risk: 'Third-party websites may contain phishing, scams, malicious downloads or inappropriate content. Verify the address, be cautious about sign-in, payment and download requests, and never disclose passwords, verification codes or other sensitive information.',
+      disclaimer: 'The website is independently operated and subject to its own terms and privacy policy. Moe Counter does not guarantee the accuracy, safety or availability of its content or services and, to the extent permitted by applicable law, is not liable for losses arising from visiting or using it. Assess the risks before continuing.',
+      cancel: 'Stay here', continue: 'Understand risks and continue'
+    },
     chart: {
       kicker: 'SITE REQUESTS / TRAFFIC', title: 'Request traffic',
       minute_24h: '24h · minutes', hour_24h: '24h · hours', hour_7d: '7 days · hours',
