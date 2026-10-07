@@ -1,3 +1,4 @@
+import './lib/polyfills'
 import 'vite/modulepreload-polyfill'
 import '../style.css'
 import party from 'party-js'
@@ -30,7 +31,9 @@ const PAGES: Record<PageName, () => Promise<ComponentType<PageProps>>> = {
   view: () => import('./pages/View').then((module) => module.View)
 }
 
-if (root) {
+async function start() {
+  if (!root) return
+
   installAnchorNavigation()
   const [, Page] = await Promise.all([i18nReady, (PAGES[page] || PAGES.home)()])
   render(
@@ -45,3 +48,5 @@ if (root) {
   const initialSection = location.hash.slice(1)
   if (initialSection) requestAnimationFrame(() => scrollToSection(initialSection))
 }
+
+start().catch((error) => console.error('Could not start the page:', error))

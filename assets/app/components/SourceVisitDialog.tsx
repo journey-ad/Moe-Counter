@@ -13,11 +13,14 @@ export function SourceVisitDialog({ hostname, onClose }: { hostname: string; onC
     if (!element) return
     const previousFocus = document.activeElement
     const previousOverflow = document.body.style.overflow
-    element.showModal()
+    // Safari below 15.4 has no dialog APIs, the element still shows as a fixed overlay
+    if (typeof element.showModal === 'function') element.showModal()
+    else element.setAttribute('open', '')
     cancel.current?.focus({ preventScroll: true })
     document.body.style.overflow = 'hidden'
     return () => {
-      element.close()
+      if (typeof element.close === 'function') element.close()
+      else element.removeAttribute('open')
       document.body.style.overflow = previousOverflow
       if (previousFocus instanceof HTMLElement && previousFocus.isConnected)
         previousFocus.focus({ preventScroll: true })

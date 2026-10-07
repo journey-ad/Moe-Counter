@@ -10,10 +10,11 @@
   height: var(--header-h);
   padding: 0 var(--page-inset);
   border-bottom: 1px solid var(--line);
+  background: var(--paper);
   background: color-mix(in srgb, var(--paper) 95%, transparent);
   transition: background 0.25s, box-shadow 0.25s;
 }
-.site-header.is-scrolled { background: color-mix(in srgb, var(--paper) 97%, transparent); backdrop-filter: blur(14px); box-shadow: 0 5px 18px var(--shadow); }
+.site-header.is-scrolled { background: var(--paper); background: color-mix(in srgb, var(--paper) 97%, transparent); backdrop-filter: blur(14px); box-shadow: 0 5px 18px var(--shadow); }
 .brand { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
 .brand-mark {
   display: grid;

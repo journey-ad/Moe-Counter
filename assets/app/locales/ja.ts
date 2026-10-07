@@ -67,7 +67,6 @@ export default {
     description: 'ブログやウェブサイトにアクセス数を表示する画像カウンターです。{count} 種類のテーマから選べます。'
   },
   common: {
-    skip: '本文へスキップ',
     language: '言語',
     decrease: '{field}を減らす',
     increase: '{field}を増やす',

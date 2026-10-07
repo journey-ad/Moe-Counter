@@ -84,7 +84,7 @@
 .rank-table--plain th:first-child, .rank-table--plain td:first-child { width: auto; }
 .rank-table--plain th:nth-child(2), .rank-table--plain td:nth-child(2) { width: 1%; text-align: right; white-space: nowrap; }
 .rank-table--plain th:nth-child(3), .rank-table--plain td:nth-child(3) { width: 132px; }
-.source-visit-dialog { position: fixed; inset: 0; width: min(560px, calc(100% - 32px)); max-width: none; max-height: calc(100dvh - 48px); margin: auto; padding: 0; border: 1px solid var(--line-strong); border-radius: 16px; background: var(--surface); color: var(--ink); box-shadow: 0 24px 80px var(--shadow-strong); }
+.source-visit-dialog { position: fixed; inset: 0; width: min(560px, calc(100% - 32px)); max-width: none; max-height: calc(100vh - 48px); max-height: calc(100dvh - 48px); margin: auto; padding: 0; border: 1px solid var(--line-strong); border-radius: 16px; background: var(--surface); color: var(--ink); box-shadow: 0 24px 80px var(--shadow-strong); }
 .source-visit-dialog[open] { display: flex; flex-direction: column; }
 .source-visit-dialog::backdrop { background: #14251dcc; }
 .source-visit-content { min-height: 0; overflow-y: auto; padding: 28px; }

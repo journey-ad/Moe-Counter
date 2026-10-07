@@ -30,6 +30,7 @@
     "pug": "^3.0.3",
     "react": "npm:@preact/compat@^18.3.2",
     "react-i18next": "^17.0.16",
+    "resize-observer-polyfill": "^1.5.1",
     "zod": "^3.25.61"
   },
   "devDependencies": {

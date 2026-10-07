@@ -1,5 +1,5 @@
 /* Sponsor banner */
-.sponsor-banner { position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; padding: 14px var(--page-inset) calc(14px + env(safe-area-inset-bottom)); border-top: 1px solid var(--support-line); background: color-mix(in srgb, var(--support-bg) 97%, transparent); box-shadow: 0 -3px 18px var(--shadow); backdrop-filter: blur(12px); }
+.sponsor-banner { position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; padding: 14px var(--page-inset) calc(14px + env(safe-area-inset-bottom)); border-top: 1px solid var(--support-line); background: var(--support-bg); background: color-mix(in srgb, var(--support-bg) 97%, transparent); box-shadow: 0 -3px 18px var(--shadow); backdrop-filter: blur(12px); }
 .sponsor-banner-inner { display: flex; align-items: center; gap: 16px; }
 .sponsor-banner-mark { display: grid; place-items: center; flex: 0 0 34px; width: 34px; height: 34px; border-radius: 10px; background: var(--support-mark); color: var(--blue-deep); font-size: 14px; }
 .sponsor-banner-copy { flex: 1; min-width: 0; }

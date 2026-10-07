@@ -67,7 +67,6 @@ export default {
     description: '用一张图片在项目说明、博客或网页中显示访问次数，支持 {count} 种主题。'
   },
   common: {
-    skip: '跳转到正文',
     language: '语言',
     decrease: '减小{field}',
     increase: '增大{field}',

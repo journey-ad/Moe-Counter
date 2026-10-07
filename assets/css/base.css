@@ -62,8 +62,13 @@
   --icon-exclamation: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M12 6.5v7'/%3E%3Cpath d='M12 17.4v.1'/%3E%3C/g%3E%3C/svg%3E");
 }
 
-:root[data-appearance="light"] { color-scheme: light; }
-:root[data-appearance="dark"] { color-scheme: dark; }
+/* Lightning CSS compiles light-dark() to these two properties, "initial" picks the fallback colour */
+:root { --lightningcss-light: initial; --lightningcss-dark: ; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-appearance="light"]) { --lightningcss-light: ; --lightningcss-dark: initial; }
+}
+:root[data-appearance="light"] { color-scheme: light; --lightningcss-light: initial; --lightningcss-dark: ; }
+:root[data-appearance="dark"] { color-scheme: dark; --lightningcss-light: ; --lightningcss-dark: initial; }
 
 /* Base */
 *, *::before, *::after { box-sizing: border-box; }
@@ -85,8 +90,6 @@ h1, h2, h3, h4, p { margin: 0; }
 fieldset { margin: 0; padding: 0; border: 0; }
 ::selection { background: var(--paper-blush); color: var(--ink); }
 :focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-offset); }
-.skip-link { position: fixed; top: -100px; left: 20px; z-index: 200; padding: 10px 20px; background: var(--surface); border-radius: 8px; }
-.skip-link:focus { top: 10px; }
 .ui-icon {
   display: inline-block;
   flex: 0 0 auto;

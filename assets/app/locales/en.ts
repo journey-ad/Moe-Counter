@@ -67,7 +67,6 @@ export default {
     description: 'An image-based visitor counter for your README, blog or website, with {count} themes to choose from.'
   },
   common: {
-    skip: 'Skip to content',
     language: 'Language',
     decrease: 'Decrease {field}',
     increase: 'Increase {field}',

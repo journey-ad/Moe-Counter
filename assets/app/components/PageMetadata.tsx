@@ -19,8 +19,6 @@ export function PageMetadata({
     document
       .querySelector('meta[name="description"]')
       ?.setAttribute('content', t(`${prefix}.description`, { count: themeCount, name }))
-    const skip = document.querySelector('.skip-link')
-    if (skip) skip.textContent = t('common.skip')
   }, [language, themeCount, page, name, t])
 
   return null
