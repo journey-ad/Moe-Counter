@@ -139,9 +139,9 @@
 
 ![cat-girls-yay](https://count.getloli.com/@demo?theme=cat-girls-yay)
 
-##### detention
+##### bully
 
-![detention](https://count.getloli.com/@demo?theme=detention)
+![bully](https://count.getloli.com/@demo?theme=bully)
 
 ##### e621
 
