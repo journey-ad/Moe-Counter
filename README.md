@@ -139,6 +139,10 @@
 
 ![cat-girls-yay](https://count.getloli.com/@demo?theme=cat-girls-yay)
 
+##### bully
+
+![bully](https://count.getloli.com/@demo?theme=bully)
+
 ##### e621
 
 ![e621](https://count.getloli.com/@demo?theme=e621)
